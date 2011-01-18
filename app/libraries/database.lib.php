@@ -8,7 +8,7 @@
 	 * coding quicker.
 	 *
 	 * @author William Duyck <wduyck@gmail.com>
-	 * @version 1.0
+	 * @version 0.1
 	 * @package affero
 	 * @subpackage libraries
 	 * @copyright 2011 William Duyck
