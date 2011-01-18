@@ -54,25 +54,7 @@
 		}
 	}
 	
-	/**
-	 * current_url
-	 *
-	 * This function get the url of the current page the user is viewing, and
-	 * sticks all the bits together as PHP does not do this for you.
-	 *
-	 * @return string the url of the current page.
-	 */
-	function current_url()
-	{
-		$url = 'http';
-		if(isset($_SERVER['HTTPS'])){ $url .= 's'; }
-		$url .= '://'.$_SERVER['HTTP_HOST'];
-		if($_SERVER['SERVER_PORT'] != 80) { $url .= $_SERVER['SERVER_PORT']; }
-		$url .= $_SERVER['REQUEST_URI'];
-		return $url;
-	}
-	
 	//set that we are in a development environment if the domain provided does not match the current domain.
-	define('DEVELOPMENT_ENVIRONMENT', (parse_url(current_url(), PHP_URL_HOST) == parse_url($config['site']['url'], PHP_URL_HOST)));
+	define('DEVELOPMENT_ENVIRONMENT', (parse_url($utilities->current_url(), PHP_URL_HOST) == parse_url($config['site']['url'], PHP_URL_HOST)));
 	
 ?>

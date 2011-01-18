@@ -7,8 +7,8 @@
 	 * layer. Tests are run automatically on file load.
 	 *
 	 * @author William Duyck <wduyck@gmail.com>
-	 * @version 1.0
-	 * @package defero
+	 * @version 0.1
+	 * @package affero
 	 * @subpackage testing
 	 * @copyright MPL 1.1/LGPL 2.1/GPL 2.0 William Duyck
 	 */
