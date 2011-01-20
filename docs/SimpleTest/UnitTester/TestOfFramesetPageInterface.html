@@ -1,0 +1,773 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class TestOfFramesetPageInterface</title>
+			<link rel="stylesheet" href="../../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name"><img src="../../media/images/Class_logo.png"
+														alt=" Class"
+														title=" Class"
+														style="vertical-align: middle"> TestOfFramesetPageInterface</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Standard unit test class for day to day testing     of PHP code XP style. Adds some useful standard     assertions.</p>
+		<p class="notes">
+			Located in <a class="field" href="_test---php---simpletest---test---frames_test.php.html">/test/php/simpletest/test/frames_test.php</a> (line <span class="field">241</span>)
+		</p>
+		
+				
+		<pre><a href="../../SimpleTest/UnitTester/SimpleTestCase.html">SimpleTestCase</a>
+   |
+   --<a href="../../SimpleTest/UnitTester/UnitTestCase.html">UnitTestCase</a>
+      |
+      --TestOfFramesetPageInterface</pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																<div class="var-title">
+					<img src="../../media/images/PrivateVariable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$frameset_interface" title="details" class="var-name">$frameset_interface</a>
+				</div>
+																<div class="var-title">
+					<img src="../../media/images/PrivateVariable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$page_interface" title="details" class="var-name">$page_interface</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																																								<div class="method-definition">
+					<img src="../../media/images/Constructor.png" alt=" "/>
+											<span class="method-result">TestOfFramesetPageInterface</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#assertListInAnyOrder" title="details" class="method-name">assertListInAnyOrder</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$list</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$expected</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/PrivateMethod.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#getFramesetMethods" title="details" class="method-name">getFramesetMethods</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/PrivateMethod.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#getPageMethods" title="details" class="method-name">getPageMethods</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testFindingFormsById" title="details" class="method-name">testFindingFormsById</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testFindingFormsByImage" title="details" class="method-name">testFindingFormsByImage</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testFindingFormsBySubmit" title="details" class="method-name">testFindingFormsBySubmit</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testFramsetHasPageInterface" title="details" class="method-name">testFramsetHasPageInterface</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testHeadersReadFromFrameIfInFocus" title="details" class="method-name">testHeadersReadFromFrameIfInFocus</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testLabelledUrlsComeFromBothFrames" title="details" class="method-name">testLabelledUrlsComeFromBothFrames</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testOnlyGettingFieldFromFocusedFrame" title="details" class="method-name">testOnlyGettingFieldFromFocusedFrame</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testOnlySettingFieldFromFocusedFrame" title="details" class="method-name">testOnlySettingFieldFromFocusedFrame</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testReadFrameTaggedUrlsFromFrameInFocus" title="details" class="method-name">testReadFrameTaggedUrlsFromFrameInFocus</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testReadUrlsFromFrameInFocus" title="details" class="method-name">testReadUrlsFromFrameInFocus</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testSettingAllFrameFieldsWhenNoFrameFocus" title="details" class="method-name">testSettingAllFrameFieldsWhenNoFrameFocus</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testUrlByIdComesFromFirstFrameToRespond" title="details" class="method-name">testUrlByIdComesFromFirstFrameToRespond</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testUrlsComeFromBothFrames" title="details" class="method-name">testUrlsComeFromBothFrames</a>
+										()
+									</div>
+											</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			
+<a name="var$frameset_interface" id="$frameset_interface"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../../media/images/PrivateVariable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$frameset_interface</span>
+						(line <span class="line-number">243</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> private</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$page_interface" id="$page_interface"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../../media/images/PrivateVariable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$page_interface</span>
+						(line <span class="line-number">242</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> private</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+							<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html">SimpleTestCase</a></span></p>
+					<blockquote>
+													<img src="../../media/images/PrivateVariable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#var$label">SimpleTestCase::$label</a></span><br>
+							</span>
+													<img src="../../media/images/PrivateVariable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#var$observers">SimpleTestCase::$observers</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#var$reporter">SimpleTestCase::$reporter</a></span><br>
+							</span>
+													<img src="../../media/images/PrivateVariable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#var$should_skip">SimpleTestCase::$should_skip</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+														<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Constructor.png" />
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">245</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">TestOfFramesetPageInterface</span>
+		<span class="method-name">
+			__construct
+		</span>
+				()
+			</div>
+	
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../SimpleTest/UnitTester/UnitTestCase.html#method__construct">UnitTestCase::__construct()</a></dt>
+						<dd>Creates an empty test case. Should be subclassed     with test methods for a functional test case.</dd>
+					</dl>
+			
+	</div>
+<a name="methodassertListInAnyOrder" id="assertListInAnyOrder"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">assertListInAnyOrder</span> (line <span class="line-number">251</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			assertListInAnyOrder
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$list</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$expected</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$list</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$expected</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetFramesetMethods" id="getFramesetMethods"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/PrivateMethod.png" />
+		<span class="method-title">getFramesetMethods</span> (line <span class="line-number">277</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> private</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getFramesetMethods
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetPageMethods" id="getPageMethods"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/PrivateMethod.png" />
+		<span class="method-title">getPageMethods</span> (line <span class="line-number">257</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> private</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getPageMethods
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestFindingFormsById" id="testFindingFormsById"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testFindingFormsById</span> (line <span class="line-number">451</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testFindingFormsById
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestFindingFormsByImage" id="testFindingFormsByImage"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testFindingFormsByImage</span> (line <span class="line-number">488</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testFindingFormsByImage
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestFindingFormsBySubmit" id="testFindingFormsBySubmit"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testFindingFormsBySubmit</span> (line <span class="line-number">468</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testFindingFormsBySubmit
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestFramsetHasPageInterface" id="testFramsetHasPageInterface"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testFramsetHasPageInterface</span> (line <span class="line-number">294</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testFramsetHasPageInterface
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestHeadersReadFromFrameIfInFocus" id="testHeadersReadFromFrameIfInFocus"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testHeadersReadFromFrameIfInFocus</span> (line <span class="line-number">305</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testHeadersReadFromFrameIfInFocus
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestLabelledUrlsComeFromBothFrames" id="testLabelledUrlsComeFromBothFrames"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testLabelledUrlsComeFromBothFrames</span> (line <span class="line-number">360</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testLabelledUrlsComeFromBothFrames
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestOnlyGettingFieldFromFocusedFrame" id="testOnlyGettingFieldFromFocusedFrame"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testOnlyGettingFieldFromFocusedFrame</span> (line <span class="line-number">535</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testOnlyGettingFieldFromFocusedFrame
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestOnlySettingFieldFromFocusedFrame" id="testOnlySettingFieldFromFocusedFrame"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testOnlySettingFieldFromFocusedFrame</span> (line <span class="line-number">521</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testOnlySettingFieldFromFocusedFrame
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestReadFrameTaggedUrlsFromFrameInFocus" id="testReadFrameTaggedUrlsFromFrameInFocus"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testReadFrameTaggedUrlsFromFrameInFocus</span> (line <span class="line-number">432</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testReadFrameTaggedUrlsFromFrameInFocus
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestReadUrlsFromFrameInFocus" id="testReadUrlsFromFrameInFocus"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testReadUrlsFromFrameInFocus</span> (line <span class="line-number">407</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testReadUrlsFromFrameInFocus
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestSettingAllFrameFieldsWhenNoFrameFocus" id="testSettingAllFrameFieldsWhenNoFrameFocus"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testSettingAllFrameFieldsWhenNoFrameFocus</span> (line <span class="line-number">508</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testSettingAllFrameFieldsWhenNoFrameFocus
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestUrlByIdComesFromFirstFrameToRespond" id="testUrlByIdComesFromFirstFrameToRespond"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testUrlByIdComesFromFirstFrameToRespond</span> (line <span class="line-number">386</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testUrlByIdComesFromFirstFrameToRespond
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestUrlsComeFromBothFrames" id="testUrlsComeFromBothFrames"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testUrlsComeFromBothFrames</span> (line <span class="line-number">338</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testUrlsComeFromBothFrames
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../SimpleTest/UnitTester/UnitTestCase.html">UnitTestCase</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Constructor.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#method__construct">UnitTestCase::__construct()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertClone">UnitTestCase::assertClone()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertCopy">UnitTestCase::assertCopy()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertEqual">UnitTestCase::assertEqual()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertFalse">UnitTestCase::assertFalse()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertIdentical">UnitTestCase::assertIdentical()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertIsA">UnitTestCase::assertIsA()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertNoPattern">UnitTestCase::assertNoPattern()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertNotA">UnitTestCase::assertNotA()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertNotEqual">UnitTestCase::assertNotEqual()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertNotIdentical">UnitTestCase::assertNotIdentical()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertNotNull">UnitTestCase::assertNotNull()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertNull">UnitTestCase::assertNull()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertOutsideMargin">UnitTestCase::assertOutsideMargin()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertPattern">UnitTestCase::assertPattern()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertReference">UnitTestCase::assertReference()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertSame">UnitTestCase::assertSame()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertTrue">UnitTestCase::assertTrue()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodassertWithinMargin">UnitTestCase::assertWithinMargin()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodcoerceExpectation">UnitTestCase::coerceExpectation()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodexpectError">UnitTestCase::expectError()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodexpectException">UnitTestCase::expectException()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/UnitTestCase.html#methodignoreException">UnitTestCase::ignoreException()</a></span><br>
+											</blockquote>
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html">SimpleTestCase</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Constructor.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#method__construct">SimpleTestCase::__construct()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodafter">SimpleTestCase::after()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodassert">SimpleTestCase::assert()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodbefore">SimpleTestCase::before()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodcreateInvoker">SimpleTestCase::createInvoker()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methoddump">SimpleTestCase::dump()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methoderror">SimpleTestCase::error()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodexception">SimpleTestCase::exception()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodfail">SimpleTestCase::fail()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodgetAssertionLine">SimpleTestCase::getAssertionLine()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodgetLabel">SimpleTestCase::getLabel()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodgetSize">SimpleTestCase::getSize()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodgetTests">SimpleTestCase::getTests()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodisTest">SimpleTestCase::isTest()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodpass">SimpleTestCase::pass()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodrun">SimpleTestCase::run()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodsetUp">SimpleTestCase::setUp()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodshouldSkip">SimpleTestCase::shouldSkip()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodsignal">SimpleTestCase::signal()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodskip">SimpleTestCase::skip()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodskipIf">SimpleTestCase::skipIf()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodskipUnless">SimpleTestCase::skipUnless()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodtearDown">SimpleTestCase::tearDown()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodtell">SimpleTestCase::tell()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+	
+	<p class="notes" id="credit">
+		Documentation generated on Thu, 20 Jan 2011 21:29:14 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>
