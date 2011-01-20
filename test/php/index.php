@@ -10,7 +10,7 @@
      * @author William Duyck
      * @version 0.1
      * @package affero
-     * @subpackage tests
+     * @subpackage testing
      * @copyright 2011 William Duyck
      * @license MPL 1.1/LGPL 2.1/GPL 2.0
      */
