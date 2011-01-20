@@ -23,7 +23,7 @@
 		//site settings
 		'site' => array(
 			//set the name of the site (will be used in page headers)
-			'name' => 'defero',
+			'name' => 'affero',
 			//set the base url of the site (excluding 'http://' and trailing slash)
 			'url' => 'labs.mozhunt.com/affero'
 		),
@@ -54,7 +54,10 @@
 		}
 	}
 	
-	//set that we are in a development environment if the domain provided does not match the current domain.
+	/*
+	 Define the 'DEVELOPMENT_ENVIRONMENT' constant. It is set to true if the
+	 current domain is the same as the domain set by the user.
+	*/
 	define('DEVELOPMENT_ENVIRONMENT', (parse_url($utilities->current_url(), PHP_URL_HOST) == parse_url($config['site']['url'], PHP_URL_HOST)));
 	
 ?>

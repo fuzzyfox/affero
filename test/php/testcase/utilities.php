@@ -26,7 +26,7 @@
 	 * that are available for use from the utilities class. These methods are
 	 * not related to any specifc areas of the application.
 	 */
-	class TestOfDatabaseAbstractionLayer extends UnitTestCase
+	class TestOfUtilitiesClass extends UnitTestCase
 	{
 		/**
          * setUp

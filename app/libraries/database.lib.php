@@ -145,7 +145,7 @@
 		{
 			if(is_string($string))
 			{
-				return "'".addslashes($string)."'";
+				return "'".mysql_real_escape_string($string)."'";
 			}
 			else
 			{

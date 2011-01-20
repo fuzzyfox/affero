@@ -129,7 +129,7 @@
 		/**
 		 * testEscapeMethod
 		 *
-		 * This test will pass a two strings into the function and check that the
+		 * This test will pass two strings into the function and check that the
 		 * output is what is expected which is a string with quotation marks
 		 * around it. Should the string already contain quotation marks then these
 		 * should be escaped with a backslash.
