@@ -84,12 +84,12 @@
             //create a new instance
             $this->db = new Database('localhost', 'ccw_dev', 'root', '');
             //check connection by attempting to get user wduyck
-            $query = $this->db->query("SELECT * FROM user WHERE username = 'wduyck'");
+            $query = $this->db->query("SELECT * FROM user WHERE username = 'john.doe'");
 			//take the results from the query and make them usable.
 			$row = mysql_fetch_object($query);
 			
 			//check that test data matches that retrieved from the database
-			$this->assertIdentical($row->username, 'wduyck');
+			$this->assertIdentical($row->username, 'john.doe');
             
             //disconnect from the database
             $this->db->disconnect();
@@ -102,9 +102,9 @@
 		 * that the details match with what should already be in user record one.
 		 *
 		 * Test data stored:
-		 * 	* username = wduyck
-		 * 	* password = 4e2776866a185e0a9e090f5ed0a6fecfb31fe90b3c4a219b0107196c9e4759bd83cebcb600550a2af2c3e45ad1b67dc2486e5f382e36eaaa224ff651ca86ba6c
-		 * 	* email = wduyck@gmail.com
+		 * 	* username = john.doe
+		 * 	* password = 62dee3a48d7a3d9e190c8ba3f2ada76c1bb85aa41b5d5f8f7ed82fef028aaaaa305231c82275b4cd2a4acac5119c6f5ab03666fea9080b776418001d5c2ab206
+		 * 	* email = john.doe@example.com
 		 *
 		 * The query method should accept JUST a sql query string.
 		 */
@@ -113,14 +113,14 @@
 			//connect to the database
 			$this->db->connect('localhost', 'ccw_dev', 'root', '');
 			//run a simple query to attempt to retrieve the test data
-			$query = $this->db->query("SELECT * FROM user WHERE username = 'wduyck'");
+			$query = $this->db->query("SELECT * FROM user WHERE username = 'john.doe'");
 			//take the results from the query and make them usable.
 			$row = mysql_fetch_object($query);
 			
 			//check that test data matches that retrieved from the database
-			$this->assertIdentical($row->username, 'wduyck');
-			$this->assertIdentical($row->userPassword, '4e2776866a185e0a9e090f5ed0a6fecfb31fe90b3c4a219b0107196c9e4759bd83cebcb600550a2af2c3e45ad1b67dc2486e5f382e36eaaa224ff651ca86ba6c');
-			$this->assertIdentical($row->userEmail, 'wduyck@gmail.com');
+			$this->assertIdentical($row->username, 'john.doe');
+			$this->assertIdentical($row->userPassword, '62dee3a48d7a3d9e190c8ba3f2ada76c1bb85aa41b5d5f8f7ed82fef028aaaaa305231c82275b4cd2a4acac5119c6f5ab03666fea9080b776418001d5c2ab206');
+			$this->assertIdentical($row->userEmail, 'john.doe@example.com');
 			
 			//disconnect from the databse
 			$this->db->disconnect();
@@ -311,16 +311,16 @@
 			//connect to the database
 			$this->db->connect('localhost', 'ccw_dev', 'root', '');
 			//get the users
-			$query = $this->db->get('user', array('username'=>'wduyck'), 'userEmail');
+			$query = $this->db->get('user', array('username'=>'john.doe'), 'userEmail');
 			//check that the result is in the correct form
 			$this->assertIsA($query, 'stdClass');
 			//check that correct num rows in returned object
 			$this->assertEqual(1, $query->num_rows);
 			//check that the expected query was generated
-			$this->assertIdentical("SELECT userEmail FROM user WHERE username = 'wduyck'", $query->query);
+			$this->assertIdentical("SELECT userEmail FROM user WHERE username = 'john.doe'", $query->query);
 			//check that the email is correct
 			$row = $query->results[0];
-			$this->assertIdentical('wduyck@gmail.com', $row->userEmail);
+			$this->assertIdentical('john.doe@example.com', $row->userEmail);
 		}
 		
 		/**
