@@ -11,9 +11,8 @@ ErrorDocument 500 asset/error/500.html
 
 #set index.html as default page in a directory
 DirectoryIndex index.html index.php
-order deny,allow
 
 #setup url rewritting
 RewriteEngine on
-RewriteCond $1 !^(index\.php|index\.html|asset|blog|docs|test|robots\.txt)
-RewriteRule ^(.*)$ ./index.php/$1 [L]
+RewriteCond $1 !^(index\.html|index\.php|asset|docs|test|robots\.txt)
+RewriteRule ^(.*)$/index.php/$1 [L]

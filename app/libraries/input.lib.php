@@ -242,7 +242,7 @@
 			// fix &entitiy\n;
 			$data = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u',"$1;", $data);
 			$data = preg_replace('#(&\#x*)([0-9A-F]+);*#iu',"$1$2;",$data);
-			$data = html_entity_decode($string, ENT_COMPAT, "UTF-8");
+			$data = html_entity_decode($data, ENT_COMPAT, "UTF-8");
 			
 			// remove any attribute starting with "on" or xmlns
 			$data = preg_replace('#(<[^>]+[\x00-\x20\"\'\/])(on|xmlns)[^>]*>#iUu', "$1>", $data);

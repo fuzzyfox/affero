@@ -64,7 +64,7 @@
 		function testCurrentUrlMethod()
 		{
 			$this->assertIsA($this->utils->current_url(), 'string');
-			$this->assertPattern('/https?:\/\/localhost\/affero\/test\/php\/testcase\/utilities\.php/i', $this->utils->current_url());
+			$this->assertPattern('/https?:\/\/'.str_replace('.', '\.', $_SERVER['HTTP_HOST']).'(\/affero)?\/test\/php\/testcase\/utilities\.php/i', $this->utils->current_url());
 		}
 		
 		/**
