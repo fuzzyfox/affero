@@ -3,7 +3,7 @@
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 			<!-- template designed by Marco Von Ballmoos -->
-			<title>Docs For Class TestInputClass</title>
+			<title>Docs For Class TestOfUserManagementClass</title>
 			<link rel="stylesheet" href="../../media/stylesheet.css" />
 			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
 		</head>
@@ -12,7 +12,7 @@
 <h2 class="class-name"><img src="../../media/images/Class_logo.png"
 														alt=" Class"
 														title=" Class"
-														style="vertical-align: middle"> TestInputClass</h2>
+														style="vertical-align: middle"> TestOfUserManagementClass</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
@@ -27,7 +27,7 @@
         		<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Standard unit test class for day to day testing     of PHP code XP style. Adds some useful standard     assertions.</p>
 		<p class="notes">
-			Located in <a class="field" href="_test---php---testcase---testInputClass.php.html">/test/php/testcase/testInputClass.php</a> (line <span class="field">4</span>)
+			Located in <a class="field" href="_test---php---testcase---user_management.php.html">/test/php/testcase/user_management.php</a> (line <span class="field">26</span>)
 		</p>
 		
 				
@@ -35,7 +35,7 @@
    |
    --<a href="../../SimpleTest/UnitTester/UnitTestCase.html">UnitTestCase</a>
       |
-      --TestInputClass</pre>
+      --TestOfUserManagementClass</pre>
 	
 			</div>
 </div>
@@ -55,16 +55,22 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																																<div class="method-definition">
+																																								<div class="method-definition">
 					<img src="../../media/images/Method.png" alt=" "/>
 											<span class="method-result">void</span>
-										<a href="#testEvilGlobalKeys" title="details" class="method-name">testEvilGlobalKeys</a>
+										<a href="#setUp" title="details" class="method-name">setUp</a>
 										()
 									</div>
 																<div class="method-definition">
 					<img src="../../media/images/Method.png" alt=" "/>
 											<span class="method-result">void</span>
-										<a href="#testXSSFilter" title="details" class="method-name">testXSSFilter</a>
+										<a href="#tearDown" title="details" class="method-name">tearDown</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#testSessionCreateAndDestroy" title="details" class="method-name">testSessionCreateAndDestroy</a>
 										()
 									</div>
 											</div>
@@ -121,41 +127,80 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
-<a name="methodtestEvilGlobalKeys" id="testEvilGlobalKeys"><!-- --></a>
+<a name="methodsetUp" id="setUp"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">testEvilGlobalKeys</span> (line <span class="line-number">12</span>)
+		<span class="method-title">setUp</span> (line <span class="line-number">33</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">setUp</p>
+<p class="description"><p>create an new instance of the user management class</p></p>
 	
 	<div class="method-signature">
 		<span class="method-result">void</span>
 		<span class="method-name">
-			testEvilGlobalKeys
+			setUp
 		</span>
 				()
 			</div>
 	
 		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodsetUp">SimpleTestCase::setUp()</a></dt>
+						<dd>Sets up unit test wide variables at the start     of each test method. To be overridden in     actual user test cases.</dd>
+					</dl>
 			
 	</div>
-<a name="methodtestXSSFilter" id="testXSSFilter"><!-- --></a>
+<a name="methodtearDown" id="tearDown"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">testXSSFilter</span> (line <span class="line-number">7</span>)
+		<span class="method-title">tearDown</span> (line <span class="line-number">44</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">tearDown</p>
+<p class="description"><p>destroies the instance of the user management class ready for the next  test</p></p>
 	
 	<div class="method-signature">
 		<span class="method-result">void</span>
 		<span class="method-name">
-			testXSSFilter
+			tearDown
+		</span>
+				()
+			</div>
+	
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../SimpleTest/UnitTester/SimpleTestCase.html#methodtearDown">SimpleTestCase::tearDown()</a></dt>
+						<dd>Clears the data set in the setUp() method call.</dd>
+					</dl>
+			
+	</div>
+<a name="methodtestSessionCreateAndDestroy" id="testSessionCreateAndDestroy"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">testSessionCreateAndDestroy</span> (line <span class="line-number">62</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">TestSessionCreate</p>
+<p class="description"><p>This function will test that a new session is created on successfull  login and that the session is destroied on logout</p><p>Will attempt to login with a number of invlaid credentials, then use  valid credentials to complete a successful login. The login method  from the user class should assert true on success and false on failure</p><p>The function will then test to see if a session has been created for  the login and that it stores the correct username.</p></p>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testSessionCreateAndDestroy
 		</span>
 				()
 			</div>
@@ -273,7 +318,7 @@
 
 	
 	<p class="notes" id="credit">
-		Documentation generated on Thu, 20 Jan 2011 21:30:30 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Tue, 01 Feb 2011 22:43:05 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>

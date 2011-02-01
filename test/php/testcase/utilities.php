@@ -77,16 +77,16 @@
 		 * salt.
 		 *
 		 * Test Data:
-		 * 	* string to hash = 'HashMePlease'
-		 * 	* salt = 'WithASaltToo'
+		 * 	- string to hash = 'HashMePlease'
+		 * 	- salt = 'WithASaltToo'
 		 *
 		 * Algorithm:
 		 *
 		 * 	if salt provided the method should hash {string}_{salt} else just {string}
 		 *
 		 * Expected Returns:
-		 * 	* without salt = '632c18211a33f50e32981cc46c95d015098bcfa5432f3d09e0fadf1effb2189fd208b4e8828071011fe187a592c53f0ccf95b4ff97b5054fba0ac87a6eedc5ca'
-		 * 	* with salt = 'babf3f6d79803c7cb6d07737dbfeb0a9c3cbe81411be23c60549dd3155a1288b96b650d32331e7d69f0690c87c6687cc68d1fb01493f14c7d8678d3d62d83491'
+		 * 	- without salt = '632c18211a33f50e32981cc46c95d015098bcfa5432f3d09e0fadf1effb2189fd208b4e8828071011fe187a592c53f0ccf95b4ff97b5054fba0ac87a6eedc5ca'
+		 * 	- with salt = 'babf3f6d79803c7cb6d07737dbfeb0a9c3cbe81411be23c60549dd3155a1288b96b650d32331e7d69f0690c87c6687cc68d1fb01493f14c7d8678d3d62d83491'
 		 */
 		function testHashStringMethod()
 		{

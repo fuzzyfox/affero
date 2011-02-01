@@ -102,9 +102,9 @@
 		 * that the details match with what should already be in user record one.
 		 *
 		 * Test data stored:
-		 * 	* username = john.doe
-		 * 	* password = 62dee3a48d7a3d9e190c8ba3f2ada76c1bb85aa41b5d5f8f7ed82fef028aaaaa305231c82275b4cd2a4acac5119c6f5ab03666fea9080b776418001d5c2ab206
-		 * 	* email = john.doe@example.com
+		 * 	- username = john.doe
+		 * 	- password = 62dee3a48d7a3d9e190c8ba3f2ada76c1bb85aa41b5d5f8f7ed82fef028aaaaa305231c82275b4cd2a4acac5119c6f5ab03666fea9080b776418001d5c2ab206
+		 * 	- email = john.doe@example.com
 		 *
 		 * The query method should accept JUST a sql query string.
 		 */
@@ -158,9 +158,9 @@
 		 * and works as expected.
 		 *
 		 * Test data:
-		 * 	* username = test_user
-		 * 	* password = sha512 hash of 'eiugbkwabgp9bgv3eB£Egib'
-		 * 	* email = test@example.com
+		 * 	- username = test_user
+		 * 	- password = sha512 hash of 'eiugbkwabgp9bgv3eB£Egib'
+		 * 	- email = test@example.com
 		 *
 		 * The insert method should accept the following arguments
 		 * 	* table name

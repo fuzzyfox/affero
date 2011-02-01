@@ -13,15 +13,6 @@
 	 * @subpackage modules
 	 * @copyright 2011 William Duyck
 	 * @license MPL 1.1/LGPL 2.1/GPL 2.0
-	 *
-	 * @todo TODO
-	 * 	* create add_user function
-	 * 	* create remove_user function
-	 * 	* complete/refine logout function
-	 * 	* * comment the code
-	 * 	* * remove all user related session variables with simple loop
-	 * 	* remove the __construct() as soon as final application structure worked
-	 * 	  out
 	 */
 	
 	//start session (normally done in the application root)
@@ -34,6 +25,15 @@
 	 *
 	 * This class deals with all user management functions from logging users in
 	 * to creating/removing their accounts.
+	 *
+	 * @todo
+	 * 	- create add_user function
+	 * 	- create remove_user function
+	 * 	- complete/refine logout function
+	 * 	  - comment the code
+	 * 	  - remove all user related session variables with simple loop
+	 * 	- remove the __construct() as soon as final application structure worked
+	 * 	  out
 	 */
 	class User
 	{
