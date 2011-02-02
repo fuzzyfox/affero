@@ -17,7 +17,7 @@
     //include the simple test framework
 	require_once(dirname(__FILE__).'/../simpletest/autorun.php');
     //include the utilities class
-	require_once(dirname(__FILE__).'/../../../app/libraries/utilities.lib.php');
+	require_once(dirname(__FILE__).'/../../../app/libraries/utility.lib.php');
 	
 	/**
      * TestOfUtilitiesClass
@@ -35,7 +35,7 @@
 		 */
 		function setUp()
 		{
-			$this->utils = new Utilities();
+			$this->utils = new Utility();
 		}
 		
 		/**

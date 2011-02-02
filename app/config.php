@@ -15,20 +15,20 @@
 	/**
 	 * config
 	 *
-	 * This is the array of settings that can be configured. This is the only
+	 * This is the object of settings that can be configured. This is the only
 	 * part of this file that should be changed by the user. It can also be
 	 * set by the installation tool.
 	 */
-	$config = array(
+	$config = (object)array(
 		//site settings
-		'site' => array(
+		'site' => (object)array(
 			//set the name of the site (will be used in page headers)
 			'name' => 'affero',
 			//set the base url of the site (excluding 'http://' and trailing slash)
 			'url' => 'labs.mozhunt.com/affero'
 		),
 		//database settings
-		'db' => array(
+		'db' => (object)array(
 			//set the database host (normally localhost)
 			'host' => 'localhost',
 			//set the database name
@@ -37,27 +37,16 @@
 			'user' => 'root',
 			//set the database password
 			'pass' => ''
-		)
+		),
+		//libraries for affero to automatically load format: ('lib1', 'lib2', 'lib3')
+		'libraries' => array()
 	);
 	
 	//==== DO NOT EDIT BELLOW THIS LINE ========================================
 	
 	/**
-	 * The following code runs through the array above and defines all the user 
-	 * configurable settings as constants for use in the rest of the application.
+	 * set required libraries for affero to load
 	 */
-	foreach($config as $key => $settings)
-	{
-		foreach($settings as $setting => $value)
-		{
-			define(strtoupper($key.'_'.$setting), $value);
-		}
-	}
-	
-	/*
-	 Define the 'DEVELOPMENT_ENVIRONMENT' constant. It is set to true if the
-	 current domain is the same as the domain set by the user.
-	*/
-	define('DEVELOPMENT_ENVIRONMENT', (parse_url($utilities->current_url(), PHP_URL_HOST) == parse_url($config['site']['url'], PHP_URL_HOST)));
+	array_push($config->libraries, 'database', 'input', 'utility');
 	
 ?>

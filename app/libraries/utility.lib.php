@@ -19,7 +19,7 @@
 	 * Contains a collection of utility methods that are not specific to any
 	 * area of the application.
 	 */
-	class Utilities
+	class Utility
 	{
 		
 		/**

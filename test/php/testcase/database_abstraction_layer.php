@@ -1,5 +1,5 @@
 <?php
-    
+	
     /**
 	 * Database Abstraction Layer Test Case
 	 *
@@ -142,6 +142,9 @@
 		 */
 		function testEscapeMethod()
 		{
+			//connect to db to allow escape function to work (windows bug)
+			$this->db->connect('localhost', 'ccw_dev', 'root', '');
+			//make assertions
 			$this->assertIdentical($this->db->escape('string'), "'string'");
 			$this->assertIdentical($this->db->escape(2), 2);
 			$this->assertIdentical($this->db->escape(false), false);
