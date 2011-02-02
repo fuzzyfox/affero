@@ -15,11 +15,6 @@
 	 * @license MPL 1.1/LGPL 2.1/GPL 2.0
 	 */
 	
-	//start session (normally done in the application root)
-	session_set_cookie_params(3600, '/', 'localhost', false, true);
-	session_start();
-	session_name('affero_session');
-	
 	/**
 	 * User
 	 *
@@ -35,24 +30,44 @@
 	 * 	- remove the __construct() as soon as final application structure worked
 	 * 	  out
 	 */
-	class User
+	class User extends Backend
 	{
-		/**
-		 * __construct
-		 *
-		 * this function is temp till I work out the final structure of the
-		 * application. Right now it sets up and initilises the input class and
-		 * a database connection.
-		 */
 		function __construct()
 		{
-			$this->input = new Input();
-			$this->database = new Database('localhost', 'ccw_dev', 'root', '');
-			$this->utility = new Utilities();
+			parent::__construct();
+			//start session (normally done in the application root)
+			session_set_cookie_params(3600, '/', parse_url(SITE_URL, PHP_URL_HOST), false, true);
+			session_start();
+			session_name('affero_session');
 		}
 		
 		/**
 		 * login
+		 * 
+		 * this function is the outer face of the login system. It handles both
+		 * get and post requests. When receiving a get request it loads the login
+		 * form and on a post request uses the input class to get the username and
+		 * password submitted and hand it off for processing to process_login
+		 */
+		function login()
+		{
+			if((!isset($_SESSION['user']['token']))||($this->input->post('token') !== $_SESSION['user']['token']))
+			{
+				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
+				$this->utility->view('backend/login');
+			}
+			elseif($this->process_login($this->input->post('username'), $this->input->post('password')))
+			{
+				echo 'logged in :)';
+			}
+			else
+			{
+				echo 'invalid login :(';
+			}
+		}
+		
+		/**
+		 * process_login
 		 *
 		 * this function is responsible for the creation of sessions relating to
 		 * users PROVIDED that the function receives valid credentials.
@@ -60,8 +75,9 @@
 		 * @param string $username the username of the user to login
 		 * @param string $password the password of the user to login
 		 * @return bool true on successful login
+		 * @access private
 		 */
-		function login($username, $password)
+		private function process_login($username, $password)
 		{
 			//set the username to lower for usage
 			$username = strtolower($username);
@@ -70,8 +86,7 @@
 			//check that there is a match for the username and that the passwords match
 			if(($query->num_rows == 1)&&($this->utility->hash_string($password, $username) == $query->results[0]->userPassword))
 			{
-				//valid user lets log them in
-				$_SESSION['username'] = $username;
+				//valid details, lets welcome them back
 				return true;
 			}
 			else
@@ -91,10 +106,10 @@
 		 */
 		function logout()
 		{
-			unset($_SESSION['username']);
+			unset($_SESSION['user']);
 			session_destroy();
 			
-			if(!isset($_SESSION['username']))
+			if(!isset($_SESSION['user']))
 			{
 				return true;
 			}

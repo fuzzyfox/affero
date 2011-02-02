@@ -4,10 +4,11 @@ deny from all
 </Files>
 
 #change the error documents
-ErrorDocument 401 asset/error/401.html
-ErrorDocument 403 asset/error/403.html
-ErrorDocument 404 asset/error/404.html
-ErrorDocument 500 asset/error/500.html
+ErrorDocument 401 /affero/asset/error/401.html
+ErrorDocument 403 /affero/asset/error/403.html
+ErrorDocument 404 /affero/asset/error/404.html
+ErrorDocument 405 /affero/asset/error/405.html
+ErrorDocument 500 /affero/asset/error/500.html
 
 #set index.html as default page in a directory
 DirectoryIndex index.html index.php

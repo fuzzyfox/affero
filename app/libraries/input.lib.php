@@ -35,34 +35,10 @@
 			//globals to get rid of
 			$global = array($_GET, $_POST, $_COOKIE, $_SERVER, $_FILES, $_ENV, ((isset($_SESSION) && is_array($_SESSION))? $_SESSION : array()));
 			
-			/**
-			 * deep_unset
-			 * 
-			 * A small helper function that recursively unsets a global.
-			 *
-			 * @param string $key the key for the global to unregister
-			 * @param string $value the data in the global to check for arrays
-			 */
-			function deep_unset($key, $value)
-			{
-				if(!is_array($key))
-				{
-					//it would be sorta wrong to remove this globals
-					if(!in_array($key, array('_SESSION', '_POST', '_GET', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES')))
-					{
-						unset($GLOBALS[$key]);
-					}
-				}
-				elseif(is_array($value))
-				{
-					deep_unset($value);
-				}
-			}
-			
 			//do a deep_unset for each global
 			foreach($global as $key => $value)
 			{
-				deep_unset($key, $value);
+				$this->deep_unset($key, $value);
 			}
 			
 			//clean $_GET data
@@ -78,6 +54,32 @@
 			unset($_COOKIE['$Domain']);
 			//okay now lets clean cookies
 			$_COOKIE = $this->clean_input($_COOKIE);
+		}
+		
+		/**
+		 * deep_unset
+ 		 * 
+		 * A small helper function that recursively unsets a global.
+		 *
+		 * @param string $key the key for the global to unregister
+		 * @param string $value the data in the global to check for arrays
+		 * @access private
+		 * @return void
+		 */
+		private function deep_unset($key, $value)
+		{
+			if(!is_array($key))
+			{
+				//it would be sorta wrong to remove this globals
+				if(!in_array($key, array('_SESSION', '_POST', '_GET', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES')))
+				{
+					unset($GLOBALS[$key]);
+				}
+			}
+			elseif(is_array($value))
+			{
+				deep_unset($value);
+			}
 		}
 		
 		/**

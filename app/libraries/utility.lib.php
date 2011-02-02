@@ -1,7 +1,7 @@
 <?php
 	
 	/**
-	 * Utilities
+	 * Utility
 	 *
 	 * This file contains a collection of utility methods that are not related
 	 * to a particular area of the application.
@@ -14,7 +14,7 @@
 	 */
 	
 	/**
-	 * Utilities
+	 * Utility
 	 *
 	 * Contains a collection of utility methods that are not specific to any
 	 * area of the application.
@@ -52,6 +52,11 @@
 			return $url;
 		}
 		
+		function site_url($localtion)
+		{
+			return 'http'.((isset($_SERVER['HTTPS']))?'s':'').'://'.SITE_URL.'/'.$localtion;
+		}
+		
 		/**
 		 * hash_string
 		 *
@@ -68,6 +73,53 @@
 		function hash_string($string, $salt = null)
 		{
 			return hash('sha512', $string.(($salt !== null)?'_'.$salt:''));
+		}
+		
+		/**
+		 * view
+		 *
+		 * This function gets and loads a view file and passes it data it receives
+		 * via an associative array, and makes it available to the view.
+		 *
+		 * @param string $view the name of the view file to load
+		 * @param assoc_array $data the data to pass to the view file
+		 * @return void
+		 */
+		function view($view, $data = null)
+		{
+			//temp store the view name so that it does not interfere with the view
+			$this->view_name = $view;
+			
+			//check if there is data to pass to the view
+			if($data !== null)
+			{
+				//lets start to convert any data in the array into variables
+				foreach($data as $variable => $value)
+				{
+					$this->view_vars[$variable] = $value;
+				}
+			}
+			
+			//remove all the newly created variables so there is nothing in scope
+			unset($view, $variable, $value, $data);
+			
+			//extract out all the variable for the view into scope if needed
+			if(isset($this->view_vars))
+			{
+				extract($this->view_vars);
+			}
+			//check if file exists that contains the view
+			if(file_exists(dirname(__FILE__).'/../views/'.$this->view_name.'.php'))
+			{
+				//it does lets load it up already!
+				include(dirname(__FILE__).'/../views/'.$this->view_name.'.php');
+			}
+			else
+			{
+				//Oops! It doth notuth existuth
+				header('HTTP/1.0 404 Not Found');
+				include(dirname(__FILE__).'/../../asset/error/404.html');
+			}
 		}
 		
 	}

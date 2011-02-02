@@ -25,7 +25,7 @@
 			//set the name of the site (will be used in page headers)
 			'name' => 'affero',
 			//set the base url of the site (excluding 'http://' and trailing slash)
-			'url' => 'labs.mozhunt.com/affero'
+			'url' => $_SERVER['HTTP_HOST'].'/affero'
 		),
 		//database settings
 		'db' => (object)array(
@@ -47,6 +47,6 @@
 	/**
 	 * set required libraries for affero to load
 	 */
-	array_push($config->libraries, 'database', 'input', 'utility');
+	array_push($config->libraries, 'glue', 'database', 'input', 'utility');
 	
 ?>

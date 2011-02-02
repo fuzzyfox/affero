@@ -1,182 +1,165 @@
 <?php
 	
-	//get the glue library
-	require_once(dirname(__FILE__).'/app/libraries/glue.lib.php');
-	
-	//setup url mapping with the help of glue
-	$urls = array(
-		'/affero/((index\.php/)?)' => 'Frontend',
-		'/affero/((index\.php/)?)backend/(?P<contoller>[a-zA-Z0-9_]*)(/?)(?P<method>[a-zA-Z0-9_]*)(/?)(.*)' => 'Backend'
-	);
-	
 	/**
 	 * Affero
 	 *
-	 * This is the main allication class. It is responsible for loading all the
-	 * libraries, setting configuration variables, etc...
+	 * This file contains all the url routing and class loading for the entire
+	 * application. It is essentially the core of the application.
+	 *
+	 * @author William Duyck <wduyck@gmail.com>
+	 * @version 0.1
+	 * @package affero
+	 * @subpackage core
+	 * @copyright MPL 1.1/LGPL 2.1/GPL 2.0 William Duyck
 	 */
-	class Affero
+	
+	/**
+	 * __autoload
+	 *
+	 * this function will attempt to automatically load files/classes as and when
+	 * they are needed rather than consume lots of memory and loading all classes
+	 */
+	function __autoload($class)
 	{
-		//contains all configuration details for affero
-		protected $config;
-		
-		/**
-		 * __construct
-		 *
-		 * create the configuration object, creates aliases for libraries,
-		 */
-		function __construct()
+		$class = strtolower($class);
+		if(file_exists(dirname(__FILE__)."/app/libraries/$class.lib.php"))
 		{
-			//get affero configuration
-			$this->get_config();
-			//get libraries
-			$this->get_libraries();
+			include(dirname(__FILE__)."/app/libraries/$class.lib.php");
 		}
-		
-		/**
-		 * get_libraries
-		 *
-		 * this function grabs all the libraries need/requested from the config
-		 * file
-		 *
-		 * @access private
-		 */
-		private function get_libraries()
+		elseif(file_exists(dirname(__FILE__)."/app/controllers/frontend/$class.php"))
 		{
-			//load all libraries selected in the configuration
-			foreach($this->config->libraries as $library)
-			{
-				//check that the library exists
-				if(file_exists(dirname(__FILE__)."/app/libraries/$library.lib.php"))
-				{
-					//library file exists lets load it
-					include(dirname(__FILE__)."/app/libraries/$library.lib.php");
-					//now lets attempt to give it an alias, does the class exist?
-					$library = ucwords($library);
-					if(class_exists($library))
-					{
-						$this->$library = new $library();
-					}
-					else
-					{
-						//error handling here
-					}
-				}
-				else
-				{
-					//error handling here
-				}
-			}
+			include(dirname(__FILE__)."/app/controllers/frontend/$class.php");
 		}
-		
-		/**
-		 * get_config
-		 *
-		 * this function does all the leg work on loading the user set config for
-		 * affero
-		 *
-		 * @access private
-		 */
-		private function get_config()
+		elseif(file_exists(dirname(__FILE__)."/app/controllers/backend/$class.php"))
 		{
-			//check to see if configuration file is set
-			if(file_exists(dirname(__FILE__).'/app/config.php'))
-			{
-				//it is lets create that object
-				include(dirname(__FILE__).'/app/config.php');
-				//set the information for affero like for like from the config file
-				$this->config = $config;
-			}
-			//file not set check for sample config file
-			elseif(file_exists(dirname(__FILE__)."/app/$class.sample.lib.php"))
-			{
-				//hmmm.... affero not configured yet, lets load the install script
-				include(dirname(__FILE__).'/install/index.php');
-			}
-			//neither config nor sample config exists. Kill application with message
-			else
-			{
-				die('Affero could not find a configuration file and is not able run installation');
-			}
+			include(dirname(__FILE__)."/app/controllers/backend/$class.php");
 		}
-		
-		private function __autoload($class)
+		else
 		{
-			$class = strtolower($class);
-			if(file_exists(dirname(__FILE__)."/app/$class.lib.php"))
-			{
-				include(dirname(__FILE__)."/app/$class.lib.php");
-			}
-			else
-			{
-				//some error handling here
-			}
+			header('HTTP/1.0 404 Not Found');
+			include(dirname(__FILE__).'/asset/error/404.html');
 		}
 	}
 	
-	/**
-	 * Frontend
-	 *
-	 * this is the main affero class for the frontend of the application
-	 */
-	class Frontend extends Affero
-	{
-		function GET($args)
-		{
-			//front end processing
-		}
-	}
+	//setup url mapping
+	$urls = array(
+		'/affero/((index\.php)?(/?))' => 'Frontend',
+		'/affero/((index\.php/)?)backend/(?P<controller>[a-zA-Z0-9_]*)(/?)(?P<method>[a-zA-Z0-9_]*)(/?)(.*)' => 'Backend'
+	);
 	
 	/**
 	 * Backend
 	 *
-	 * this is the main affero class for the backend of the application
+	 * This class controls all tasks relating to modifying areas of affero. It 
+	 * does some minor url routing tasks, and provides all the key libraries
+	 * to the controllers to routes to.
 	 */
-	class Backend extends Affero
+	class Backend
 	{
+		//configuration options
+		protected $config;
+		//database class
+		protected $database;
+		//utility class
+		protected $utility;
+		//input class
+		protected $input;
+		
+		/**
+		 * __construct
+		 *
+		 * this function sets up the backend requirements such as the configuration,
+		 * database connection, etc...
+		 */
+		function __construct()
+		{
+			//fetch the configuration file
+			include(dirname(__FILE__).'/app/config.php');
+			//create class global for config
+			$this->config = $config;
+			//create a couple of constants for one or two libraries to use from config
+			@define('SITE_URL', $config->site->url);
+			//initiate the database connection
+			$this->database = new Database($config->db->host, $config->db->name, $config->db->user, $config->db->pass);
+			//load the utility and input classes
+			$this->utility = new Utility();
+			$this->input = new Input();
+		}
+		
+		/**
+		 * GET
+		 * 
+		 * This function routes all HTTP GET calls to the relevant controllers
+		 * based on the url provided
+		 */
 		function GET($args)
 		{
 			//ensure we have a controller and method set (defaults if not)
-			$controller = ($args['controller'] != '')?$args['controller']:'default';
-			$method = ($args['method'] != '')?$args['method']:'index';
-			//attempt to load the provided controller
-			if(file_exists(dirname(__FILE__).'/app/controllers/backend/'.$args['controller']))
+			$controller = (isset($args['controller']))?$args['controller']:'default';
+			$method = (isset($args['method']))?$args['method']:'index';
+			
+			//load the controller and its relevant method if posible
+			if(class_exists($controller))
 			{
-				//include the contoller file
-				include(dirname(__FILE__).'/app/controllers/backend/'.$args['controller']);
-				//check the class exists
-				if(class_exists($args['controller']))
+				//repurpose $controller into the class object
+				$controller = new $controller;
+				//check if the method exists
+				if(method_exists($controller, $method))
 				{
-					//create the controller object
-					$controller = ucwords($controller);
-					$controller = new $controller;
-					//check the method exists
-					if(method_exists($controller, $method))
-					{
-						//call the controller and its method and pass it the arguments recieved
-						$controller->$method($args);
-					}
-					else
-					{
-						header('HTTP/1.0 404 Not Found');
-						include(dirname(__FILE__).'/asset/error/404.html');
-					}
+					//okay it does, lets call it and pass it the rest of our args
+					$controller->$method($args);
 				}
 				else
 				{
+					//nope, not in existance, set http header to 404
 					header('HTTP/1.0 404 Not Found');
+					//load 404 error file
 					include(dirname(__FILE__).'/asset/error/404.html');
 				}
 			}
 			else
 			{
+				//nope, not in existance, set http header to 404
 				header('HTTP/1.0 404 Not Found');
+				//load 404 error file
 				include(dirname(__FILE__).'/asset/error/404.html');
 			}
-			print_r($args);
 		}
+		
+		/**
+		 * POST
+		 *
+		 * very similar to GET. So similar in fact that it just sends all its
+		 * calls striaght to GET for convinience. This will likely be modified
+		 * in the future.
+		 */
+		function POST($args)
+		{
+			$this->GET($args);
+		}
+		
 	}
 	
 	//make the mapping work!
-	glue::stick($urls);
+	try
+	{
+		glue::stick($urls);
+	}
+	//catch bad method calls and turn them into 405 errors
+	catch(BadMethodCallException $e)
+	{
+		//set http header
+		header('HTTP/1.0 405 Method Not Allowed');
+		//include the error file
+		include(dirname(__FILE__).'/asset/error/405.html');
+	}
+	//catch exceptions from glue and turn them into 404 errors (essensially what they should be)
+	catch(Exception $e)
+	{
+		//set http header
+		header('HTTP/1.0 404 Not Found');
+		//include the error file
+		include(dirname(__FILE__).'/asset/error/404.html');
+	}
+	
 ?>
