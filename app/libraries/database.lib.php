@@ -21,6 +21,9 @@
 	 * Provides an easy way to run simple database queries with good
 	 * optimisation and a reduction on database overhead caused by deletion
 	 * of rows.
+	 *
+	 * @todo DAL Rewrite
+	 * - Rewite all methods to use the newer mysqli functions over the mysql ones
 	 */
 	class Database
 	{
