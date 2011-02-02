@@ -5,8 +5,8 @@
 	
 	//setup url mapping with the help of glue
 	$urls = array(
-		'/affero/' => 'Frontend',
-		'/affero/backend/(?P<contoller>[a-zA-Z0-9_]*)(/?)(?P<method>[a-zA-Z0-9_]*)(/?)(.*)' => 'Backend'
+		'/affero/((index\.php/)?)' => 'Frontend',
+		'/affero/((index\.php/)?)backend/(?P<contoller>[a-zA-Z0-9_]*)(/?)(?P<method>[a-zA-Z0-9_]*)(/?)(.*)' => 'Backend'
 	);
 	
 	/**
@@ -136,10 +136,47 @@
 	{
 		function GET($args)
 		{
+			//ensure we have a controller and method set (defaults if not)
+			$controller = ($args['controller'] != '')?$args['controller']:'default';
+			$method = ($args['method'] != '')?$args['method']:'index';
 			//attempt to load the provided controller
-			if(file_exists())
+			if(file_exists(dirname(__FILE__).'/app/controllers/backend/'.$args['controller']))
+			{
+				//include the contoller file
+				include(dirname(__FILE__).'/app/controllers/backend/'.$args['controller']);
+				//check the class exists
+				if(class_exists($args['controller']))
+				{
+					//create the controller object
+					$controller = ucwords($controller);
+					$controller = new $controller;
+					//check the method exists
+					if(method_exists($controller, $method))
+					{
+						//call the controller and its method and pass it the arguments recieved
+						$controller->$method($args);
+					}
+					else
+					{
+						header('HTTP/1.0 404 Not Found');
+						include(dirname(__FILE__).'/asset/error/404.html');
+					}
+				}
+				else
+				{
+					header('HTTP/1.0 404 Not Found');
+					include(dirname(__FILE__).'/asset/error/404.html');
+				}
+			}
+			else
+			{
+				header('HTTP/1.0 404 Not Found');
+				include(dirname(__FILE__).'/asset/error/404.html');
+			}
+			print_r($args);
 		}
 	}
 	
+	//make the mapping work!
 	glue::stick($urls);
 ?>
