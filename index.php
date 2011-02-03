@@ -95,8 +95,8 @@
 		function GET($args)
 		{
 			//ensure we have a controller and method set (defaults if not)
-			$controller = (isset($args['controller']))?$args['controller']:'default';
-			$method = (isset($args['method']))?$args['method']:'index';
+			$controller = (isset($args['controller'])&&($args['controller'] != null))?$args['controller']:'dashboard';
+			$method = (isset($args['method'])&&($args['method'] != null))?$args['method']:'index';
 			
 			//load the controller and its relevant method if posible
 			if(class_exists($controller))

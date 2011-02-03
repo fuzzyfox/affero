@@ -32,13 +32,61 @@
 	 */
 	class User extends Backend
 	{
+		/**
+		 * __construct
+		 *
+		 * Initialises the session needed for all authentication/user tracking
+		 */
 		function __construct()
 		{
 			parent::__construct();
 			//start session (normally done in the application root)
 			session_set_cookie_params(3600, '/', parse_url(SITE_URL, PHP_URL_HOST), false, true);
-			session_start();
 			session_name('affero_session');
+			session_start();
+		}
+		
+		/**
+		 * index
+		 *
+		 * provides a page to check if a user is logged in and routes them to either 
+		 * the backend dashboard OR the login page depending on the result
+		 *
+		 * @return void
+		 * @access public
+		 */
+		public function index()
+		{
+			if($this->check_auth())
+			{
+				header('Location: '.$this->utility->site_url('backend/dashboard'));
+			}
+		}
+		
+		/**
+		 * check_auth
+		 * 
+		 * this is a simple helper function that checks to see if a users is or
+		 * is not logged in. If they are not it redirects them to the login page
+		 * and returns false, else it returns true with no redirect.
+		 *
+		 * @return bool True if user logged in
+		 * @access private
+		 */
+		private function check_auth()
+		{
+			//do the check
+			if(isset($_SESSION['user']['logged']) && ($_SESSION['user']['logged'] == true))
+			{
+				//return true the user is logged in
+				return true;
+			}
+			else
+			{
+				//oops they are not logged in they are not allowed to see this page...
+				header('Location: '.$this->utility->site_url('backend/user/login'));
+				return false;
+			}
 		}
 		
 		/**
@@ -48,22 +96,33 @@
 		 * get and post requests. When receiving a get request it loads the login
 		 * form and on a post request uses the input class to get the username and
 		 * password submitted and hand it off for processing to process_login
+		 *
+		 * @return void
+		 * @access public
 		 */
-		function login()
+		public function login()
 		{
-			if((!isset($_SESSION['user']['token']))||($this->input->post('token') !== $_SESSION['user']['token']))
+			if(isset($_SESSION['user']['logged']) && ($_SESSION['user']['logged'] == true))
+			{
+				header('Location: '.$this->utility->site_url('backend/dashboard'));
+			}
+			elseif((!isset($_SESSION['user']['token']))||($this->input->post('token') !== $_SESSION['user']['token']))
 			{
 				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
 				$this->utility->view('backend/login');
 			}
 			elseif($this->process_login($this->input->post('username'), $this->input->post('password')))
 			{
-				echo 'logged in :)';
+				//regenerate the session id but dont delete old session
+				session_regenerate_id(false);
+				$_SESSION['user']['username'] = strtolower($this->input->post('username'));
+				$_SESSION['user']['logged'] = true;
 			}
 			else
 			{
-				echo 'invalid login :(';
+				header('Location: '.$this->utility->site_url('backend/user/login?invalid=true'));
 			}
+			print_r($_SESSION);
 		}
 		
 		/**

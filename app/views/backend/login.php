@@ -23,8 +23,11 @@
 			<div class="section">
 				<div class="article">
 					<h2>Login</h2>
-					<form method="post" action="<?=$this->site_url('backend/user/login')?>">
-						<input type="hidden" name="token" value="<?=$_SESSION['user']['token']?>">
+					<?php if($this->input->get('invalid') == true): ?>
+					<p class="error">Invalid Login Credentials</p>
+					<?php endif; ?>
+					<form method="post" action="<?php echo$this->site_url('backend/user/login'); ?>">
+						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
 						<label>Username</label>
 						<input type="text" name="username" id="username">
 						<label>Password</label>

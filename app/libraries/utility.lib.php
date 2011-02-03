@@ -108,6 +108,8 @@
 			{
 				extract($this->view_vars);
 			}
+			//reload the input libray for the view to use if needed
+			$this->input = new Input;
 			//check if file exists that contains the view
 			if(file_exists(dirname(__FILE__).'/../views/'.$this->view_name.'.php'))
 			{
