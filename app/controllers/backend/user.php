@@ -21,14 +21,12 @@
 	 * This class deals with all user management functions from logging users in
 	 * to creating/removing their accounts.
 	 *
-	 * @todo
+	 * @todo user class items
 	 * 	- create add_user function
-	 * 	- create remove_user function
-	 * 	- complete/refine logout function
-	 * 	  - comment the code
-	 * 	  - remove all user related session variables with simple loop
-	 * 	- remove the __construct() as soon as final application structure worked
-	 * 	  out
+	 * 	- create invite user
+	 * 	  - construct email
+	 * 	  - generate a token for the create user function
+	 * 	- create user settings page
 	 */
 	class User extends Backend
 	{
@@ -73,7 +71,9 @@
 		 *
 		 * On success this function will run the logout process, and redirect the
 		 * user to the publicly available dashboard with a notice informing them
-		 * of success
+		 * of success.
+		 *
+		 * Only logged in users may use this method
 		 *
 		 * @return void
 		 * @access public
@@ -81,13 +81,14 @@
 		public function delete()
 		{
 			//check that the user is logged in before we do anything else
-			if(($this->check_auth())&&($this->input->post('token') !== $_SESSION['user']['token']))
+			if(($this->check_auth())&&($this->input->post('token') != $_SESSION['user']['token']))
 			{
 				//create new session token to ensure that the form is not being used for CSRF
 				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
 				//load the confimation form
 				$this->utility->view('backend/delete_user');
 			}
+			//check auth and if password submitted
 			elseif($this->check_auth()&&($this->input->post('password') != false))
 			{
 				//get the users password and compare to the hashed version of what they provided
@@ -95,7 +96,17 @@
 				//compate passwords
 				if($query->results[0]->userPassword == $this->utility->hash_string($this->input->post('password'), $_SESSION['user']['username']))
 				{
-					//delete user
+					//attempt to delete account
+					if($this->database->delete('user', array('username'=>$_SESSION['user']['username'])))
+					{
+						//account was deleted lets logout the user and send them to the dashboard
+						$this->logout();
+					}
+					else
+					{
+						//oops something went wrong!
+						header('Location: '.$this->utility->site_url('backend/user/delete?failed=true'));
+					}
 				}
 				else
 				{
@@ -103,7 +114,8 @@
 					header('Location: '.$this->utility->site_url('backend/user/delete?invalid=true'));
 				}
 			}
-			else
+			//empty password field check auth
+			elseif($this->check_auth())
 			{
 				//logged in but no password submitted
 				header('Location: '.$this->utility->site_url('backend/user/delete?invalid=true'));
@@ -170,7 +182,6 @@
 			{
 				header('Location: '.$this->utility->site_url('backend/user/login?invalid=true'));
 			}
-			print_r($_SESSION);
 		}
 		
 		/**
@@ -209,15 +220,21 @@
 		 * this function destroies user session information and logs them out of
 		 * the app.
 		 *
-		 * @return bool true on successful logout.
+		 * on success will redirect to the backend dashboard
+		 *
+		 * @return bool false on failed logout.
 		 */
 		function logout()
 		{
+			//all the session data to do with users is in $_SESSION['user'] so lets delete that
 			unset($_SESSION['user']);
+			//lets destroy the session too just to be on the safe side
 			session_destroy();
 			
+			//okay lets just check that worked before sending true/false
 			if(!isset($_SESSION['user']))
 			{
+				header('Location: '.$this->utility->site_url('backend/dashboard'));
 				return true;
 			}
 			else

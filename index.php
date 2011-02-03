@@ -124,6 +124,7 @@
 				//load 404 error file
 				include(dirname(__FILE__).'/asset/error/404.html');
 			}
+			print_r($_SESSION); //for debugging issues with sessions
 		}
 		
 		/**
