@@ -64,6 +64,53 @@
 		}
 		
 		/**
+		 * delete
+		 *
+		 * This function is responsible for the deleting users. It will ask the
+		 * user for confirmation that they wish to remove their account as well
+		 * as check that they have the correct password so as to avoid someone
+		 * removing their account by accident, and for added security.
+		 *
+		 * On success this function will run the logout process, and redirect the
+		 * user to the publicly available dashboard with a notice informing them
+		 * of success
+		 *
+		 * @return void
+		 * @access public
+		 */
+		public function delete()
+		{
+			//check that the user is logged in before we do anything else
+			if(($this->check_auth())&&($this->input->post('token') !== $_SESSION['user']['token']))
+			{
+				//create new session token to ensure that the form is not being used for CSRF
+				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
+				//load the confimation form
+				$this->utility->view('backend/delete_user');
+			}
+			elseif($this->check_auth()&&($this->input->post('password') != false))
+			{
+				//get the users password and compare to the hashed version of what they provided
+				$query = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPassword', 1);
+				//compate passwords
+				if($query->results[0]->userPassword == $this->utility->hash_string($this->input->post('password'), $_SESSION['user']['username']))
+				{
+					//delete user
+				}
+				else
+				{
+					//logged in but incorrect password
+					header('Location: '.$this->utility->site_url('backend/user/delete?invalid=true'));
+				}
+			}
+			else
+			{
+				//logged in but no password submitted
+				header('Location: '.$this->utility->site_url('backend/user/delete?invalid=true'));
+			}
+		}
+		
+		/**
 		 * check_auth
 		 * 
 		 * this is a simple helper function that checks to see if a users is or
@@ -117,6 +164,7 @@
 				session_regenerate_id(false);
 				$_SESSION['user']['username'] = strtolower($this->input->post('username'));
 				$_SESSION['user']['logged'] = true;
+				header('Location: '.$this->utility->site_url('backend/dashboard'));
 			}
 			else
 			{
