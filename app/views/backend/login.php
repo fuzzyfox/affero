@@ -28,9 +28,9 @@
 					<?php endif; ?>
 					<form method="post" action="<?php echo$this->site_url('backend/user/login'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
-						<label>Username</label>
+						<label for="username">Username</label>
 						<input type="text" name="username" id="username">
-						<label>Password</label>
+						<label for="password">Password</label>
 						<input type="password" name="password" id="password">
 						<div class="controls">
 							<button type="submit">login</button>

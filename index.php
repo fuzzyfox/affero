@@ -84,6 +84,10 @@
 			//load the utility and input classes
 			$this->utility = new Utility();
 			$this->input = new Input();
+			//setup the session that will be used for auth and CSRF prevention
+			session_set_cookie_params(3600, '/', parse_url($this->config->site->url, PHP_URL_HOST), false, true);
+			session_name('affero_session');
+			session_start();
 		}
 		
 		/**

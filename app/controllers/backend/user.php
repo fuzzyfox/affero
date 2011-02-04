@@ -26,24 +26,12 @@
 	 * 	- create invite user
 	 * 	  - construct email
 	 * 	  - generate a token for the create user function
+	 * 	    - use blowfish encrytion with sender username+email sha512 hash as key and ECB mode
+	 * 	    - e.g. mycrypt_encrypt(MYCRYPT_BLOWFISH, $key, $data, MYCRYPT_MODE_ECB);
 	 * 	- create user settings page
 	 */
 	class User extends Backend
 	{
-		/**
-		 * __construct
-		 *
-		 * Initialises the session needed for all authentication/user tracking
-		 */
-		function __construct()
-		{
-			parent::__construct();
-			//start session (normally done in the application root)
-			session_set_cookie_params(3600, '/', parse_url(SITE_URL, PHP_URL_HOST), false, true);
-			session_name('affero_session');
-			session_start();
-		}
-		
 		/**
 		 * index
 		 *
@@ -58,6 +46,71 @@
 			if($this->check_auth())
 			{
 				header('Location: '.$this->utility->site_url('backend/dashboard'));
+			}
+		}
+		
+		/**
+		 * settings
+		 *
+		 * provides the ability to change user settings such as password and
+		 * email address
+		 *
+		 * @return void
+		 * @access public
+		 * @todo user settings
+		 * - complete email setting
+		 *   - check email is different from currently stored
+		 *   - check new email is valid
+		 *   - make the change if above are both true
+		 */
+		public function settings()
+		{
+			//check user logged in and if the form was submitted
+			if($this->check_auth()&&($this->input->post('token') != $_SESSION['user']['token']))
+			{
+				//regenerate user token for security
+				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
+				//get the users currently known email
+				$query = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userEmail', 1);
+				$data['userEmail'] = $query->results[0]->userEmail;
+				//send the email to the view and load the view
+				$this->utility->view('backend/user_settings', $data);
+			}
+			//okay time to process the form
+			elseif($this->check_auth()&&($this->input->post('oldPassword') != false))
+			{
+				//bool to track if we fail to update the database
+				$success = true;
+				//do we need to change the users password?
+				if(($this->input->post('newPassword') != false)&&($this->input->post('confirmPassword') != $this->input->post('newPassword')))
+				{
+					//get ready to change password
+					$where = array('username'=>$_SESSION['user']['username']); //constraints on rows to update
+					$data = array('userPassword'=>$this->utility->hash_string($this->input->post('newPassword'), $_SESSION['user']['username'])); //new data for rows
+					//make the change and check it worked
+					if(!$this->database->update('user', $where, $data))
+					{
+						$success = false;
+					}
+				}
+				elseif(($this->input->post('newPassword') != false)||($this->input->post('oldPassword') != false))
+				{
+					//passwords do not match redirect back to form with msg informing user
+					header('Location: '.$this->utility->site_url('backend/user/settings?invalid=new'));
+				}
+				
+				//do we need to change the email
+				if($this->input->post('email') != false)
+				{
+					//check email is different
+					//check email is valid
+					//make the change
+				}
+			}
+			else
+			{
+				//settings changed but not received password confirmation
+				header('Location: '.$this->utility->site_url('backend/user/settings?invalid=old'));
 			}
 		}
 		
@@ -99,8 +152,12 @@
 					//attempt to delete account
 					if($this->database->delete('user', array('username'=>$_SESSION['user']['username'])))
 					{
-						//account was deleted lets logout the user and send them to the dashboard
-						$this->logout();
+						//all the session data to do with users is in $_SESSION['user'] so lets delete that
+						unset($_SESSION['user']);
+						//lets destroy the session too just to be on the safe side
+						session_destroy();
+						//finally redirect user with msg
+						header('Location: '.$this->utility->site_url('backend/dashboard?msg=user_delete'));
 					}
 					else
 					{

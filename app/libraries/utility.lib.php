@@ -52,9 +52,34 @@
 			return $url;
 		}
 		
+		/**
+		 * site_url
+		 *
+		 * This function generates a url that points to a page on the same site
+		 * based on the domain provided in the configuration file.
+		 *
+		 * @param string $localtion the page/file on site to point to
+		 * @return string the url to that file
+		 */
 		function site_url($localtion)
 		{
 			return 'http'.((isset($_SERVER['HTTPS']))?'s':'').'://'.SITE_URL.'/'.$localtion;
+		}
+		
+		/**
+		 * valid_email
+		 *
+		 * This function returns true or false depending on whether the input it
+		 * receives is a valid url
+		 *
+		 * @param string $email The email to check
+		 * @return bool True when email is valid
+		 * @todo valid_email
+		 * - Grab regex and return bool based on preg_match of said regex
+		 */
+		function valid_email($email)
+		{
+			//return 
 		}
 		
 		/**
