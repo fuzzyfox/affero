@@ -103,8 +103,12 @@
 				if($this->input->post('email') != false)
 				{
 					//check email is different
-					//check email is valid
-					//make the change
+					$query = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userEmail', 1);
+					if($this->input->post('email') != $query->results[0]->userEmail)
+					{
+						//check email is valid
+						//make the change
+					}
 				}
 			}
 			else
