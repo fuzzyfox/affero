@@ -22,12 +22,7 @@
 	 * to creating/removing their accounts.
 	 *
 	 * @todo user class items
-	 * 	- create add_user function
-	 * 	- create invite user
-	 * 	  - construct email
-	 * 	  - generate a token for the create user function
-	 * 	    - use blowfish encrytion with sender username+email sha512 hash as key and ECB mode
-	 * 	    - e.g. mcrypt_encrypt(MCRYPT_BLOWFISH, $key, $data, MYCRYPT_MODE_ECB);
+	 * 	- create add user function
 	 */
 	class User extends Backend
 	{
@@ -52,6 +47,9 @@
 		 * invite
 		 *
 		 * provides a way for existing users to invite new users
+		 *
+		 * @todo invite system
+		 * - refactor the code
 		 *
 		 * @access public
 		 * @return void
