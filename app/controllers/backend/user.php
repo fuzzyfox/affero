@@ -27,8 +27,7 @@
 	 * 	  - construct email
 	 * 	  - generate a token for the create user function
 	 * 	    - use blowfish encrytion with sender username+email sha512 hash as key and ECB mode
-	 * 	    - e.g. mycrypt_encrypt(MYCRYPT_BLOWFISH, $key, $data, MYCRYPT_MODE_ECB);
-	 * 	- create user settings page
+	 * 	    - e.g. mcrypt_encrypt(MCRYPT_BLOWFISH, $key, $data, MYCRYPT_MODE_ECB);
 	 */
 	class User extends Backend
 	{
@@ -50,6 +49,95 @@
 		}
 		
 		/**
+		 * invite
+		 *
+		 * provides a way for existing users to invite new users
+		 *
+		 * @access public
+		 * @return void
+		 */
+		public function invite()
+		{
+			if($this->check_auth()&&($this->input->post('token') != $_SESSION['user']['token']))
+			{
+				//regenerate user token for security
+				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
+				//load the form
+				$this->utility->view('backend/user_invite');
+			}
+			elseif($this->check_auth())
+			{
+				//check valid email
+				if($this->utility->valid_email($this->input->post('receipient')))
+				{
+					//check all fields entered
+					if($this->input->post('sender') != false)
+					{
+						/*
+						 okay so lets generate a token
+						*/
+						//construct key
+						$key = $_SESSION['user']['username'].'_'.($this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userEmail', 1)->results[0]->userEmail);
+						//check that the email address has not been submitted by this user before
+						$replace['{token}'] = base64_encode(mcrypt_encrypt(MCRYPT_BLOWFISH, $key, $this->input->post('receipient'), MCRYPT_MODE_ECB));
+						
+						//set remaining data to send in email
+						$replace['{sender}'] = $this->input->post('sender');
+						
+						//set the strings to replace with data
+						$search = array('{token}', '{sender}');
+						
+						//construct email
+						$message = wordwrap(str_replace($search, $replace, $this->config->invite->template), 70);
+						
+						//set message headers
+						$headers = 'From: '.$this->config->invite->replyto.'\r\nReply-To: '.$this->config->invite->replyto.'\r\nX-Mailer: PHP/'.phpversion();
+						
+						//send email and check it did send
+						if(mail($this->input->post('receipient'), $this->config->invite->subject, $message))
+						{
+							//check we dont need to save to the database again
+							if(!$replace['{token}'] == $this->database->get('invite', array('inviter'=>$_SESSION['user']['username']), 'token', 1)->results[0]->token)
+							{
+								/*
+								 okay all sent we better save that information into the database
+								*/
+								//set the data
+								$data = array(
+									'token' => $replace['token'],
+									'inviter' => $_SESSION['user']['username']
+								);
+								//insert
+								$this->database->insert('invite', $data);
+							}
+							//inform user we succeeded
+							header('Location: '.$this->utility->site_url('backend/user/invite?success=true'));
+						}
+						else
+						{
+							//failed to send inform user
+							header('Location: '.$this->utility->site_url('backend/user/invite?success=false'));
+							return;
+						}
+					}
+					else
+					{
+						//not all fields entered, lets notify the user
+						header('Location: '.$this->utility->site_url('backend/user/invite?invalid=sender'));
+						return;
+					}
+					
+				}
+				elseif($this->check_auth())
+				{
+					//invalid email inform user
+					header('Location: '.$this->utility->site_url('backend/user/invite?invalid=email'));
+					return;
+				}
+			}
+		}
+		
+		/**
 		 * settings
 		 *
 		 * provides the ability to change user settings such as password and
@@ -57,11 +145,6 @@
 		 *
 		 * @return void
 		 * @access public
-		 * @todo user settings
-		 * - complete email setting
-		 *   - check email is different from currently stored
-		 *   - check new email is valid
-		 *   - make the change if above are both true
 		 */
 		public function settings()
 		{
@@ -81,8 +164,39 @@
 			{
 				//bool to track if we fail to update the database
 				$success = true;
+				
+				//do we need to change the email
+				if($this->input->post('email') != false)
+				{
+					//check email is different
+					$query = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userEmail', 1);
+					if($this->input->post('email') != $query->results[0]->userEmail)
+					{
+						//check email is valid
+						if($this->utility->valid_email($this->input->post('email')))
+						{
+							//make the change
+							if(!$this->database->update('user', array('username'=>$_SESSION['user']['username']), array('userEmail'=>$this->input->post('email'))))
+							{
+								$success = false;
+							}
+						}
+						//not a valid email
+						else
+						{
+							header('Location: '.$this->utility->site_url('backend/user/settings?invalid=email'));
+							return;
+						}
+					}
+				}
+				else
+				{
+					header('Location: '.$this->utility->site_url('backend/user/settings?invalid=email'));
+					return;
+				}
+				
 				//do we need to change the users password?
-				if(($this->input->post('newPassword') != false)&&($this->input->post('confirmPassword') != $this->input->post('newPassword')))
+				if(($this->input->post('newPassword') != false)&&($this->input->post('confirmPassword') == $this->input->post('newPassword')))
 				{
 					//get ready to change password
 					$where = array('username'=>$_SESSION['user']['username']); //constraints on rows to update
@@ -97,24 +211,18 @@
 				{
 					//passwords do not match redirect back to form with msg informing user
 					header('Location: '.$this->utility->site_url('backend/user/settings?invalid=new'));
+					return;
 				}
 				
-				//do we need to change the email
-				if($this->input->post('email') != false)
-				{
-					//check email is different
-					$query = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userEmail', 1);
-					if($this->input->post('email') != $query->results[0]->userEmail)
-					{
-						//check email is valid
-						//make the change
-					}
-				}
+				//report back to the user
+				header('Location: '.$this->utility->site_url('backend/user/settings?success='.(($success)?'true':'false')));
+				return;
 			}
-			else
+			elseif($this->check_auth())
 			{
 				//settings changed but not received password confirmation
 				header('Location: '.$this->utility->site_url('backend/user/settings?invalid=old'));
+				return;
 			}
 		}
 		
@@ -162,17 +270,20 @@
 						session_destroy();
 						//finally redirect user with msg
 						header('Location: '.$this->utility->site_url('backend/dashboard?msg=user_delete'));
+						return;
 					}
 					else
 					{
 						//oops something went wrong!
 						header('Location: '.$this->utility->site_url('backend/user/delete?failed=true'));
+						return;
 					}
 				}
 				else
 				{
 					//logged in but incorrect password
 					header('Location: '.$this->utility->site_url('backend/user/delete?invalid=true'));
+					return;
 				}
 			}
 			//empty password field check auth
@@ -180,6 +291,7 @@
 			{
 				//logged in but no password submitted
 				header('Location: '.$this->utility->site_url('backend/user/delete?invalid=true'));
+				return;
 			}
 		}
 		

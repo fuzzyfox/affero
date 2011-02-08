@@ -29,6 +29,10 @@
 					<p class="error">your new password does not match your confirmation password</p>
 					<?php elseif($this->input->get('invalid') == 'email'): ?>
 					<p class="error">you must enter a valid email address</p>
+					<?php elseif($this->input->get('success') == 'true'): ?>
+					<p class="success">your settings were saved</p>
+					<?php elseif($this->input->get('success') == 'false'): ?>
+					<p class="error">failed to save your settings<br><small>if problems continue please contact us</small></p>
 					<?php endif; ?>
 					<form method="post" action="<?php echo$this->site_url('backend/user/settings'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">

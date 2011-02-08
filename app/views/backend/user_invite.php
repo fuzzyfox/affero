@@ -2,7 +2,7 @@
 	<html lang="en">
 		<head>
 			<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-			<title>Confirm Account Deletion</title>
+			<title>Invite user</title>
 			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/reset.css" type="text/css">
 			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/generic.css" media="all" type="text/css">
 			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/dblog.css" media="all" type="text/css">
@@ -22,18 +22,24 @@
 			
 			<div class="section">
 				<div class="article">
-					<h2>Confirm Account Deletion</h2>
-					<?php if($this->input->get('invalid') == true): ?>
-					<p class="error">invalid password</p>
-					<?php elseif($this->input->get('failed')): ?>
-					<p class="error">an unknown error occured meaning your account was not deleted<br><small>please try again... if the problem persists contact us and we will remove your account for you</small></p>
+					<h2>Invite user</h2>
+					<?php if($this->input->get('invalid') == 'email'): ?>
+					<p class="error">you must enter a valid email address</p>
+					<?php if($this->input->get('invalid') == 'sender'): ?>
+					<p class="error">you must enter your name</p>
+					<?php elseif($this->input->get('success') == 'true'): ?>
+					<p class="success">invite sent</p>
+					<?php elseif($this->input->get('success') == 'false'): ?>
+					<p class="error">failed to send invite</p>
 					<?php endif; ?>
-					<form method="post" action="<?php echo$this->site_url('backend/user/delete'); ?>">
+					<form method="post" action="<?php echo$this->site_url('backend/user/invite'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
-						<label for="password">Password</label>
-						<input type="password" name="password" id="password">
+						<label for="sender">Your Name</label>
+						<input type="text" name="sender" id="sender">
+						<label for="receipient">Their Email</label>
+						<input type="text" name="receipient" id="receipient">
 						<div class="controls">
-							<button type="button" onclick="history.go(-1);">cancel</button> <button type="submit">delete</button>
+							<button type="button" onclick="history.go(-1);">cancel</button> <button type="submit">send</button>
 						</div>
 					</form>
 				</div>

@@ -37,16 +37,15 @@
 			'user' => 'root',
 			//set the database password
 			'pass' => ''
-		),
-		//libraries for affero to automatically load format: ('lib1', 'lib2', 'lib3')
-		'libraries' => array()
+		)
 	);
-	
-	//==== DO NOT EDIT BELLOW THIS LINE ========================================
-	
-	/**
-	 * set required libraries for affero to load
-	 */
-	array_push($config->libraries, 'glue', 'database', 'input', 'utility');
+	$config['invite'] = (object)array(
+		'replyto' => 'noreply@mozhunt.com',
+		'subject' => 'You\'ve been invited to use Affero',
+		'template' => '{sender} has invited you to join Affero\n\n
+to create your account visit:\n\n
+http://'.$config->site->url.'/backend/create?token={token}\n\n
+Look foward to seeing you soon!'
+	);
 	
 ?>
