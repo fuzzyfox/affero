@@ -37,15 +37,15 @@
 			'user' => 'root',
 			//set the database password
 			'pass' => ''
-		)
-	);
-	$config['invite'] = (object)array(
-		'replyto' => 'noreply@mozhunt.com',
-		'subject' => 'You\'ve been invited to use Affero',
-		'template' => '{sender} has invited you to join Affero\n\n
+		),
+		'invite' => (object)array(
+			'replyto' => 'noreply@mozhunt.com',
+			'subject' => 'You\'ve been invited to use Affero',
+			'template' => '{sender} has invited you to join Affero\n\n
 to create your account visit:\n\n
 http://'.$config->site->url.'/backend/create?token={token}\n\n
 Look foward to seeing you soon!'
+		)
 	);
 	
 ?>

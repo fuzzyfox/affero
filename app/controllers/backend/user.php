@@ -44,6 +44,100 @@
 		}
 		
 		/**
+		 * create
+		 *
+		 * this function creates a user, it does so by checking the provided token,
+		 * unencrypting it if it is valid, and then asking the user to provide a
+		 * username and password. (the decrypted token is the users email)
+		 *
+		 * @access public
+		 * @return void
+		 */
+			public function create()
+		{
+			//check a token was provided
+			if($this->input->get('token') != false)
+			{
+				/*
+				 query db for all needed information in this function
+				*/
+				//run raw query
+				$queryResource = $this->database->query('SELECT user.username, user.userEmail FROM invite INNER JOIN user ON invite.inviter = user.username WHERE invite.token = '.$this->database->escape($this->input->get('token')).' LIMIT 1');
+				//return the information from database
+				$query = mysql_fetch_object($queryResource);
+				
+				//check the token exists
+				if($this->database->num_rows() == 1)
+				{
+					//free up memory used in query
+					$this->database->free_result();
+					
+					/*
+					 decrypt token to get email address
+					*/
+					//set the key
+					$key = $query->username.'_'.$query->userEmail;
+					//get the user email
+					$data['email'] = mcrypt_decrypt(MCRYPT_BLOWFISH, $key, base64_decode($this->input->get('token')), MCRYPT_MODE_ECB);
+					$data['token'] = $this->input->get('token');
+					//regenerate user token for security
+					$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
+					//load the form to get the rest of the information we need
+					$this->utility->view('backend/create_user', $data);
+				}
+				else
+				{
+					//respond as a teapot (assume someone is attempting to hack into affero)
+					header('HTTP/1.0 418 I\'m a teapot');
+					return;
+				}
+			}
+			//check we dont need to create a user
+			elseif($this->input->post('token') == $_SESSION['user']['token'])
+			{
+				//check if the submitted username is not taken (and was taken)
+				if(($this->input->post('username') != false)&&($this->database->get('user', array('username'=>$this->input->post('username')), 'username', 1)->num_rows == 0))
+				{
+					//check the passwords match
+					if(($this->input->post('password') != false)&&($this->input->post('password') == $this->input->post('confPassword')))
+					{
+						//create their account
+						$data = array(
+							'username' => strtolower($this->input->post('username')),
+							'userPassword' => $this->utility->hash_string($this->input->post('password'), $this->input->post('username')),
+							'userEmail' => $this->input->post('email')
+						);
+						$this->database->insert('user', $data);
+						$this->database->update('invite', array('token'=>$this->input->post('inviteToken')), array('invitee'=>$this->input->post('username')));
+						
+						//log user in
+						session_regenerate_id(false);
+						$_SESSION['user']['username'] = strtolower($this->input->post('username'));
+						$_SESSION['user']['logged'] = true;
+						header('Location: '.$this->utility->site_url('backend/dashboard'));
+					}
+					else
+					{
+						//passwords dont match inform user
+						header('Location: '.$this->utility->site_url('backend/user/create?token='.$this->input->post('inviteToken').'&invalid=passwords'));
+						return false;
+					}
+				}
+				else
+				{
+					//username taken inform user
+					header('Location: '.$this->utility->site_url('backend/user/create?token='.$this->input->post('inviteToken').'&invalid=username'));
+					return false;
+				}
+			}
+			else
+			{
+				//notify that we are missing a token
+				echo 'token not found, required to create an account';
+			}
+		}
+		
+		/**
 		 * invite
 		 *
 		 * provides a way for existing users to invite new users
@@ -92,17 +186,17 @@
 						$headers = 'From: '.$this->config->invite->replyto.'\r\nReply-To: '.$this->config->invite->replyto.'\r\nX-Mailer: PHP/'.phpversion();
 						
 						//send email and check it did send
-						if(mail($this->input->post('receipient'), $this->config->invite->subject, $message))
+						if(mail($this->input->post('receipient'), $this->config->invite->subject, $message, $headers))
 						{
 							//check we dont need to save to the database again
-							if(!$replace['{token}'] == $this->database->get('invite', array('inviter'=>$_SESSION['user']['username']), 'token', 1)->results[0]->token)
+							if($this->database->get('invite', array('token'=>$replace['{token}']), 'token', 1)->num_rows == 0)
 							{
 								/*
 								 okay all sent we better save that information into the database
 								*/
 								//set the data
 								$data = array(
-									'token' => $replace['token'],
+									'token' => $replace['{token}'],
 									'inviter' => $_SESSION['user']['username']
 								);
 								//insert

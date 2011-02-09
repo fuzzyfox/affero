@@ -320,7 +320,7 @@
 			$queryString = $select.$where.$limit.$order;
 			
 			//run the query
-			$this->_result = $this->query($queryString);
+			$this->query($queryString);
 			
 			//format the return
 			$return = array(

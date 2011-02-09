@@ -2,7 +2,7 @@
 	<html lang="en">
 		<head>
 			<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-			<title>Invite user</title>
+			<title>Create user</title>
 			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/reset.css" type="text/css">
 			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/generic.css" media="all" type="text/css">
 			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/dblog.css" media="all" type="text/css">
@@ -22,24 +22,25 @@
 			
 			<div class="section">
 				<div class="article">
-					<h2>Invite user</h2>
-					<?php if($this->input->get('invalid') == 'email'): ?>
-					<p class="error">you must enter a valid email address</p>
-					<?php elseif($this->input->get('invalid') == 'sender'): ?>
-					<p class="error">you must enter your name</p>
-					<?php elseif($this->input->get('success') == 'true'): ?>
-					<p class="success">invite sent</p>
-					<?php elseif($this->input->get('success') == 'false'): ?>
-					<p class="error">failed to send invite</p>
+					<h2>Create user</h2>
+					<?php if($this->input->get('invalid') == 'passwords'): ?>
+					<p class="error">passwords do not match</p>
+					<?php elseif($this->input->get('invalid') == 'username'): ?>
+					<p class="error">username taken</p>
 					<?php endif; ?>
-					<form method="post" action="<?php echo$this->site_url('backend/user/invite'); ?>">
+					<form method="post" action="<?php echo$this->site_url('backend/user/create'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
-						<label for="sender">Your Name</label>
-						<input type="text" name="sender" id="sender">
-						<label for="receipient">Their Email</label>
-						<input type="text" name="receipient" id="receipient">
+						<input type="hidden" name="inviteToken" value="<?php echo $token ?>">
+						<label for="Email">Email</label>
+						<input type="text" name="email" id="email" value="<?php echo $email?>">
+						<label for="username">Username</label>
+						<input type="text" name="username" id="username">
+						<label for="password">Password</label>
+						<input type="password" name="password" id="password">
+						<label for="confPassword">Confirm Password</label>
+						<input type="password" name="confPassword" id="confPassword">
 						<div class="controls">
-							<button type="button" onclick="history.go(-1);">cancel</button> <button type="submit">send</button>
+							<button type="submit">create</button>
 						</div>
 					</form>
 				</div>
