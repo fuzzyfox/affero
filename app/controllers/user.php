@@ -155,7 +155,7 @@
 				//regenerate user token for security
 				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
 				//load the form
-				$this->utility->view('backend/user_invite');
+				$this->view->load('backend/user_invite');
 			}
 			elseif($this->check_auth())
 			{

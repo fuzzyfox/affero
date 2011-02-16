@@ -1,11 +1,12 @@
 <!doctype html>
 	<html lang="en">
 		<head>
-			<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+			<?php $this->head('Invite User'); ?>
+			<!--<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 			<title>Invite user</title>
 			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/reset.css" type="text/css">
 			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/generic.css" media="all" type="text/css">
-			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/dblog.css" media="all" type="text/css">
+			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/dblog.css" media="all" type="text/css">-->
 		</head>
 		<body>
 			<div id="header">

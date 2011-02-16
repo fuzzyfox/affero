@@ -63,6 +63,8 @@
 		protected $utility;
 		//input class
 		protected $input;
+		//view class
+		protected $view;
 		
 		/**
 		 * __construct
@@ -80,9 +82,10 @@
 			@define('SITE_URL', $config->site->url);
 			//initiate the database connection
 			$this->database = new Database($config->db->host, $config->db->name, $config->db->user, $config->db->pass);
-			//load the utility and input classes
-			$this->utility = new Utility();
-			$this->input = new Input();
+			//load the utility, input, and classes
+			$this->utility = new Utility;
+			$this->input = new Input;
+			$this->view = new View;
 			//setup the session that will be used for auth and CSRF prevention
 			session_set_cookie_params(3600, '/', parse_url($this->config->site->url, PHP_URL_HOST), false, true);
 			session_name('affero_session');
