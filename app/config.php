@@ -25,7 +25,9 @@
 			//set the name of the site (will be used in page headers)
 			'name' => 'affero',
 			//set the base url of the site (excluding 'http://' and trailing slash)
-			'url' => $_SERVER['HTTP_HOST'].'/affero'
+			'url' => $_SERVER['HTTP_HOST'].'/affero',
+			//set the footer information (must be in html)
+			'footer' => '<p>copyleft <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">cba</a> 2010 - <a href="http://fuzzyfox.mozhunt.com/">William Duyck</a></p>'
 		),
 		//database settings
 		'db' => (object)array(

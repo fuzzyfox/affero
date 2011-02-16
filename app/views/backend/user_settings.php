@@ -1,11 +1,7 @@
 <!doctype html>
 	<html lang="en">
 		<head>
-			<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-			<title>User Settings</title>
-			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/reset.css" type="text/css">
-			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/generic.css" media="all" type="text/css">
-			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/dblog.css" media="all" type="text/css">
+			<?php $this->head('User Settings'); ?>
 		</head>
 		<body>
 			<div id="header">
@@ -49,7 +45,7 @@
 						<div class="controls">
 							<button type="submit">save</button>
 						</div>
-						<a href="<?php echo $this->site_url('backend/user/delete')?>">delete account</a>
+						<a href="<?php echo $this->site_url('user/delete')?>">delete account</a>
 					</form>
 				</div>
 			</div>

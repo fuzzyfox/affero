@@ -83,7 +83,7 @@
 					//regenerate user token for security
 					$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
 					//load the form to get the rest of the information we need
-					$this->utility->view('backend/create_user', $data);
+					$this->view->load('backend/create_user', $data);
 				}
 				else
 				{
@@ -98,8 +98,15 @@
 				//check if the submitted username is not taken (and was taken)
 				if(($this->input->post('username') != false)&&($this->database->get('user', array('username'=>$this->input->post('username')), 'username', 1)->num_rows == 0))
 				{
+					//check email is valid
+					if(!$this->utility->valid_email($this->input->post('email')))
+					{
+						//email is invalid notify user
+						header('Location: '.$this->utility->site_url('user/create?token='.$this->input->post('inviteToken').'&invalid=email'));
+						return false;
+					}
 					//check the passwords match
-					if(($this->input->post('password') != false)&&($this->input->post('password') == $this->input->post('confPassword')))
+					elseif(($this->input->post('password') != false)&&($this->input->post('password') == $this->input->post('confPassword')))
 					{
 						//create their account
 						$data = array(
@@ -249,7 +256,7 @@
 				$query = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userEmail', 1);
 				$data['userEmail'] = $query->results[0]->userEmail;
 				//send the email to the view and load the view
-				$this->utility->view('backend/user_settings', $data);
+				$this->view->load('backend/user_settings', $data);
 			}
 			//okay time to process the form
 			elseif($this->check_auth()&&($this->input->post('oldPassword') != false))
@@ -343,7 +350,7 @@
 				//create new session token to ensure that the form is not being used for CSRF
 				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
 				//load the confimation form
-				$this->utility->view('backend/delete_user');
+				$this->view->load('backend/delete_user');
 			}
 			//check auth and if password submitted
 			elseif($this->check_auth()&&($this->input->post('password') != false))
@@ -433,7 +440,7 @@
 			elseif((!isset($_SESSION['user']['token']))||($this->input->post('token') !== $_SESSION['user']['token']))
 			{
 				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
-				$this->utility->view('backend/login');
+				$this->view->load('backend/login');
 			}
 			elseif($this->process_login($this->input->post('username'), $this->input->post('password')))
 			{

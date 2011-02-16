@@ -78,11 +78,9 @@
 			include(dirname(__FILE__).'/app/config.php');
 			//create class global for config
 			$this->config = $config;
-			//create a couple of constants for one or two libraries to use from config
-			@define('SITE_URL', $config->site->url);
 			//initiate the database connection
 			$this->database = new Database($config->db->host, $config->db->name, $config->db->user, $config->db->pass);
-			//load the utility, input, and classes
+			//load the utility, input, and view classes
 			$this->utility = new Utility;
 			$this->input = new Input;
 			$this->view = new View;

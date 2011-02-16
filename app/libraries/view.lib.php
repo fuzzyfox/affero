@@ -7,8 +7,8 @@
 	 * easier and to remove redundancy. It also allows for easier theming of the
 	 * system.
 	 *
-	 * This library is slightly different to the others as it relies on another
-	 * class called Controller
+	 * This library is slightly different to the others as it relies on the
+	 * utility library
 	 *
 	 * @author William Duyck <wduyck@gmail.com>
 	 * @version 0.1
@@ -21,6 +21,16 @@
 	
 	class View extends Utility
 	{
+		/**
+		 * load
+		 *
+		 * This function gets and loads a view file and passes it data it receives
+		 * via an associative array, and makes it available to the view.
+		 *
+		 * @param string $view the name of the view file to load
+		 * @param assoc_array $data the data to pass to the view file
+		 * @return void
+		 */
 		function load($name, $data = null)
 		{
 			//temp store the view name so that it does not interfere with the view
@@ -39,7 +49,7 @@
 			//remove all the newly created variables so there is nothing in scope
 			unset($name, $variable, $value, $data);
 			
-			//reload the libraries for the view to use
+			//load the libraries for the view to use
 			$this->input = new Input;
 			
 			//extract out all the variable for the view into scope if needed
@@ -72,34 +82,45 @@
 		 */
 		function head($title = 'untitled')
 		{
-			echo "<!-- default head content -->\r\n<meta http-equiv='Content-type' content='text/html; charset=utf-8'>\r\n";
+			//meta data
+			echo "<!-- start default head content -->\r\n<meta http-equiv='Content-type' content='text/html; charset=utf-8'>\r\n";
+			//generic stylesheet
 			$this->stylesheet('generic');
-			echo "<title>$title</title>";
+			//page title
+			echo "<title>$title</title>\r\n<!-- end default head content -->";
 		}
 		
+		/**
+		 * navigation
+		 * 
+		 * This function checks if a user is logged in and presents a different
+		 * set of navigation options if so.
+		 *
+		 * It prints the navigation as html
+		 */
 		function navigation()
 		{
-			
+			echo '<div id="nav" class="right">
+					<ul>
+						<li><a href="'.$this->site_url('dashboard').'">dashboard</a></li>
+						<li><a href="'.$this->site_url('user/settings').'">user settings</a></li>
+						<li><a href="'.$this->site_url('user/invite').'">invite user</a></li>
+						<li><a href="'.$this->site_url('user/logout').'">logout</a></li>
+					</ul>
+				</div>';
 		}
 		
 		/**
 		 * stylesheet
 		 *
-		 * This prints the html for loading stylesheets within the affero directory
+		 * This simple helper prints the html for loading stylesheets within the
+		 * affero css directory
+		 *
+		 * @param string $name the name of the css file (ex. '.css')
 		 */
 		function stylesheet($name)
 		{
 			echo '<link rel="stylesheet" href="'.$this->site_url('asset/css/'.$name.'.css').'" type="text/css">'."\r\n";
-		}
-		
-		function script()
-		{
-			
-		}
-		
-		function footer()
-		{
-			
 		}
 	}
 	

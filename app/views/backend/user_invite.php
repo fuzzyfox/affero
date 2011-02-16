@@ -2,11 +2,6 @@
 	<html lang="en">
 		<head>
 			<?php $this->head('Invite User'); ?>
-			<!--<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-			<title>Invite user</title>
-			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/reset.css" type="text/css">
-			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/generic.css" media="all" type="text/css">
-			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/dblog.css" media="all" type="text/css">-->
 		</head>
 		<body>
 			<div id="header">
@@ -47,7 +42,7 @@
 			</div>
 			
 			<div id="footer">
-				<p>copyleft <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">cba</a> 2010 - <a href="http://fuzzyfox.mozhunt.com/">William D</a></p>
+				<?php echo $this->config->site->footer; ?>
 			</div>
 		</body>
 	</html>

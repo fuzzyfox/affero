@@ -1,11 +1,7 @@
 <!doctype html>
 	<html lang="en">
 		<head>
-			<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-			<title>Login</title>
-			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/reset.css" type="text/css">
-			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/generic.css" media="all" type="text/css">
-			<link rel="stylesheet" href="http://labs.mozhunt.com/community-wizard/assets/css/dblog.css" media="all" type="text/css">
+			<?php $this->head('Login'); ?>
 		</head>
 		<body>
 			<div id="header">
