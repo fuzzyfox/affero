@@ -4,7 +4,7 @@
 /* -- custom fonts -- */
 @font-face {
 	font-family : license;
-	src : url('../fonts/cc.ttf');
+	src : url('../font/cc.ttf');
 }
 
 /* -- html 5 replacements -- */

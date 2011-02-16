@@ -15,8 +15,8 @@
 			<div class="section">
 				<div id="tabs">
 					<ul>
-						<li>Areas Of Contribution</li>
-						<li>Skills</li>
+						<li onclick="toggle('areas');toggle('skills');">Areas Of Contribution</li>
+						<li onclick="toggle('areas');toggle('skills');">Skills</li>
 					</ul>
 				</div>
 				<div class="section" id="areas">
@@ -73,5 +73,15 @@
 			<div id="footer">
 				<?php echo $this->config->site->footer; ?>
 			</div>
+			<script type="text/javascript">
+				function toggle(id)
+				{
+					elem = document.getElementById(id);
+					if(elem.style.display != 'none')
+					{ elem.style.display = 'none'; }
+					else
+					{ elem.style.display = ''; }
+				}
+			</script>
 		</body>
 	</html>

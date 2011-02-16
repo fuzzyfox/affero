@@ -92,7 +92,7 @@
 		 */
 		function valid_email($email)
 		{
-			return preg_match("/\b^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$\b/ix", $email);
+			return preg_match("/\b^([a-z0-9\+_\-\.]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$\b/ix", $email);
 		}
 		
 		/**
