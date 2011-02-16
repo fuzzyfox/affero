@@ -20,8 +20,10 @@
 <a href="#compatibility_test.php">compatibility_test.php</a><br>
 <a href="#configuration_file.php">configuration_file.php</a><br>
 <a href="#cookies_test.php">cookies_test.php</a><br>
+<a href="#create_user.php">create_user.php</a><br>
 <a href="#database.lib.php">database.lib.php</a><br>
 <a href="#database_abstraction_layer.php">database_abstraction_layer.php</a><br>
+<a href="#delete_user.php">delete_user.php</a><br>
 <a href="#detached_test.php">detached_test.php</a><br>
 <a href="#dumper_test.php">dumper_test.php</a><br>
 <a href="#eclipse_test.php">eclipse_test.php</a><br>
@@ -41,6 +43,8 @@
 <a href="#interfaces_test_php5_1.php">interfaces_test_php5_1.php</a><br>
 <a href="#live_test.php">live_test.php</a><br>
 <a href="#login.php">login.php</a><br>
+<a href="#manage.php">manage.php</a><br>
+<a href="#manage_index.php">manage_index.php</a><br>
 <a href="#mock_objects_test.php">mock_objects_test.php</a><br>
 <a href="#page_test.php">page_test.php</a><br>
 <a href="#parse_error_test.php">parse_error_test.php</a><br>
@@ -64,9 +68,12 @@
 <a href="#url_test.php">url_test.php</a><br>
 <a href="#user.php">user.php</a><br>
 <a href="#user_agent_test.php">user_agent_test.php</a><br>
+<a href="#user_invite.php">user_invite.php</a><br>
 <a href="#user_management.php">user_management.php</a><br>
+<a href="#user_settings.php">user_settings.php</a><br>
 <a href="#utility.lib.php">utility.lib.php</a><br>
 <a href="#utility.php">utility.php</a><br>
+<a href="#view.lib.php">view.lib.php</a><br>
 <a href="#visual_test.php">visual_test.php</a><br>
 <a href="#web_tester_test.php">web_tester_test.php</a><br>
 <a href="#xml_test.php">xml_test.php</a><br>
@@ -74,10 +81,10 @@
 <h1>Post-parsing</h1>
 <h2>Warnings:</h2><br>
 <b>Warning</b> - 
-duplicate class element "Dummy" in file /opt/lampp/htdocs/affero/test/php/simpletest/test/mock_objects_test.php will be ignored.
+duplicate class element "TestOfReflection" in file /opt/lampp/htdocs/affero/test/php/simpletest/test/reflection_php4_test.php will be ignored.
 Use an @ignore tag on the original if you want this case to be documented.<br>
 <b>Warning</b> - 
-duplicate class element "TestOfReflection" in file /opt/lampp/htdocs/affero/test/php/simpletest/test/reflection_php4_test.php will be ignored.
+duplicate class element "Dummy" in file /opt/lampp/htdocs/affero/test/php/simpletest/test/mock_objects_test.php will be ignored.
 Use an @ignore tag on the original if you want this case to be documented.<br>
 <a name="acceptance_test.php"></a>
 <h1>acceptance_test.php</h1>
@@ -170,15 +177,23 @@ Use an @ignore tag on the original if you want this case to be documented.<br>
 <b>Warning on line 5</b> - no @package tag was used in a DocBlock for class TestOfCookie<br>
 <b>Warning on line 104</b> - no @package tag was used in a DocBlock for class TestOfCookieJar<br>
 <b>Warning on line 226</b> - File "/opt/lampp/htdocs/affero/test/php/simpletest/test/cookies_test.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="create_user.php"></a>
+<h1>create_user.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 46</b> - File "/opt/lampp/htdocs/affero/app/views/backend/create_user.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
 <a name="database.lib.php"></a>
 <h1>database.lib.php</h1>
 <h2>Warnings:</h2><br>
-<b>Warning on line 25</b> - no @package tag was used in a DocBlock for class Database<br>
+<b>Warning on line 28</b> - no @package tag was used in a DocBlock for class Database<br>
 <a name="database_abstraction_layer.php"></a>
 <h1>database_abstraction_layer.php</h1>
 <h2>Warnings:</h2><br>
 <b>Warning on line 16</b> - Page-level DocBlock precedes "require_once dirname(__FILE__).'/../simpletest/autorun.php'", use another DocBlock to document the source element<br>
 <b>Warning on line 30</b> - no @package tag was used in a DocBlock for class TestOfDatabaseAbstractionLayer<br>
+<a name="delete_user.php"></a>
+<h1>delete_user.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 37</b> - File "/opt/lampp/htdocs/affero/app/views/backend/delete_user.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
 <a name="detached_test.php"></a>
 <h1>detached_test.php</h1>
 <h2>Warnings:</h2><br>
@@ -289,7 +304,7 @@ Use an @ignore tag on the original if you want this case to be documented.<br>
 <h2>Warnings:</h2><br>
 <b>Warning on line 18</b> - Page-level DocBlock precedes "require_once 'simpletest/autorun.php'", use another DocBlock to document the source element<br>
 <b>Warning on line 27</b> - no @package tag was used in a DocBlock for class AllTests<br>
-<b>Warning on line 57</b> - no @package tag was used in a DocBlock for class Backend<br>
+<b>Warning on line 56</b> - no @package tag was used in a DocBlock for class Controller<br>
 <a name="input.lib.php"></a>
 <h1>input.lib.php</h1>
 <h2>Warnings:</h2><br>
@@ -322,7 +337,15 @@ Use an @ignore tag on the original if you want this case to be documented.<br>
 <a name="login.php"></a>
 <h1>login.php</h1>
 <h2>Warnings:</h2><br>
-<b>Warning on line 42</b> - File "/opt/lampp/htdocs/affero/app/views/backend/login.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 37</b> - File "/opt/lampp/htdocs/affero/app/views/backend/login.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="manage.php"></a>
+<h1>manage.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - no @package tag was used in a DocBlock for class Manage<br>
+<a name="manage_index.php"></a>
+<h1>manage_index.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 76</b> - File "/opt/lampp/htdocs/affero/app/views/backend/manage_index.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
 <a name="mock_objects_test.php"></a>
 <h1>mock_objects_test.php</h1>
 <h2>Warnings:</h2><br>
@@ -501,13 +524,13 @@ Use an @ignore tag on the original if you want this case to be documented.<br>
 <b>Warning on line 5</b> - no @package tag was used in a DocBlock for class TestOfUrl<br>
 <b>Warning on line 321</b> - no @package tag was used in a DocBlock for class TestOfAbsoluteUrls<br>
 <b>Warning on line 455</b> - no @package tag was used in a DocBlock for class TestOfFrameUrl<br>
-<b>Warning on line 468</b> - Unknown tag "@note" used<br>
 <b>Warning on line 468</b> - no @package tag was used in a DocBlock for class TestOfFileUrl<br>
+<b>Warning on line 468</b> - Unknown tag "@note" used<br>
 <b>Warning on line 514</b> - File "/opt/lampp/htdocs/affero/test/php/simpletest/test/url_test.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
 <a name="user.php"></a>
 <h1>user.php</h1>
 <h2>Warnings:</h2><br>
-<b>Warning on line 33</b> - no @package tag was used in a DocBlock for class User<br>
+<b>Warning on line 27</b> - no @package tag was used in a DocBlock for class User<br>
 <a name="user_agent_test.php"></a>
 <h1>user_agent_test.php</h1>
 <h2>Warnings:</h2><br>
@@ -518,11 +541,19 @@ Use an @ignore tag on the original if you want this case to be documented.<br>
 <b>Warning on line 303</b> - no @package tag was used in a DocBlock for class TestOfBadHosts<br>
 <b>Warning on line 327</b> - no @package tag was used in a DocBlock for class TestOfAuthorisation<br>
 <b>Warning on line 347</b> - File "/opt/lampp/htdocs/affero/test/php/simpletest/test/user_agent_test.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="user_invite.php"></a>
+<h1>user_invite.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 43</b> - File "/opt/lampp/htdocs/affero/app/views/backend/user_invite.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
 <a name="user_management.php"></a>
 <h1>user_management.php</h1>
 <h2>Warnings:</h2><br>
 <b>Warning on line 17</b> - Page-level DocBlock precedes "require_once dirname(__FILE__).'/../simpletest/autorun.php'", use another DocBlock to document the source element<br>
 <b>Warning on line 26</b> - no @package tag was used in a DocBlock for class TestOfUserManagementClass<br>
+<a name="user_settings.php"></a>
+<h1>user_settings.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 52</b> - File "/opt/lampp/htdocs/affero/app/views/backend/user_settings.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
 <a name="utility.lib.php"></a>
 <h1>utility.lib.php</h1>
 <h2>Warnings:</h2><br>
@@ -532,6 +563,10 @@ Use an @ignore tag on the original if you want this case to be documented.<br>
 <h2>Warnings:</h2><br>
 <b>Warning on line 17</b> - Page-level DocBlock precedes "require_once dirname(__FILE__).'/../simpletest/autorun.php'", use another DocBlock to document the source element<br>
 <b>Warning on line 29</b> - no @package tag was used in a DocBlock for class TestOfUtilitiesClass<br>
+<a name="view.lib.php"></a>
+<h1>view.lib.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - DocBlock would be page-level, but precedes class "View", use another DocBlock to document the file<br>
 <a name="visual_test.php"></a>
 <h1>visual_test.php</h1>
 <h2>Warnings:</h2><br>
@@ -565,7 +600,7 @@ Use an @ignore tag on the original if you want this case to be documented.<br>
 <b>Warning on line 102</b> - no @package tag was used in a DocBlock for class TestOfXmlResultsParsing<br>
 <b>Warning on line 186</b> - File "/opt/lampp/htdocs/affero/test/php/simpletest/test/xml_test.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
 	<p class="notes" id="credit">
-		Documentation generated on Wed, 02 Feb 2011 22:30:25 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Wed, 16 Feb 2011 20:02:52 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</body>
 </html>

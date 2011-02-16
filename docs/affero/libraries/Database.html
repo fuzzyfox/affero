@@ -27,8 +27,11 @@
         		<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Database</p>
 <p class="description"><p>Provides an easy way to run simple database queries with good  optimisation and a reduction on database overhead caused by deletion  of rows.</p></p>
+	<ul class="tags">
+				<li><span class="field">todo:</span> DAL Rewrite <ul><li>Rewite all methods to use the newer mysqli functions over the mysql ones</li></ul></li>
+			</ul>
 		<p class="notes">
-			Located in <a class="field" href="_app---libraries---database.lib.php.html">/app/libraries/database.lib.php</a> (line <span class="field">25</span>)
+			Located in <a class="field" href="_app---libraries---database.lib.php.html">/app/libraries/database.lib.php</a> (line <span class="field">28</span>)
 		</p>
 		
 				
@@ -181,7 +184,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$_handler</span>
-						(line <span class="line-number">28</span>)
+						(line <span class="line-number">31</span>)
 		</span>
 	</div>
 
@@ -203,7 +206,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$_result</span>
-						(line <span class="line-number">30</span>)
+						(line <span class="line-number">33</span>)
 		</span>
 	</div>
 
@@ -237,7 +240,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Constructor.png" />
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">46</span>)
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">49</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -277,7 +280,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">connect</span> (line <span class="line-number">66</span>)
+		<span class="method-title">connect</span> (line <span class="line-number">69</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -317,7 +320,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">delete</span> (line <span class="line-number">220</span>)
+		<span class="method-title">delete</span> (line <span class="line-number">223</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -351,7 +354,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">disconnect</span> (line <span class="line-number">92</span>)
+		<span class="method-title">disconnect</span> (line <span class="line-number">95</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -377,7 +380,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">escape</span> (line <span class="line-number">144</span>)
+		<span class="method-title">escape</span> (line <span class="line-number">147</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -408,7 +411,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">free_result</span> (line <span class="line-number">118</span>)
+		<span class="method-title">free_result</span> (line <span class="line-number">121</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -434,7 +437,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">get</span> (line <span class="line-number">262</span>)
+		<span class="method-title">get</span> (line <span class="line-number">265</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -480,7 +483,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">get_error</span> (line <span class="line-number">131</span>)
+		<span class="method-title">get_error</span> (line <span class="line-number">134</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -506,7 +509,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">insert</span> (line <span class="line-number">165</span>)
+		<span class="method-title">insert</span> (line <span class="line-number">168</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -540,7 +543,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">num_rows</span> (line <span class="line-number">242</span>)
+		<span class="method-title">num_rows</span> (line <span class="line-number">245</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -566,7 +569,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">optimize</span> (line <span class="line-number">349</span>)
+		<span class="method-title">optimize</span> (line <span class="line-number">352</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -594,7 +597,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">query</span> (line <span class="line-number">105</span>)
+		<span class="method-title">query</span> (line <span class="line-number">108</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -625,7 +628,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">update</span> (line <span class="line-number">190</span>)
+		<span class="method-title">update</span> (line <span class="line-number">193</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -663,7 +666,7 @@
 
 	
 	<p class="notes" id="credit">
-		Documentation generated on Wed, 02 Feb 2011 22:28:35 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Wed, 16 Feb 2011 20:01:03 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>

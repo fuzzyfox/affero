@@ -3,7 +3,7 @@
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 			<!-- template designed by Marco Von Ballmoos -->
-			<title>Docs For Class Backend</title>
+			<title>Docs For Class Controller</title>
 			<link rel="stylesheet" href="../../media/stylesheet.css" />
 			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
 		</head>
@@ -12,7 +12,7 @@
 <h2 class="class-name"><img src="../../media/images/Class_logo.png"
 														alt=" Class"
 														title=" Class"
-														style="vertical-align: middle"> Backend</h2>
+														style="vertical-align: middle"> Controller</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
@@ -26,10 +26,10 @@
 					</div>
 	<div class="info-box-body">
         		<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">Backend</p>
+<p class="short-description">Controller</p>
 <p class="description"><p>This class controls all tasks relating to modifying areas of affero. It  does some minor url routing tasks, and provides all the key libraries  to the controllers to routes to.</p></p>
 		<p class="notes">
-			Located in <a class="field" href="_index.php.html">/index.php</a> (line <span class="field">57</span>)
+			Located in <a class="field" href="_index.php.html">/index.php</a> (line <span class="field">56</span>)
 		</p>
 		
 				
@@ -60,7 +60,19 @@
 								 alt=" class"
 								 title=" class"
 								 style="vertical-align: center"/>
-						<a href="../../affero/modules/User.html">User</a>
+						<a href="../../affero/controllers/Manage.html">Manage</a>
+					</td>
+					<td>
+											Manage
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em; white-space: nowrap">
+						<img src="../../media/images/Class.png"
+								 alt=" class"
+								 title=" class"
+								 style="vertical-align: center"/>
+						<a href="../../affero/controllers/User.html">User</a>
 					</td>
 					<td>
 											User
@@ -84,7 +96,7 @@
 								</div>
 		<div class="info-box-body">
 			<div class="var-summary">
-																																																<div class="var-title">
+																																																								<div class="var-title">
 					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$config" title="details" class="var-name">$config</a>
@@ -103,6 +115,11 @@
 					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$utility" title="details" class="var-name">$utility</a>
+				</div>
+																<div class="var-title">
+					<img src="../../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$view" title="details" class="var-name">$view</a>
 				</div>
 											</div>
 		</div>
@@ -123,7 +140,7 @@
 			<div class="method-summary">
 																																								<div class="method-definition">
 					<img src="../../media/images/Constructor.png" alt=" "/>
-											<span class="method-result">Backend</span>
+											<span class="method-result">Controller</span>
 										<a href="#__construct" title="details" class="method-name">__construct</a>
 										()
 									</div>
@@ -166,7 +183,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$config</span>
-						(line <span class="line-number">60</span>)
+						(line <span class="line-number">59</span>)
 		</span>
 	</div>
 
@@ -188,7 +205,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$database</span>
-						(line <span class="line-number">62</span>)
+						(line <span class="line-number">61</span>)
 		</span>
 	</div>
 
@@ -210,7 +227,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$input</span>
-						(line <span class="line-number">66</span>)
+						(line <span class="line-number">65</span>)
 		</span>
 	</div>
 
@@ -232,7 +249,29 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$utility</span>
-						(line <span class="line-number">64</span>)
+						(line <span class="line-number">63</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$view" id="$view"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$view</span>
+						(line <span class="line-number">67</span>)
 		</span>
 	</div>
 
@@ -263,11 +302,11 @@
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
 <a name="method__construct" id="__construct"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
 		<img src="../../media/images/Constructor.png" />
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">74</span>)
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">75</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -275,7 +314,7 @@
 <p class="description"><p>this function sets up the backend requirements such as the configuration,  database connection, etc...</p></p>
 	
 	<div class="method-signature">
-		<span class="method-result">Backend</span>
+		<span class="method-result">Controller</span>
 		<span class="method-name">
 			__construct
 		</span>
@@ -284,20 +323,13 @@
 	
 		
 			
-			<hr class="separator" />
-		<div class="notes">Redefined in descendants as:</div>
-		<ul class="redefinitions">
-					<li>
-				<a href="../../affero/modules/User.html#method__construct">User::__construct()</a>
-							</li>
-				</ul>
 	</div>
 <a name="methodGET" id="GET"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">GET</span> (line <span class="line-number">95</span>)
+		<span class="method-title">GET</span> (line <span class="line-number">99</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -321,11 +353,11 @@
 			
 	</div>
 <a name="methodPOST" id="POST"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">POST</span> (line <span class="line-number">136</span>)
+		<span class="method-title">POST</span> (line <span class="line-number">141</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -354,7 +386,7 @@
 
 	
 	<p class="notes" id="credit">
-		Documentation generated on Wed, 02 Feb 2011 22:29:09 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Wed, 16 Feb 2011 20:01:37 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>

@@ -19,7 +19,8 @@
 	<div class="info-box-title">Description</div>
 	<div class="nav-bar">
 					<span class="disabled">Description</span> |
-															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							<a href="#sec-descendents">Descendents</a>
+			|													<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
 						
 					</div>
 	<div class="info-box-body">
@@ -36,6 +37,36 @@
 			</div>
 </div>
 
+	<a name="sec-descendents"></a>
+	<div class="info-box">
+		<div class="info-box-title">Direct descendents</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+			<span class="disabled">Descendents</span>
+			|															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em; white-space: nowrap">
+						<img src="../../media/images/Class.png"
+								 alt=" class"
+								 title=" class"
+								 style="vertical-align: center"/>
+						<a href="../../affero/libraries/View.html">View</a>
+					</td>
+					<td>
+											View
+										</td>
+				</tr>
+							</table>
+		</div>
+	</div>
 
 
 
@@ -44,11 +75,24 @@
 		<div class="info-box-title">Method Summary</span></div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendants</a> |
 												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																																																<div class="method-definition">
+																																																																<div class="method-definition">
+					<img src="../../media/images/Constructor.png" alt=" "/>
+											<span class="method-result">Utility</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../../media/images/PrivateMethod.png" alt=" "/>
+											<span class="method-result">bool</span>
+										<a href="#check_auth" title="details" class="method-name">check_auth</a>
+										()
+									</div>
+																<div class="method-definition">
 					<img src="../../media/images/Method.png" alt=" "/>
 											<span class="method-result">string</span>
 										<a href="#current_url" title="details" class="method-name">current_url</a>
@@ -62,15 +106,15 @@
 									</div>
 																<div class="method-definition">
 					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+											<span class="method-result">string</span>
 										<a href="#site_url" title="details" class="method-name">site_url</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$localtion</span>)
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$localtion</span>)
 									</div>
 																<div class="method-definition">
 					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#view" title="details" class="method-name">view</a>
-											(<span class="var-type">string</span>&nbsp;<span class="var-name">$view</span>, [<span class="var-type">assoc_array</span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>])
+											<span class="method-result">bool</span>
+										<a href="#valid_email" title="details" class="method-name">valid_email</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$email</span>)
 									</div>
 											</div>
 		</div>
@@ -82,17 +126,68 @@
 		<div class="info-box-title">Methods</div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
 													<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
 						
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Constructor.png" />
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">30</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">__construct</p>
+<p class="description"><p>loads the affero configuration file and assigns config details to  $this-&gt;config</p></p>
+	
+	<div class="method-signature">
+		<span class="method-result">Utility</span>
+		<span class="method-name">
+			__construct
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodcheck_auth" id="check_auth"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/PrivateMethod.png" />
+		<span class="method-title">check_auth</span> (line <span class="line-number">126</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">check_auth</p>
+<p class="description"><p>this is a simple helper function that checks to see if a users is or  is not logged in. If they are not it redirects them to the login page  and returns false, else it returns true with no redirect.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> True if user logged in</li>
+				<li><span class="field">access:</span> private</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			check_auth
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
 <a name="methodcurrent_url" id="current_url"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">current_url</span> (line <span class="line-number">33</span>)
+		<span class="method-title">current_url</span> (line <span class="line-number">46</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -118,7 +213,7 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">hash_string</span> (line <span class="line-number">73</span>)
+		<span class="method-title">hash_string</span> (line <span class="line-number">111</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -152,54 +247,60 @@
 	
 	<div class="method-header">
 		<img src="../../media/images/Method.png" />
-		<span class="method-title">site_url</span> (line <span class="line-number">55</span>)
+		<span class="method-title">site_url</span> (line <span class="line-number">77</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">site_url</p>
+<p class="description"><p>This function generates a url that points to a page on the same site  based on the domain provided in the configuration file.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> the url to that file</li>
+			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">string</span>
 		<span class="method-name">
 			site_url
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$localtion</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$localtion</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodview" id="view"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">view</span> (line <span class="line-number">88</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">view</p>
-<p class="description"><p>This function gets and loads a view file and passes it data it receives  via an associative array, and makes it available to the view.</p></p>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			view
-		</span>
-					(<span class="var-type">string</span>&nbsp;<span class="var-name">$view</span>, [<span class="var-type">assoc_array</span>&nbsp;<span class="var-name">$data</span> = <span class="var-default">null</span>])
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$localtion</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
 				<span class="var-type">string</span>
-				<span class="var-name">$view</span><span class="var-description">: the name of the view file to load</span>			</li>
+				<span class="var-name">$localtion</span><span class="var-description">: the page/file on site to point to</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodvalid_email" id="valid_email"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">valid_email</span> (line <span class="line-number">93</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">valid_email</p>
+<p class="description"><p>This function returns true or false depending on whether the input it  receives is a valid url</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> True when email is valid</li>
+				<li><span class="field">todo:</span> valid_email <ul><li>Grab regex and return bool based on preg_match of said regex</li></ul></li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			valid_email
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$email</span>)
+			</div>
+	
+			<ul class="parameters">
 					<li>
-				<span class="var-type">assoc_array</span>
-				<span class="var-name">$data</span><span class="var-description">: the data to pass to the view file</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$email</span><span class="var-description">: The email to check</span>			</li>
 				</ul>
 		
 			
@@ -210,7 +311,7 @@
 
 	
 	<p class="notes" id="credit">
-		Documentation generated on Wed, 02 Feb 2011 22:30:11 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Wed, 16 Feb 2011 20:02:39 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>
