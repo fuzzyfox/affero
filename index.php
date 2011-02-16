@@ -34,27 +34,26 @@
 		{
 			include(dirname(__FILE__)."/app/controllers/backend/$class.php");
 		}
-		else
+		elseif(file_exists(dirname(__FILE__)."/app/controllers/$class.php"))
 		{
-			header('HTTP/1.0 404 Not Found');
-			include(dirname(__FILE__).'/asset/error/404.html');
+			include(dirname(__FILE__)."/app/controllers/$class.php");
 		}
 	}
 	
 	//setup url mapping
 	$urls = array(
-		'/affero/((index\.php)?(/?))' => 'Frontend',
-		'/affero/((index\.php/)?)backend/(?P<controller>[a-zA-Z0-9_]*)(/?)(?P<method>[a-zA-Z0-9_]*)(/?)(.*)' => 'Backend'
+		//'/affero/((index\.php)?(/?))' => 'Frontend',
+		'/affero/((index\.php/)?)(?P<controller>[a-zA-Z0-9_]*)(/?)(?P<method>[a-zA-Z0-9_]*)(/?)(.*)' => 'Controller'
 	);
 	
 	/**
-	 * Backend
+	 * Controller
 	 *
 	 * This class controls all tasks relating to modifying areas of affero. It 
 	 * does some minor url routing tasks, and provides all the key libraries
 	 * to the controllers to routes to.
 	 */
-	class Backend
+	class Controller
 	{
 		//configuration options
 		protected $config;
@@ -99,7 +98,7 @@
 		function GET($args)
 		{
 			//ensure we have a controller and method set (defaults if not)
-			$controller = (isset($args['controller'])&&($args['controller'] != null))?$args['controller']:'dashboard';
+			$controller = (isset($args['controller'])&&($args['controller'] != null))?$args['controller']:'defacto';
 			$method = (isset($args['method'])&&($args['method'] != null))?$args['method']:'index';
 			
 			//load the controller and its relevant method if posible

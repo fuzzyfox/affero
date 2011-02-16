@@ -32,7 +32,7 @@
 					<?php elseif($this->input->get('success') == 'false'): ?>
 					<p class="error">failed to send invite</p>
 					<?php endif; ?>
-					<form method="post" action="<?php echo$this->site_url('backend/user/invite'); ?>">
+					<form method="post" action="<?php echo$this->site_url('user/invite'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
 						<label for="sender">Your Name</label>
 						<input type="text" name="sender" id="sender">

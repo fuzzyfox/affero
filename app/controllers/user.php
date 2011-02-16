@@ -24,7 +24,7 @@
 	 * @todo user class items
 	 * 	- create add user function
 	 */
-	class User extends Backend
+	class User extends Controller
 	{
 		/**
 		 * index
@@ -39,7 +39,7 @@
 		{
 			if($this->check_auth())
 			{
-				header('Location: '.$this->utility->site_url('backend/dashboard'));
+				header('Location: '.$this->utility->site_url('dashboard'));
 			}
 		}
 		
@@ -114,19 +114,19 @@
 						session_regenerate_id(false);
 						$_SESSION['user']['username'] = strtolower($this->input->post('username'));
 						$_SESSION['user']['logged'] = true;
-						header('Location: '.$this->utility->site_url('backend/dashboard'));
+						header('Location: '.$this->utility->site_url('dashboard'));
 					}
 					else
 					{
 						//passwords dont match inform user
-						header('Location: '.$this->utility->site_url('backend/user/create?token='.$this->input->post('inviteToken').'&invalid=passwords'));
+						header('Location: '.$this->utility->site_url('user/create?token='.$this->input->post('inviteToken').'&invalid=passwords'));
 						return false;
 					}
 				}
 				else
 				{
 					//username taken inform user
-					header('Location: '.$this->utility->site_url('backend/user/create?token='.$this->input->post('inviteToken').'&invalid=username'));
+					header('Location: '.$this->utility->site_url('user/create?token='.$this->input->post('inviteToken').'&invalid=username'));
 					return false;
 				}
 			}
@@ -203,19 +203,19 @@
 								$this->database->insert('invite', $data);
 							}
 							//inform user we succeeded
-							header('Location: '.$this->utility->site_url('backend/user/invite?success=true'));
+							header('Location: '.$this->utility->site_url('user/invite?success=true'));
 						}
 						else
 						{
 							//failed to send inform user
-							header('Location: '.$this->utility->site_url('backend/user/invite?success=false'));
+							header('Location: '.$this->utility->site_url('user/invite?success=false'));
 							return;
 						}
 					}
 					else
 					{
 						//not all fields entered, lets notify the user
-						header('Location: '.$this->utility->site_url('backend/user/invite?invalid=sender'));
+						header('Location: '.$this->utility->site_url('user/invite?invalid=sender'));
 						return;
 					}
 					
@@ -223,7 +223,7 @@
 				elseif($this->check_auth())
 				{
 					//invalid email inform user
-					header('Location: '.$this->utility->site_url('backend/user/invite?invalid=email'));
+					header('Location: '.$this->utility->site_url('user/invite?invalid=email'));
 					return;
 				}
 			}
@@ -276,14 +276,14 @@
 						//not a valid email
 						else
 						{
-							header('Location: '.$this->utility->site_url('backend/user/settings?invalid=email'));
+							header('Location: '.$this->utility->site_url('user/settings?invalid=email'));
 							return;
 						}
 					}
 				}
 				else
 				{
-					header('Location: '.$this->utility->site_url('backend/user/settings?invalid=email'));
+					header('Location: '.$this->utility->site_url('user/settings?invalid=email'));
 					return;
 				}
 				
@@ -302,18 +302,18 @@
 				elseif(($this->input->post('newPassword') != false)||($this->input->post('oldPassword') != false))
 				{
 					//passwords do not match redirect back to form with msg informing user
-					header('Location: '.$this->utility->site_url('backend/user/settings?invalid=new'));
+					header('Location: '.$this->utility->site_url('user/settings?invalid=new'));
 					return;
 				}
 				
 				//report back to the user
-				header('Location: '.$this->utility->site_url('backend/user/settings?success='.(($success)?'true':'false')));
+				header('Location: '.$this->utility->site_url('user/settings?success='.(($success)?'true':'false')));
 				return;
 			}
 			elseif($this->check_auth())
 			{
 				//settings changed but not received password confirmation
-				header('Location: '.$this->utility->site_url('backend/user/settings?invalid=old'));
+				header('Location: '.$this->utility->site_url('user/settings?invalid=old'));
 				return;
 			}
 		}
@@ -361,20 +361,20 @@
 						//lets destroy the session too just to be on the safe side
 						session_destroy();
 						//finally redirect user with msg
-						header('Location: '.$this->utility->site_url('backend/dashboard?msg=user_delete'));
+						header('Location: '.$this->utility->site_url('dashboard?msg=user_delete'));
 						return;
 					}
 					else
 					{
 						//oops something went wrong!
-						header('Location: '.$this->utility->site_url('backend/user/delete?failed=true'));
+						header('Location: '.$this->utility->site_url('user/delete?failed=true'));
 						return;
 					}
 				}
 				else
 				{
 					//logged in but incorrect password
-					header('Location: '.$this->utility->site_url('backend/user/delete?invalid=true'));
+					header('Location: '.$this->utility->site_url('user/delete?invalid=true'));
 					return;
 				}
 			}
@@ -382,7 +382,7 @@
 			elseif($this->check_auth())
 			{
 				//logged in but no password submitted
-				header('Location: '.$this->utility->site_url('backend/user/delete?invalid=true'));
+				header('Location: '.$this->utility->site_url('user/delete?invalid=true'));
 				return;
 			}
 		}
@@ -408,7 +408,7 @@
 			else
 			{
 				//oops they are not logged in they are not allowed to see this page...
-				header('Location: '.$this->utility->site_url('backend/user/login'));
+				header('Location: '.$this->utility->site_url('user/login'));
 				return false;
 			}
 		}
@@ -428,7 +428,7 @@
 		{
 			if(isset($_SESSION['user']['logged']) && ($_SESSION['user']['logged'] == true))
 			{
-				header('Location: '.$this->utility->site_url('backend/dashboard'));
+				header('Location: '.$this->utility->site_url('dashboard'));
 			}
 			elseif((!isset($_SESSION['user']['token']))||($this->input->post('token') !== $_SESSION['user']['token']))
 			{
@@ -441,11 +441,11 @@
 				session_regenerate_id(false);
 				$_SESSION['user']['username'] = strtolower($this->input->post('username'));
 				$_SESSION['user']['logged'] = true;
-				header('Location: '.$this->utility->site_url('backend/dashboard'));
+				header('Location: '.$this->utility->site_url('dashboard'));
 			}
 			else
 			{
-				header('Location: '.$this->utility->site_url('backend/user/login?invalid=true'));
+				header('Location: '.$this->utility->site_url('user/login?invalid=true'));
 			}
 		}
 		
@@ -499,7 +499,7 @@
 			//okay lets just check that worked before sending true/false
 			if(!isset($_SESSION['user']))
 			{
-				header('Location: '.$this->utility->site_url('backend/dashboard'));
+				header('Location: '.$this->utility->site_url('dashboard'));
 				return true;
 			}
 			else

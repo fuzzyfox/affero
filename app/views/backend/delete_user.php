@@ -28,7 +28,7 @@
 					<?php elseif($this->input->get('failed')): ?>
 					<p class="error">an unknown error occured meaning your account was not deleted<br><small>please try again... if the problem persists contact us and we will remove your account for you</small></p>
 					<?php endif; ?>
-					<form method="post" action="<?php echo$this->site_url('backend/user/delete'); ?>">
+					<form method="post" action="<?php echo$this->site_url('user/delete'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
 						<label for="password">Password</label>
 						<input type="password" name="password" id="password">

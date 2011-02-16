@@ -26,7 +26,7 @@
 					<?php if($this->input->get('invalid') == true): ?>
 					<p class="error">invalid login credentials</p>
 					<?php endif; ?>
-					<form method="post" action="<?php echo$this->site_url('backend/user/login'); ?>">
+					<form method="post" action="<?php echo$this->site_url('user/login'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
 						<label for="username">Username</label>
 						<input type="text" name="username" id="username">

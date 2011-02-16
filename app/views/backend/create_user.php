@@ -28,7 +28,7 @@
 					<?php elseif($this->input->get('invalid') == 'username'): ?>
 					<p class="error">username taken</p>
 					<?php endif; ?>
-					<form method="post" action="<?php echo$this->site_url('backend/user/create'); ?>">
+					<form method="post" action="<?php echo$this->site_url('user/create'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
 						<input type="hidden" name="inviteToken" value="<?php echo $token ?>">
 						<label for="Email">Email</label>

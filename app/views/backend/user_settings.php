@@ -34,7 +34,7 @@
 					<?php elseif($this->input->get('success') == 'false'): ?>
 					<p class="error">failed to save your settings<br><small>if problems continue please contact us</small></p>
 					<?php endif; ?>
-					<form method="post" action="<?php echo$this->site_url('backend/user/settings'); ?>">
+					<form method="post" action="<?php echo$this->site_url('user/settings'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
 						<label for="username">Username</label>
 						<input type="text" name="username" id="username" value="<?php echo $_SESSION['user']['username']; ?>" disabled="disabled">
