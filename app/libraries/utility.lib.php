@@ -113,6 +113,31 @@
 			return hash('sha512', $string.(($salt !== null)?'_'.$salt:''));
 		}
 		
+		/**
+		 * check_auth
+		 * 
+		 * this is a simple helper function that checks to see if a users is or
+		 * is not logged in. If they are not it redirects them to the login page
+		 * and returns false, else it returns true with no redirect.
+		 *
+		 * @return bool True if user logged in
+		 * @access private
+		 */
+		function check_auth()
+		{
+			//do the check
+			if(isset($_SESSION['user']['logged']) && ($_SESSION['user']['logged'] == true))
+			{
+				//return true the user is logged in
+				return true;
+			}
+			else
+			{
+				//oops they are not logged in they are not allowed to see this page...
+				header('Location: '.$this->site_url('user/login'));
+				return false;
+			}
+		}
 	}
 	
 ?>

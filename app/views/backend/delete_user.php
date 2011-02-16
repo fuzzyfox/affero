@@ -7,11 +7,7 @@
 			<div id="header">
 				<h1><a href="./">Affero</a></h1>
 				
-				<div id="nav" class="right">
-					<ul>
-						<li><a href="#">navigation</a></li>
-					</ul>
-				</div>
+				<?php $this->navigation(); ?>
 				
 				<div class="clear">&nbsp;</div>
 			</div>
@@ -36,7 +32,7 @@
 			</div>
 			
 			<div id="footer">
-				<p>copyleft <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">cba</a> 2010 - <a href="http://fuzzyfox.mozhunt.com/">William D</a></p>
+				<?php echo $this->config->site->footer; ?>
 			</div>
 		</body>
 	</html>

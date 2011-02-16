@@ -101,13 +101,17 @@
 		function navigation()
 		{
 			echo '<div id="nav" class="right">
-					<ul>
-						<li><a href="'.$this->site_url('dashboard').'">dashboard</a></li>
-						<li><a href="'.$this->site_url('user/settings').'">user settings</a></li>
-						<li><a href="'.$this->site_url('user/invite').'">invite user</a></li>
-						<li><a href="'.$this->site_url('user/logout').'">logout</a></li>
-					</ul>
-				</div>';
+			<ul>
+				<li><a href="'.$this->site_url('dashboard').'">dashboard</a></li>';
+			if(isset($_SESSION['user']['logged']) && ($_SESSION['user']['logged'] == true))
+			{
+				echo '<li><a href="'.$this->site_url('manage').'">affero settings</a></li>
+				<li><a href="'.$this->site_url('user/settings').'">user settings</a></li>
+				<li><a href="'.$this->site_url('user/invite').'">invite user</a></li>
+				<li><a href="'.$this->site_url('user/logout').'">logout</a></li>';
+			}
+			echo '</ul>
+			</div>';
 		}
 		
 		/**

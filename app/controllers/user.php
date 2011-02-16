@@ -1,7 +1,7 @@
 <?php
 	
 	/**
-	 * User Class
+	 * User Controller
 	 *
 	 * This file contains a collection of tools for logging in/logging out users
 	 * as well as creating them, modifying them, and deleting them from the
@@ -10,7 +10,7 @@
 	 * @author William Duyck <wduyck@gmail.com>
 	 * @version 0.1
 	 * @package affero
-	 * @subpackage modules
+	 * @subpackage controllers
 	 * @copyright 2011 William Duyck
 	 * @license MPL 1.1/LGPL 2.1/GPL 2.0
 	 */
@@ -37,7 +37,7 @@
 		 */
 		public function index()
 		{
-			if($this->check_auth())
+			if($this->utility->check_auth())
 			{
 				header('Location: '.$this->utility->site_url('dashboard'));
 			}
@@ -53,94 +53,97 @@
 		 * @access public
 		 * @return void
 		 */
-			public function create()
+		public function create()
 		{
-			//check a token was provided
-			if($this->input->get('token') != false)
+			if(!isset($_SESSION['user']['logged']))
 			{
-				/*
-				 query db for all needed information in this function
-				*/
-				//run raw query
-				$queryResource = $this->database->query('SELECT user.username, user.userEmail FROM invite INNER JOIN user ON invite.inviter = user.username WHERE invite.token = '.$this->database->escape($this->input->get('token')).' LIMIT 1');
-				//return the information from database
-				$query = mysql_fetch_object($queryResource);
-				
-				//check the token exists
-				if($this->database->num_rows() == 1)
+				//check a token was provided
+				if($this->input->get('token') != false)
 				{
-					//free up memory used in query
-					$this->database->free_result();
-					
 					/*
-					 decrypt token to get email address
+					 query db for all needed information in this function
 					*/
-					//set the key
-					$key = $query->username.'_'.$query->userEmail;
-					//get the user email
-					$data['email'] = mcrypt_decrypt(MCRYPT_BLOWFISH, $key, base64_decode($this->input->get('token')), MCRYPT_MODE_ECB);
-					$data['token'] = $this->input->get('token');
-					//regenerate user token for security
-					$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
-					//load the form to get the rest of the information we need
-					$this->view->load('backend/create_user', $data);
-				}
-				else
-				{
-					//respond as a teapot (assume someone is attempting to hack into affero)
-					header('HTTP/1.0 418 I\'m a teapot');
-					return;
-				}
-			}
-			//check we dont need to create a user
-			elseif($this->input->post('token') == $_SESSION['user']['token'])
-			{
-				//check if the submitted username is not taken (and was taken)
-				if(($this->input->post('username') != false)&&($this->database->get('user', array('username'=>$this->input->post('username')), 'username', 1)->num_rows == 0))
-				{
-					//check email is valid
-					if(!$this->utility->valid_email($this->input->post('email')))
+					//run raw query
+					$queryResource = $this->database->query('SELECT user.username, user.userEmail FROM invite INNER JOIN user ON invite.inviter = user.username WHERE invite.token = '.$this->database->escape($this->input->get('token')).' LIMIT 1');
+					//return the information from database
+					$query = mysql_fetch_object($queryResource);
+					
+					//check the token exists
+					if($this->database->num_rows() == 1)
 					{
-						//email is invalid notify user
-						header('Location: '.$this->utility->site_url('user/create?token='.$this->input->post('inviteToken').'&invalid=email'));
-						return false;
-					}
-					//check the passwords match
-					elseif(($this->input->post('password') != false)&&($this->input->post('password') == $this->input->post('confPassword')))
-					{
-						//create their account
-						$data = array(
-							'username' => strtolower($this->input->post('username')),
-							'userPassword' => $this->utility->hash_string($this->input->post('password'), $this->input->post('username')),
-							'userEmail' => $this->input->post('email')
-						);
-						$this->database->insert('user', $data);
-						$this->database->update('invite', array('token'=>$this->input->post('inviteToken')), array('invitee'=>$this->input->post('username')));
+						//free up memory used in query
+						$this->database->free_result();
 						
-						//log user in
-						session_regenerate_id(false);
-						$_SESSION['user']['username'] = strtolower($this->input->post('username'));
-						$_SESSION['user']['logged'] = true;
-						header('Location: '.$this->utility->site_url('dashboard'));
+						/*
+						 decrypt token to get email address
+						*/
+						//set the key
+						$key = $query->username.'_'.$query->userEmail;
+						//get the user email
+						$data['email'] = mcrypt_decrypt(MCRYPT_BLOWFISH, $key, base64_decode($this->input->get('token')), MCRYPT_MODE_ECB);
+						$data['token'] = $this->input->get('token');
+						//regenerate user token for security
+						$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
+						//load the form to get the rest of the information we need
+						$this->view->load('backend/create_user', $data);
 					}
 					else
 					{
-						//passwords dont match inform user
-						header('Location: '.$this->utility->site_url('user/create?token='.$this->input->post('inviteToken').'&invalid=passwords'));
+						//respond as a teapot (assume someone is attempting to hack into affero)
+						header('HTTP/1.0 418 I\'m a teapot');
+						return;
+					}
+				}
+				//check we dont need to create a user
+				elseif($this->input->post('token') == $_SESSION['user']['token'])
+				{
+					//check if the submitted username is not taken (and was taken)
+					if(($this->input->post('username') != false)&&($this->database->get('user', array('username'=>$this->input->post('username')), 'username', 1)->num_rows == 0))
+					{
+						//check email is valid
+						if(!$this->utility->valid_email($this->input->post('email')))
+						{
+							//email is invalid notify user
+							header('Location: '.$this->utility->site_url('user/create?token='.$this->input->post('inviteToken').'&invalid=email'));
+							return false;
+						}
+						//check the passwords match
+						elseif(($this->input->post('password') != false)&&($this->input->post('password') == $this->input->post('confPassword')))
+						{
+							//create their account
+							$data = array(
+								'username' => strtolower($this->input->post('username')),
+								'userPassword' => $this->utility->hash_string($this->input->post('password'), $this->input->post('username')),
+								'userEmail' => $this->input->post('email')
+							);
+							$this->database->insert('user', $data);
+							$this->database->update('invite', array('token'=>$this->input->post('inviteToken')), array('invitee'=>$this->input->post('username')));
+							
+							//log user in
+							session_regenerate_id(false);
+							$_SESSION['user']['username'] = strtolower($this->input->post('username'));
+							$_SESSION['user']['logged'] = true;
+							header('Location: '.$this->utility->site_url('dashboard'));
+						}
+						else
+						{
+							//passwords dont match inform user
+							header('Location: '.$this->utility->site_url('user/create?token='.$this->input->post('inviteToken').'&invalid=passwords'));
+							return false;
+						}
+					}
+					else
+					{
+						//username taken inform user
+						header('Location: '.$this->utility->site_url('user/create?token='.$this->input->post('inviteToken').'&invalid=username'));
 						return false;
 					}
 				}
 				else
 				{
-					//username taken inform user
-					header('Location: '.$this->utility->site_url('user/create?token='.$this->input->post('inviteToken').'&invalid=username'));
-					return false;
+					//notify that we are missing a token
+					echo 'token not found, required to create an account';
 				}
-			}
-			else
-			{
-				//notify that we are missing a token
-				echo 'token not found, required to create an account';
 			}
 		}
 		
@@ -157,14 +160,14 @@
 		 */
 		public function invite()
 		{
-			if($this->check_auth()&&($this->input->post('token') != $_SESSION['user']['token']))
+			if($this->utility->check_auth()&&($this->input->post('token') != $_SESSION['user']['token']))
 			{
 				//regenerate user token for security
 				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
 				//load the form
 				$this->view->load('backend/user_invite');
 			}
-			elseif($this->check_auth())
+			elseif($this->utility->check_auth())
 			{
 				//check valid email
 				if($this->utility->valid_email($this->input->post('receipient')))
@@ -227,7 +230,7 @@
 					}
 					
 				}
-				elseif($this->check_auth())
+				elseif($this->utility->check_auth())
 				{
 					//invalid email inform user
 					header('Location: '.$this->utility->site_url('user/invite?invalid=email'));
@@ -248,7 +251,7 @@
 		public function settings()
 		{
 			//check user logged in and if the form was submitted
-			if($this->check_auth()&&($this->input->post('token') != $_SESSION['user']['token']))
+			if($this->utility->check_auth()&&($this->input->post('token') != $_SESSION['user']['token']))
 			{
 				//regenerate user token for security
 				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
@@ -259,7 +262,7 @@
 				$this->view->load('backend/user_settings', $data);
 			}
 			//okay time to process the form
-			elseif($this->check_auth()&&($this->input->post('oldPassword') != false))
+			elseif($this->utility->check_auth()&&($this->input->post('oldPassword') != false))
 			{
 				//bool to track if we fail to update the database
 				$success = true;
@@ -317,7 +320,7 @@
 				header('Location: '.$this->utility->site_url('user/settings?success='.(($success)?'true':'false')));
 				return;
 			}
-			elseif($this->check_auth())
+			elseif($this->utility->check_auth())
 			{
 				//settings changed but not received password confirmation
 				header('Location: '.$this->utility->site_url('user/settings?invalid=old'));
@@ -345,7 +348,7 @@
 		public function delete()
 		{
 			//check that the user is logged in before we do anything else
-			if(($this->check_auth())&&($this->input->post('token') != $_SESSION['user']['token']))
+			if(($this->utility->check_auth())&&($this->input->post('token') != $_SESSION['user']['token']))
 			{
 				//create new session token to ensure that the form is not being used for CSRF
 				$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
@@ -353,7 +356,7 @@
 				$this->view->load('backend/delete_user');
 			}
 			//check auth and if password submitted
-			elseif($this->check_auth()&&($this->input->post('password') != false))
+			elseif($this->utility->check_auth()&&($this->input->post('password') != false))
 			{
 				//get the users password and compare to the hashed version of what they provided
 				$query = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPassword', 1);
@@ -386,37 +389,11 @@
 				}
 			}
 			//empty password field check auth
-			elseif($this->check_auth())
+			elseif($this->utility->check_auth())
 			{
 				//logged in but no password submitted
 				header('Location: '.$this->utility->site_url('user/delete?invalid=true'));
 				return;
-			}
-		}
-		
-		/**
-		 * check_auth
-		 * 
-		 * this is a simple helper function that checks to see if a users is or
-		 * is not logged in. If they are not it redirects them to the login page
-		 * and returns false, else it returns true with no redirect.
-		 *
-		 * @return bool True if user logged in
-		 * @access private
-		 */
-		private function check_auth()
-		{
-			//do the check
-			if(isset($_SESSION['user']['logged']) && ($_SESSION['user']['logged'] == true))
-			{
-				//return true the user is logged in
-				return true;
-			}
-			else
-			{
-				//oops they are not logged in they are not allowed to see this page...
-				header('Location: '.$this->utility->site_url('user/login'));
-				return false;
 			}
 		}
 		
