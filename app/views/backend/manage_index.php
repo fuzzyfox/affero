@@ -13,6 +13,12 @@
 			</div>
 			
 			<div class="section">
+				<div id="tabs">
+					<ul>
+						<li>Areas Of Contribution</li>
+						<li>Skills</li>
+					</ul>
+				</div>
 				<div class="section" id="areas">
 					<?php if(count($areas) > 0): ?>
 					<ul style="height:400px;overflow-y: scroll;">
@@ -40,18 +46,27 @@
 					<div class="clear">&nbsp;</div>
 				</div>
 				<div class="section" id="skills">
-					<?php if(count($skills) > 0): ?>
-						<select size="30">
+					<select size="30" style="border:none;width:40%;height:400px;">
+						<?php if(count($skills) > 0): ?>
 							<?php foreach($skills as $skill): ?>
 							<option>
 								<?php echo $skill->skillName; ?>
 							</option>
 							<?php endforeach; ?>
-						</select>
-					<?php endif; ?>
-					<form action="<?php echo $this->site_url('manage/tag/add'); ?>" method="post">
-					
+						<?php else: ?>
+							<option>No Skills Yet</option>
+						<?php endif; ?>
+					</select>
+					<form style="width: 50%;height:360px;float: right;" action="<?php echo $this->site_url('manage/tag/add'); ?>" method="post">
+						<label for="name">Name</label>
+						<input type="text" name="name" id="name">
+						<label for="slug">Slug</label>
+						<input type="text" name="slug" id="slug">
+						<div class="controls">
+							<button type="submit" value="true" name="add">add</button> <button type="submit">save</button>
+						</div>
 					</form>
+					<div class="clear">&nbsp;</div>
 				</div>
 			</div>
 			
