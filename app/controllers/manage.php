@@ -36,7 +36,7 @@
 				/*
 				 get parent areas of contribution
 				*/
-				$queryResource = $this->database->query("SELECT areaSlug, areaName, areaUrl, areaDescription, timeRequirementShortDescription FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID  WHERE area.areaParentSlug = 'root'");
+				$queryResource = $this->database->query("SELECT areaSlug, areaName, areaUrl, areaDescription, timeRequirementShortDescription FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE area.areaParentSlug = 'root'");
 				while($queryParents = mysql_fetch_object($queryResource))
 				{
 					$query['parents'][] = $queryParents;
@@ -56,6 +56,7 @@
 					/*
 					 mash sets together
 					*/
+					$data['areas'] = new stdClass;
 					foreach($query['parents'] as $parent)
 					{
 						$parentSlug = $parent->areaSlug;
@@ -72,6 +73,26 @@
 				
 				$this->view->load('backend/manage_index', $data);
 			}
+		}
+		
+		/**
+		 * tag
+		 *
+		 * This function handles editing/deleting/creating tags
+		 */
+		function tag()
+		{
+			
+		}
+		
+		/**
+		 * area
+		 *
+		 * This function handles editing/deleting/creating areas
+		 */
+		function area()
+		{
+			
 		}
 	}
 	

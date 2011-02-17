@@ -98,7 +98,9 @@
 				elseif($this->input->post('token') == $_SESSION['user']['token'])
 				{
 					//check if the submitted username is not taken (and was taken)
-					if(($this->input->post('username') != false)&&($this->database->get('user', array('username'=>$this->input->post('username')), 'username', 1)->num_rows == 0))
+					if(($this->input->post('username') != false)&&
+					   ($this->database->get('user', array('username'=>$this->input->post('username')), 'username', 1)->num_rows == 0)&&
+					   ($this->database->get('invite', array('invitee'=>$this->input->post('username')), 'invitee', 1)->num_rows == 0))
 					{
 						//check email is valid
 						if(!$this->utility->valid_email($this->input->post('email')))
@@ -113,7 +115,7 @@
 							//create their account
 							$data = array(
 								'username' => strtolower($this->input->post('username')),
-								'userPassword' => $this->utility->hash_string($this->input->post('password'), $this->input->post('username')),
+								'userPassword' => $this->utility->hash_string($this->input->post('password'), strtolower($this->input->post('username'))),
 								'userEmail' => $this->input->post('email')
 							);
 							$this->database->insert('user', $data);
@@ -144,6 +146,12 @@
 					//notify that we are missing a token
 					echo 'token not found, required to create an account';
 				}
+			}
+			else
+			{
+				//oops they are not logged in they are not allowed to see this page...
+				header('Location: '.$this->utility->site_url('user/login'));
+				return false;
 			}
 		}
 		
@@ -449,7 +457,7 @@
 			//set the username to lower for usage
 			$username = strtolower($username);
 			//query the database for the provided user
-			$query = $this->database->get('user', array('username'=>$username), 'username, userPassword', 1);
+			$query = $this->database->get('user', array('username'=>$username), 'userPassword', 1);
 			//check that there is a match for the username and that the passwords match
 			if(($query->num_rows == 1)&&($this->utility->hash_string($password, $username) == $query->results[0]->userPassword))
 			{
