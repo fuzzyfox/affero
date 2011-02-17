@@ -48,7 +48,7 @@
 					<div class="clear">&nbsp;</div>
 				</div>
 				<div class="section" id="skills">
-					<select size="30" style="border:none;width:40%;height:390px;">
+					<select size="30" style="float:left;display:block;border:none;width:40%;height:390px;">
 						<?php if(count($skills) > 0): ?>
 							<?php foreach($skills as $skill): ?>
 							<option>
@@ -59,7 +59,7 @@
 							<option>No skills yet</option>
 						<?php endif; ?>
 					</select>
-					<form style="width: 50%;height:358px;float: right;" action="<?php echo $this->site_url('manage/tag/add'); ?>" method="post">
+					<form style="display:block;width:50%;height:358px;float:right;" action="<?php echo $this->site_url('manage/tag/add'); ?>" method="post">
 						<label for="name">Name</label>
 						<input type="text" name="name" id="name">
 						<label for="slug">Slug</label>

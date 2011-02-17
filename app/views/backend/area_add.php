@@ -15,8 +15,8 @@
 			<div class="section">
 				<div class="article">
 					<h2>Login</h2>
-					<?php if($this->input->get('invalid') == true): ?>
-					<p class="error">invalid login credentials</p>
+					<?php if($this->input->get('invalid') == 'missing'): ?>
+					<p class="error">not all required fields were submitted</p>
 					<?php endif; ?>
 					<form method="post" action="<?php echo$this->site_url('manage/area/add'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
@@ -31,12 +31,24 @@
 						
 						<label for="parent">Parent</label>
 						<!-- select parent -->
+						<select name="parent" id="parent">
+							<option value="root">No Parent</option>
+							<?php if($parents->num_rows > 0): foreach($parents->results as $parent): ?>
+							<option value="<?php echo $parent->areaSlug; ?>"><?php echo $parent->areaName; ?></option>
+							<?php endforeach; endif;?>
+						</select>
 						
 						<label for="tags">Tags</label>
 						<input type="text" name="tags" id="tags">
 						
-						<label for="parent">Minimum Time Requirement</label>
+						<label for="time">Minimum Time Requirement</label>
 						<!-- select min time requirement -->
+						<select name="time" id="time">
+							<option value="null">---</option>
+							<?php if($timeRequirements->num_rows > 0): foreach($timeRequirements->results as $timeRequirement): ?>
+							<option value="<?php echo $timeRequirement->timeRequirementID; ?>"><?php echo $timeRequirement->timeRequirementShortDescription; ?></option>
+							<?php endforeach; endif;?>
+						</select>
 						
 						<div class="controls">
 							<button type="button" onclick="history.go(-1)">cancel</button> <button type="submit">save</button>

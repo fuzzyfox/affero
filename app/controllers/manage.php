@@ -110,10 +110,14 @@
 							
 							//load information from database for dropdown menus
 							$data['parents'] = $this->database->get('area', array('areaParentSlug'=>'root'), 'areaSlug, areaName');
-							$data['skills'] = $this->database->get('timeRequirement', null, 'timeRequirementID, timeRequirementShortDescription');
+							$data['timeRequirements'] = $this->database->get('timeRequirement', null, 'timeRequirementID, timeRequirementShortDescription');
 							
 							//load view
 							$this->view->load('backend/area_add', $data);
+						}
+						else
+						{
+							$this->area_add();
 						}
 					break;
 					case 'delete':
@@ -129,9 +133,47 @@
 			}
 		}
 		
+		/**
+		 * area_add
+		 *
+		 * to reduce the size of the area function and for readability when a
+		 * user adds a new area of contribution this function will be called into
+		 * action to do the processing.
+		 *
+		 * @access private
+		 */
 		private function area_add()
 		{
-			
+			//check that all required fields were submitted
+			if(($this->input->post('name') != false)&&
+			   ($this->input->post('url') != false)&&
+			   ($this->input->post('description') != false)&&
+			   ($this->input->post('time') != 'null'))
+			{
+				//something was not entered, inform the user
+				header('Location: '.$this->utility->site_url('manage/area/add').'?invalid=missing');
+			}
+			//check that the slug is not used already
+			elseif((preg_match('/\b[a-zA-Z0-9]*[a-zA-Z0-9\-]*[a-zA-Z0-9]*\b/'))&&($this->database->get('area', array('areaSlug'=>$this->input->post('slug')), 'areaSlug', 1)->num_rows == 0))
+			{
+				//start getting ready to add data to the database
+				$data = array();
+				
+				//check slug no empty if so correct this and generate slug
+				if($this->input->post('slug') == false)
+				{
+					//index 'areaSlug' stores the area name in hyphenated form + unique id
+					$data['areaSlug'] = implode('-', explode(' ', strtolower($this->input->post('name')))).uniqid();
+				}
+				else
+				{
+					$data['areaSlug'] = strtolower($this->input->post('slug'));
+				}
+			}
+			else
+			{
+				//invalid slug
+			}
 		}
 	}
 	
