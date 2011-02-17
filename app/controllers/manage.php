@@ -92,6 +92,45 @@
 		 */
 		function area()
 		{
+			//get the url segments for loading specific views/calling correct functions
+			$urlSegment = func_get_arg(0);
+			
+			//check the user is logged in
+			if($this->utility->check_auth())
+			{
+				//use a nice simple switch to load the correct view/function
+				switch($urlSegment[7])
+				{
+					case 'add': //if we need to add an area
+						//check we are not processing a form
+						if($this->input->post('name') == false)
+						{
+							//refresh session token for security
+							$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
+							
+							//load information from database for dropdown menus
+							$data['parents'] = $this->database->get('area', array('areaParentSlug'=>'root'), 'areaSlug, areaName');
+							$data['skills'] = $this->database->get('timeRequirement', null, 'timeRequirementID, timeRequirementShortDescription');
+							
+							//load view
+							$this->view->load('backend/area_add', $data);
+						}
+					break;
+					case 'delete':
+						
+					break;
+					case 'edit':
+						
+					break;
+					default:
+						
+					break;
+				}
+			}
+		}
+		
+		private function area_add()
+		{
 			
 		}
 	}

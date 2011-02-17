@@ -1,7 +1,7 @@
 <!doctype html>
 	<html lang="en">
 		<head>
-			<?php $this->head('User Settings'); ?>
+			<?php $this->head('Affero Settings'); ?>
 		</head>
 		<body>
 			<div id="header">
@@ -42,7 +42,7 @@
 						<?php endforeach; ?>
 					</ul>
 					<?php else: ?>
-					<p>No areas of contribution</p>
+					<p>No areas of contribution yet</p>
 					<?php endif; ?>
 					<button class="right" style="margin: -40px 30px 0 0;" type="button" onclick="location.href='<?php echo $this->site_url('manage/area/add'); ?>'">add</button>
 					<div class="clear">&nbsp;</div>
@@ -56,7 +56,7 @@
 							</option>
 							<?php endforeach; ?>
 						<?php else: ?>
-							<option>No Skills Yet</option>
+							<option>No skills yet</option>
 						<?php endif; ?>
 					</select>
 					<form style="width: 50%;height:358px;float: right;" action="<?php echo $this->site_url('manage/tag/add'); ?>" method="post">

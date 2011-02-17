@@ -101,6 +101,7 @@
 		 */
 		function GET($args)
 		{
+			//save segments for use in classes
 			//ensure we have a controller and method set (defaults if not)
 			$controller = (isset($args['controller'])&&($args['controller'] != null))?$args['controller']:'defacto';
 			$method = (isset($args['method'])&&($args['method'] != null))?$args['method']:'index';
