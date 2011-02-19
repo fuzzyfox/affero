@@ -100,6 +100,7 @@ form {
 
 label {
 	font-size : larger;
+	display : block;
 }
 
 input, textarea, select {

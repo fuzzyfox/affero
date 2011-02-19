@@ -27,7 +27,7 @@
 						<label for="url">URL</label>
 						<input type="text" name="url" id="url">
 						<label for="description">Description</label>
-						<textarea rows="10" cols="40"></textarea>
+						<textarea rows="10" cols="40" name="description" id="desciption"></textarea>
 						
 						<label for="parent">Parent</label>
 						<!-- select parent -->
@@ -51,7 +51,7 @@
 						</select>
 						
 						<div class="controls">
-							<button type="button" onclick="history.go(-1)">cancel</button> <button type="submit">save</button>
+							<button type="button" onclick="history.go(-1)">cancel</button> <button type="submit" name="submit" value="true">save</button>
 						</div>
 					</form>
 				</div>

@@ -25,14 +25,16 @@
 						<?php foreach($areas as $parent): ?>
 						<li>
 							<?php echo $parent->areaName; ?> -
-							<a href="<?php echo $this->site_url('manage/area/edit/'.$parent->areaName); ?>">edit</a> |
+							<a href="<?php echo $parent->areaURL; ?>">view</a> |
+							<a href="<?php echo $this->site_url('manage/area/edit/'.$parent->areaSlug); ?>">edit</a> |
 							<a href="<?php echo $this->site_url('manage/area/delete/'.$parent->areaName); ?>">delete</a>
 							<?php if(count($parent->children) > 0): ?>
 							<ul>
 								<?php foreach($parent->children as $child): ?>
 								<li>
 									<?php echo $child->areaName; ?> -
-									<a href="<?php echo $this->site_url('manage/area/edit/'.$child->areaName); ?>">edit</a> |
+									<a href="<?php echo $child->areaURL; ?>">view</a> |
+									<a href="<?php echo $this->site_url('manage/area/edit/'.$child->areaSlug); ?>">edit</a> |
 									<a href="<?php echo $this->site_url('manage/area/delete/'.$child->areaName); ?>">delete</a>
 								</li>
 								<?php endforeach; ?>

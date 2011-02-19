@@ -36,7 +36,7 @@
 				/*
 				 get parent areas of contribution
 				*/
-				$queryResource = $this->database->query("SELECT areaSlug, areaName, areaUrl, areaDescription, timeRequirementShortDescription FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE area.areaParentSlug = 'root'");
+				$queryResource = $this->database->query("SELECT areaSlug, areaName, areaURL, timeRequirementShortDescription FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE area.areaParentSlug = 'root'");
 				while($queryParents = mysql_fetch_object($queryResource))
 				{
 					$query['parents'][] = $queryParents;
@@ -48,7 +48,7 @@
 					/*
 					 get child areas of contibution
 					*/
-					$queryResource = $this->database->query("SELECT areaSlug, areaName, areaUrl, areaDescription, areaParentSlug, timeRequirementShortDescription FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID  WHERE area.areaParentSlug != 'root'");
+					$queryResource = $this->database->query("SELECT areaSlug, areaName, areaURL, areaDescription, areaParentSlug, timeRequirementShortDescription FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID  WHERE area.areaParentSlug != 'root'");
 					while($queryChildren = mysql_fetch_object($queryResource))
 					{
 						$query['children'][] = $queryChildren;
@@ -98,12 +98,14 @@
 			//check the user is logged in
 			if($this->utility->check_auth())
 			{
+				$switch = explode('?', $urlSegment[7]);
+				$switch = $switch[0];
 				//use a nice simple switch to load the correct view/function
-				switch($urlSegment[7])
+				switch($switch)
 				{
 					case 'add': //if we need to add an area
 						//check we are not processing a form
-						if($this->input->post('name') == false)
+						if(!$this->input->post('submit'))
 						{
 							//refresh session token for security
 							$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
@@ -127,7 +129,10 @@
 						
 					break;
 					default:
-						
+						//nope, not in existance, set http header to 404
+						header('HTTP/1.0 404 Not Found');
+						//load 404 error file
+						include(dirname(__FILE__).'/../../asset/error/404.html');
 					break;
 				}
 			}
@@ -144,35 +149,85 @@
 		 */
 		private function area_add()
 		{
-			//check that all required fields were submitted
-			if(($this->input->post('name') != false)&&
-			   ($this->input->post('url') != false)&&
-			   ($this->input->post('description') != false)&&
-			   ($this->input->post('time') != 'null'))
+			if($this->input->post('token') == $_SESSION['user']['token'])
 			{
-				//something was not entered, inform the user
-				header('Location: '.$this->utility->site_url('manage/area/add').'?invalid=missing');
-			}
-			//check that the slug is not used already
-			elseif((preg_match('/\b[a-zA-Z0-9]*[a-zA-Z0-9\-]*[a-zA-Z0-9]*\b/'))&&($this->database->get('area', array('areaSlug'=>$this->input->post('slug')), 'areaSlug', 1)->num_rows == 0))
-			{
-				//start getting ready to add data to the database
-				$data = array();
-				
-				//check slug no empty if so correct this and generate slug
-				if($this->input->post('slug') == false)
+				//check that all required fields were submitted
+				if(($this->input->post('name') == false)||
+				   ($this->input->post('url') == false)||
+				   ($this->input->post('description') == false)||
+				   ($this->input->post('time') == 'null'))
 				{
-					//index 'areaSlug' stores the area name in hyphenated form + unique id
-					$data['areaSlug'] = implode('-', explode(' ', strtolower($this->input->post('name')))).uniqid();
+					//something was not entered, inform the user
+					header('Location: '.$this->utility->site_url('manage/area/add').'?invalid=missing');
+				}
+				//check that the slug is not used already
+				elseif($this->database->get('area', array('areaSlug'=>$this->input->post('slug')), 'areaSlug', 1)->num_rows == 0)
+				{
+					//start getting ready to add data to the database
+					$data = array(
+						'areaURL' => $this->input->post('url'),
+						'areaName' => $this->input->post('name'),
+						'areaDescription' => $this->input->post('description'),
+						'timeRequirementID' => $this->input->post('time'),
+						'areaParentSlug' => $this->input->post('parent'),
+					);
+					
+					//check slug not empty and in correct format
+					if((preg_match('/\b[a-zA-Z0-9]*[a-zA-Z0-9\-]*[a-zA-Z0-9]*\b/', $this->input->post('slug')))&&($this->input->post('slug') == false))
+					{
+						//index 'areaSlug' stores the area name in underscored form + unique id
+						$data['areaSlug'] = implode('_', explode(' ', strtolower($this->input->post('name')))).'_'.uniqid();
+					}
+					else
+					{
+						$data['areaSlug'] = strtolower($this->input->post('slug'));
+					}
+					
+					//add information to the database
+					//$this->database->insert('area', $data);
+					
+					/*
+					 deal with tags now
+					*/
+					
+					$areaSlug = $data['areaSlug'];
+					
+					//split tags up
+					$tags = explode(',', $this->input->post('tags'));
+					//check the last tag is not empty (this happens from time to time)
+					if($tags[count($tags)-1] == '')
+					{
+						//last tag is empty lets remove it
+						unset($tags[count($tags)-1]);
+					}
+					
+					//check if tags already exist
+					foreach($tags as $tag)
+					{
+						//run a query so we can get the number of rows
+						$queryResource = $this->database->query("SELECT skillTag FROM skill WHERE skillTag = ".$this->database->escape(strtolower($tag))." OR skillName = ".$this->database->escape($tag)." LIMIT 1");
+						if($this->database->num_rows() == 1);
+						{
+							//get the skillTag out of the db and make link in areaSkill
+							$skill = mysql_fetch_object($queryResource);
+							
+							//repurpose $data for the next save in the database
+							$data = array(
+								'areaSlug' => $areaSlug,
+								'skillTag' => $skill->skillTag
+							);
+							
+							
+						}
+						//be kind to resources
+						$this->database->free_result();
+					}
 				}
 				else
 				{
-					$data['areaSlug'] = strtolower($this->input->post('slug'));
+					//invalid slug
+					echo 'invalid slug';
 				}
-			}
-			else
-			{
-				//invalid slug
 			}
 		}
 	}
