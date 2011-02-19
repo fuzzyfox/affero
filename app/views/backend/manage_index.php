@@ -28,7 +28,7 @@
 							<a href="<?php echo $parent->areaURL; ?>">view</a> |
 							<a href="<?php echo $this->site_url('manage/area/edit/'.$parent->areaSlug); ?>">edit</a> |
 							<a href="<?php echo $this->site_url('manage/area/delete/'.$parent->areaName); ?>">delete</a>
-							<?php if(count($parent->children) > 0): ?>
+							<?php if(isset($parent->children)): ?>
 							<ul>
 								<?php foreach($parent->children as $child): ?>
 								<li>

@@ -14,7 +14,7 @@
 			
 			<div class="section">
 				<div class="article">
-					<h2>Login</h2>
+					<h2>Add an area of contribution</h2>
 					<?php if($this->input->get('invalid') == 'missing'): ?>
 					<p class="error">not all required fields were submitted</p>
 					<?php endif; ?>

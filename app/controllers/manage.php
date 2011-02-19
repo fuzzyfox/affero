@@ -71,6 +71,8 @@
 					}
 				}
 				
+				$data['skills'] = $this->database->get('skill')->results;
+				
 				$this->view->load('backend/manage_index', $data);
 			}
 		}
@@ -154,7 +156,6 @@
 				//check that all required fields were submitted
 				if(($this->input->post('name') == false)||
 				   ($this->input->post('url') == false)||
-				   ($this->input->post('description') == false)||
 				   ($this->input->post('time') == 'null'))
 				{
 					//something was not entered, inform the user
@@ -173,7 +174,7 @@
 					);
 					
 					//check slug not empty and in correct format
-					if((preg_match('/\b[a-zA-Z0-9]*[a-zA-Z0-9\-]*[a-zA-Z0-9]*\b/', $this->input->post('slug')))&&($this->input->post('slug') == false))
+					if($this->input->post('slug') == false)
 					{
 						//index 'areaSlug' stores the area name in underscored form + unique id
 						$data['areaSlug'] = implode('_', explode(' ', strtolower($this->input->post('name')))).'_'.uniqid();
@@ -184,13 +185,15 @@
 					}
 					
 					//add information to the database
-					//$this->database->insert('area', $data);
+					$this->database->insert('area', $data);
 					
 					/*
 					 deal with tags now
 					*/
 					
+					//prep $data for repurposing
 					$areaSlug = $data['areaSlug'];
+					unset($data);
 					
 					//split tags up
 					$tags = explode(',', $this->input->post('tags'));
@@ -204,9 +207,10 @@
 					//check if tags already exist
 					foreach($tags as $tag)
 					{
+						$tag = trim($tag);
 						//run a query so we can get the number of rows
 						$queryResource = $this->database->query("SELECT skillTag FROM skill WHERE skillTag = ".$this->database->escape(strtolower($tag))." OR skillName = ".$this->database->escape($tag)." LIMIT 1");
-						if($this->database->num_rows() == 1);
+						if($this->database->num_rows() == 1)
 						{
 							//get the skillTag out of the db and make link in areaSkill
 							$skill = mysql_fetch_object($queryResource);
@@ -217,16 +221,34 @@
 								'skillTag' => $skill->skillTag
 							);
 							
-							
+							//insert into database
+							$this->database->insert('areaSkill', $data);
 						}
-						//be kind to resources
-						$this->database->free_result();
+						else
+						{
+							//tag does not exist, so we need to add it to the database
+							$data = array(
+								'skillTag' => implode('_', explode(' ', strtolower($tag))),
+								'skillName' => $tag
+							);
+							$this->database->insert('skill', $data);
+							
+							//link area and new tag
+							$data = array(
+								'skillTag' => implode('_', explode(' ', strtolower($tag))),
+								'areaSlug' => $areaSlug
+							);
+							$this->database->insert('areaSkill', $data);
+						}
 					}
+					
+					//all done return user to management page
+					header('Location: '.$this->utility->site_url('manage'));
 				}
 				else
 				{
-					//invalid slug
-					echo 'invalid slug';
+					//slug taken
+					echo 'slug taken';
 				}
 			}
 		}
