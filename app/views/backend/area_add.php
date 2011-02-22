@@ -17,6 +17,8 @@
 					<h2>Add an area of contribution</h2>
 					<?php if($this->input->get('invalid') == 'missing'): ?>
 					<p class="error">not all required fields were submitted</p>
+					<?php elseif($this->input->get('invalid') == 'slug'): ?>
+					<p class="error">slug already in use</p>
 					<?php endif; ?>
 					<form method="post" action="<?php echo$this->site_url('manage/area/add'); ?>">
 						<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">

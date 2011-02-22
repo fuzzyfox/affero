@@ -102,8 +102,10 @@
 			{
 				$switch = explode('?', $urlSegment[7]);
 				$switch = $switch[0];
+				$switch = explode('/', $switch);
+				
 				//use a nice simple switch to load the correct view/function
-				switch($switch)
+				switch($switch[0])
 				{
 					case 'add': //if we need to add an area
 						//check we are not processing a form
@@ -128,7 +130,22 @@
 						
 					break;
 					case 'edit':
+						//refresh session token for security
+						$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
 						
+						//load information from database for dropdown menus
+						$data['parents'] = $this->database->get('area', array('areaParentSlug'=>'root'), 'areaSlug, areaName');
+						$data['timeRequirements'] = $this->database->get('timeRequirement', null, 'timeRequirementID, timeRequirementShortDescription');
+						
+						//load information on this area to populate form
+						$queryResource = $this->database->query('SELECT areaSlug, areaName, areaURL, areaDescription, areaParentSlug, timeRequirementShortDescription FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE areaSlug = '.$this->database->escape($switch[1]).'LIMIT 1');
+						$data['area'] = mysql_fetch_object($queryResource);
+						
+						$queryResource = $this->database->query('SELECT skillName FROM areaSkill INNER JOIN skill ON areaSkill.skillTag = skill.skillTag');
+						$data['tags'] = mysql_fetch_object($queryResource);
+						
+						//load view
+						$this->view->load('backend/area_edit', $data);
 					break;
 					default:
 						//nope, not in existance, set http header to 404
@@ -248,7 +265,7 @@
 				else
 				{
 					//slug taken
-					echo 'slug taken';
+					header('Location: '.$this->utility->site_url('manage/area/add?invalid=slug'));
 				}
 			}
 		}
