@@ -26,7 +26,7 @@
 						<li>
 							<?php echo $parent->areaName; ?> -
 							<a href="<?php echo $parent->areaURL; ?>">view</a> |
-							<a href="<?php echo $this->site_url('manage/area/edit/'.$parent->areaSlug); ?>">edit</a> |
+							<!--<a href="<?php echo $this->site_url('manage/area/edit/'.$parent->areaSlug); ?>">edit</a> |-->
 							<a href="<?php echo $this->site_url('manage/area/delete/'.$parent->areaName); ?>">delete</a>
 							<?php if(isset($parent->children)): ?>
 							<ul>
@@ -34,7 +34,7 @@
 								<li>
 									<?php echo $child->areaName; ?> -
 									<a href="<?php echo $child->areaURL; ?>">view</a> |
-									<a href="<?php echo $this->site_url('manage/area/edit/'.$child->areaSlug); ?>">edit</a> |
+									<!--<a href="<?php echo $this->site_url('manage/area/edit/'.$child->areaSlug); ?>">edit</a> |-->
 									<a href="<?php echo $this->site_url('manage/area/delete/'.$child->areaName); ?>">delete</a>
 								</li>
 								<?php endforeach; ?>
@@ -61,14 +61,15 @@
 							<option>No skills yet</option>
 						<?php endif; ?>
 					</select>
-					<form style="display:block;width:50%;height:358px;float:right;" action="<?php echo $this->site_url('manage/tag/add'); ?>" method="post">
+					<form style="display:block;width:50%;height:358px;float:right;" action="<?php echo $this->site_url('manage/tag'); ?>" method="post">
 						<input type="hidden" name="existing" value="false">
+						<input type="hidden" name="token" id="token" value="<?php echo $_SESSION['user']['token']; ?>">
 						<label for="name">Name</label>
 						<input type="text" name="name" id="name">
 						<label for="slug">Slug</label>
 						<input type="text" name="slug" id="slug">
 						<div class="controls">
-							<button type="submit" value="true" name="add">add</button> <button type="submit" value="true" name="edit">save</button>
+							<button type="submit" value="true" name="add">add</button> <button type="submit" value="true" name="edit">edit</button> <button type="submit" value="true" name="delete">delete</button>
 						</div>
 					</form>
 					<div class="clear">&nbsp;</div>

@@ -95,7 +95,6 @@
 				$urlSegment = func_get_arg(0);
 				$switch = explode('?', $urlSegment[7]);
 				$switch = $switch[0];
-				$switch = explode('/', $switch);
 				
 				if(($this->input->post('name') != false)&&($this->input->post('slug') != false))
 				{
@@ -112,7 +111,7 @@
 							//ans = no so lets add this skill
 							$this->database->insert('skill', $data);
 							//redirect user back with success message
-							header('Location: '.$this->utility->site_url('manage?msg=skill-success'));
+							header('Location: '.$this->utility->site_url('manage?msg=skill-added'));
 						}
 						else
 						{
@@ -120,7 +119,7 @@
 							header('Location: '.$this->utility->site_url('manage?msg=skill-exists'));
 						}
 					}
-					elseif($this->input->post('save'))
+					elseif($this->input->post('edit'))
 					{
 						/*
 						 we need to update the existing skill.
@@ -128,30 +127,35 @@
 						 if the slug has changed
 						*/
 						
-						$this->database->update('skill', array('skillTag'=>$this->input->post('existing')), $data);
-						
 						if($this->input->post('existing') != $data['skillTag'])
 						{
-						   $this->database->update('areaSkill', array('skillTag'=>$this->input->post('existing')), array('skillTag'=>$data['skillTag']));
+							//check another tag does not share new name
+						   if($this->database->get('skill', array('skillTag'=>$data['skillTag']), 'skillTag', 1)->num_rows == 0)
+							{
+								//ans = no so lets add this skill
+								$this->database->update('areaSkill', array('skillTag'=>$this->input->post('existing')), $data);
+								//redirect user back with success message
+								header('Location: '.$this->utility->site_url('manage?msg=skill-saved'));
+							}
+							else
+							{
+								//inform user that the tag already exists
+								header('Location: '.$this->utility->site_url('manage?msg=skill-exists'));
+							}
+						}
+						else
+						{
+							$this->database->update('skill', array('skillTag'=>$this->input->post('existing')), $data);
 						}
 					}
-					else
-					{
-						//no action selected infrom user
-						header('Location: '.$this->utility->site_url('manage?msg=skill-invalid-action'));
-					}
-				}
-				elseif($switch[0] == 'delete')
-				{
-					//did the user confirm the delete?
-					if($this->input->post('submit'))
+					elseif($this->input->post('delete'))
 					{
 						//check token valid for security
 						if($_SESSION['user']['token'] == $this->input->post('token'))
 						{
 							//check user password confirmed before delete
 							$userPass = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPass', 1);
-							if($userPass == $this->utility->hash_string($this->input->post('password'), $_SESSION['user']['username']))
+							if($userPass->userPassword == $this->utility->hash_string($this->input->post('password'), $_SESSION['user']['username']))
 							{
 								//delete and redirect
 								$this->database->delete('skill', array('skillTag'=>$this->input->get('skill')));
@@ -171,10 +175,10 @@
 							
 						}
 					}
-					//nope lets ask them to confim action
 					else
 					{
-						$this->view->load('backend/skill_delete');
+						//no action selected infrom user
+						header('Location: '.$this->utility->site_url('manage?msg=skill-invalid-action'));
 					}
 				}
 				else
@@ -225,35 +229,36 @@
 						}
 					break;
 					case 'delete':
-						
-					break;
-					case 'edit':
-						//check we are not processing a form
-						if(!$this->input->post('submit'))
+						//check if we need to do some processing
+						if($this->input->post('submit'))
 						{
-							//refresh session token for security
-							$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
-							
-							//load information from database for dropdown menus
-							$data['parents'] = $this->database->get('area', array('areaParentSlug'=>'root'), 'areaSlug, areaName');
-							$data['timeRequirements'] = $this->database->get('timeRequirement', null, 'timeRequirementID, timeRequirementShortDescription');
-							
-							//load information on this area to populate form
-							$queryResource = $this->database->query('SELECT areaSlug, areaName, areaURL, areaDescription, areaParentSlug, timeRequirementID FROM area WHERE areaSlug = '.$this->database->escape($switch[1]).'LIMIT 1');
-							$data['area'] = mysql_fetch_object($queryResource);
-							
-							$queryResource = $this->database->query('SELECT skillName FROM areaSkill INNER JOIN skill ON areaSkill.skillTag = skill.skillTag WHERE areaSkill.areaSlug = '.$this->database->escape($switch[1]));
-							while($skillName = mysql_fetch_object($queryResource))
+							//CSRF check
+							if($_SESSION['user']['token'] == $this->input->post('token'))
 							{
-								$data['tags'][] = $skillName->skillName;
+								//time to delete area
+								
+								//check password matches for confimation
+								$userPass = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPass', 1);
+								if($this->input->post('password') == $userPass->userPassword)
+								{
+									
+								}
+								else
+								{
+									//password not correct inform user
+									header('Location: '.$this->utility->site_url('manage/area/delete/?msg=invalid'));
+								}
 							}
-							
-							//load view
-							$this->view->load('backend/area_edit', $data);
+							else
+							{
+								//assume faul play and respond in kind
+							}
 						}
 						else
 						{
-							$this->area_edit();
+							//not needing to process yet load confirm form
+							$data['area'] = $this->database->get('skill', array('skillTag'=>$this->input->get('skill')), '*', 1);
+							$this->view->load('backend/area_delete', $data);
 						}
 					break;
 					default:
