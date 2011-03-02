@@ -62,12 +62,13 @@
 						<?php endif; ?>
 					</select>
 					<form style="display:block;width:50%;height:358px;float:right;" action="<?php echo $this->site_url('manage/tag/add'); ?>" method="post">
+						<input type="hidden" name="existing" value="false">
 						<label for="name">Name</label>
 						<input type="text" name="name" id="name">
 						<label for="slug">Slug</label>
 						<input type="text" name="slug" id="slug">
 						<div class="controls">
-							<button type="submit" value="true" name="add">add</button> <button type="submit">save</button>
+							<button type="submit" value="true" name="add">add</button> <button type="submit" value="true" name="edit">save</button>
 						</div>
 					</form>
 					<div class="clear">&nbsp;</div>
