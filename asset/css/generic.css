@@ -137,6 +137,27 @@ button:hover, button:focus, .button:hover, .button:focus {
 	background : -webkit-gradient(linear, left top, left bottom, from(#eee), to(#fff));
 }
 
+table {
+	width : 90%;
+	border : 1px solid #ccc;
+	margin : 10px auto;
+	text-align : left;
+}
+th {
+	background : #eee;
+	font-size : larger;
+	max-width : 50%;
+}
+td {
+	max-width : 50%;
+}
+tr td, tr th {
+	padding : 10px;
+}
+tr:nth-child(odd) {
+	background : #eee;
+}
+
 /* -- layout elements -- */
 #header { margin : 50px 0 5px 0; padding : 0 5px; }
 #header h1 {
@@ -204,6 +225,18 @@ p.success {
 	margin : 2px 0 2px 0;
 	border : 1px solid #88c641;
 	color : #4b840a;
+	font-size : larger;
+	text-align : center;
+	border-radius : 5px;
+	-moz-border-radius : 5px;
+	-webkit-border-radius : 5px;
+}
+p.caution {
+	background : #F4F3A1;
+	padding : 2px 5px 2px 5px;
+	margin : 2px 0 2px 0;
+	border : 1px solid #BFA73F;
+	color : #BFA73F;
 	font-size : larger;
 	text-align : center;
 	border-radius : 5px;

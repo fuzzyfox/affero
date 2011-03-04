@@ -96,14 +96,17 @@
 				$switch = explode('?', $urlSegment[7]);
 				$switch = $switch[0];
 				
+				print_r($_POST);
+				
 				if(($this->input->post('name') != false)&&($this->input->post('slug') != false))
 				{
 					$data = array(
-						'skillTag' => strtolower(implode('_', explode(' ', $this->input->post('slug')))),
+						//'skillTag' => strtolower(implode('_', explode(' ', $this->input->post('slug')))),
+						'skillTag' => strtolower($this->input->post('slug')),
 						'skillName' => $this->input->post('name')
 					);
 					
-					if($this->input->post('add'))
+					if($this->input->post('action') == 'add')
 					{
 						//lets add the new tag, first does it already exist?
 						if($this->database->get('skill', array('skillTag'=>$data['skillTag']), 'skillTag', 1)->num_rows == 0)
@@ -111,15 +114,15 @@
 							//ans = no so lets add this skill
 							$this->database->insert('skill', $data);
 							//redirect user back with success message
-							header('Location: '.$this->utility->site_url('manage?msg=skill-added'));
+							header('Location: '.$this->utility->site_url('manage?msg=skill-added#skills'));
 						}
 						else
 						{
 							//inform user that the tag already exists
-							header('Location: '.$this->utility->site_url('manage?msg=skill-exists'));
+							header('Location: '.$this->utility->site_url('manage?msg=skill-exists#skills'));
 						}
 					}
-					elseif($this->input->post('edit'))
+					elseif($this->input->post('action') == 'edit')
 					{
 						/*
 						 we need to update the existing skill.
@@ -130,17 +133,18 @@
 						if($this->input->post('existing') != $data['skillTag'])
 						{
 							//check another tag does not share new name
-						   if($this->database->get('skill', array('skillTag'=>$data['skillTag']), 'skillTag', 1)->num_rows == 0)
+							if($this->database->get('skill', array('skillTag'=>$data['skillTag']), 'skillTag', 1)->num_rows == 0)
 							{
 								//ans = no so lets add this skill
-								$this->database->update('areaSkill', array('skillTag'=>$this->input->post('existing')), $data);
+								$this->database->update('skill', array('skillTag'=>$this->input->post('existing')), $data);
+								$this->database->update('areaSkill', array('skillTag'=>$this->input->post('existing')), array('skillTag'=>$this->input->post('existing')));
 								//redirect user back with success message
-								header('Location: '.$this->utility->site_url('manage?msg=skill-saved'));
+								header('Location: '.$this->utility->site_url('manage?msg=skill-saved#skills'));
 							}
 							else
 							{
 								//inform user that the tag already exists
-								header('Location: '.$this->utility->site_url('manage?msg=skill-exists'));
+								header('Location: '.$this->utility->site_url('manage?msg=skill-exists#skills'));
 							}
 						}
 						else
@@ -148,26 +152,16 @@
 							$this->database->update('skill', array('skillTag'=>$this->input->post('existing')), $data);
 						}
 					}
-					elseif($this->input->post('delete'))
+					elseif($this->input->post('action') == 'delete')
 					{
 						//check token valid for security
 						if($_SESSION['user']['token'] == $this->input->post('token'))
 						{
-							//check user password confirmed before delete
-							$userPass = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPass', 1);
-							if($userPass->userPassword == $this->utility->hash_string($this->input->post('password'), $_SESSION['user']['username']))
-							{
-								//delete and redirect
-								$this->database->delete('skill', array('skillTag'=>$this->input->get('skill')));
-								$this->database->delete('areaSkill', array('skillTag'=>$this->input->get('skill')));
-								
-								header('Location: '.$this->utility->site_url('manage?msg=skill-delete-success'));
-							}
-							else
-							{
-								//redirect and inform invalid password
-								header('Location: '.$this->utility->site_url('manage/tag/delete?msg=invalid&skill='.$this->input->get('skill')));
-							}
+							//delete and redirect
+							$this->database->delete('skill', array('skillTag'=>$this->input->post('slug')));
+							$this->database->delete('areaSkill', array('skillTag'=>$this->input->post('slug')));
+							
+							header('Location: '.$this->utility->site_url('manage?msg=skill-delete-success#skills'));
 						}
 						else
 						{
@@ -178,13 +172,13 @@
 					else
 					{
 						//no action selected infrom user
-						header('Location: '.$this->utility->site_url('manage?msg=skill-invalid-action'));
+						header('Location: '.$this->utility->site_url('manage?msg=skill-invalid-action#skills'));
 					}
 				}
 				else
 				{
 					//something missing lets inform the user
-					header('Location: '.$this->utility->site_url('manage?msg=tag-missing-field#skills'));
+					header('Location: '.$this->utility->site_url('manage?msg=skill-missing-field#skills'));
 				}
 			}
 		}
@@ -241,7 +235,10 @@
 								$userPass = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPass', 1);
 								if($this->input->post('password') == $userPass->userPassword)
 								{
-									
+									//make all the areas children root so we dont loose them
+									$this->database->update('area', array('areaParentSlug'=>$switch[1]), array('areaParentSlug'=>'root'));
+									//delete area
+									$this->database->delete('area', array('areaSlug'=>$switch[1]));
 								}
 								else
 								{
@@ -257,7 +254,20 @@
 						else
 						{
 							//not needing to process yet load confirm form
-							$data['area'] = $this->database->get('skill', array('skillTag'=>$this->input->get('skill')), '*', 1);
+							$queryResource = $this->database->query('SELECT areaName, area.areaSlug, areaURL, areaDescription, areaParentSlug, timeRequirementShortDescription FROM area INNER JOIN timeRequirement ON timeRequirement.timeRequirementID = area.timeRequirementID WHERE areaSlug = '.$this->database->escape($switch[1]));
+							$data['area'] = mysql_fetch_object($queryResource);
+							$queryResource = $this->database->query('SELECT skillName FROM areaSkill INNER JOIN skill ON areaSkill.skillTag = skill.skillTag WHERE areaSkill.areaSlug = '.$this->database->escape($switch[1]));
+							$data['area']->skills = array();
+							while($row = mysql_fetch_object($queryResource))
+							{
+								$data['area']->skills[] = $row->skillName;
+							}
+							if($data['area']->areaParentSlug != 'root')
+							{
+								$parent = $this->database->get('area', array('areaSlug'=>$data['area']->areaParentSlug), 'areaName', 1);
+								$data['area']->areaParent = $parent->results[0]->areaName;
+							}
+							unset($data['area']->areaParentSlug);
 							$this->view->load('backend/area_delete', $data);
 						}
 					break;

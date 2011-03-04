@@ -205,7 +205,7 @@
 			}
 			
 			//construct remainder of the string
-			$queryString = "UPDATE $table SET ".implode(' AND ', $set)." WHERE ".implode(' AND ', $where).";";
+			$queryString = "UPDATE $table SET ".implode(', ', $set)." WHERE ".implode(' AND ', $where).";";
 			
 			//run query and return result
 			return $this->query($queryString);
