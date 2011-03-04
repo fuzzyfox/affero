@@ -150,6 +150,7 @@
 						else
 						{
 							$this->database->update('skill', array('skillTag'=>$this->input->post('existing')), $data);
+							header('Location: '.$this->utility->site_url('manage?msg=skill-saved#skills'));
 						}
 					}
 					elseif($this->input->post('action') == 'delete')
@@ -224,7 +225,7 @@
 					break;
 					case 'delete':
 						//check if we need to do some processing
-						if($this->input->post('submit'))
+						if($this->input->post('password') != false)
 						{
 							//CSRF check
 							if($_SESSION['user']['token'] == $this->input->post('token'))
@@ -232,18 +233,20 @@
 								//time to delete area
 								
 								//check password matches for confimation
-								$userPass = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPass', 1);
-								if($this->input->post('password') == $userPass->userPassword)
+								$userPass = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPassword', 1);
+								if($this->utility->hash_string($this->input->post('password'), $_SESSION['user']['username']) == $userPass->results[0]->userPassword)
 								{
 									//make all the areas children root so we dont loose them
 									$this->database->update('area', array('areaParentSlug'=>$switch[1]), array('areaParentSlug'=>'root'));
 									//delete area
 									$this->database->delete('area', array('areaSlug'=>$switch[1]));
+									//redirect user with success message
+									header('Location: '.$this->utility->site_url('manage?msg=area-delete-success'));
 								}
 								else
 								{
 									//password not correct inform user
-									header('Location: '.$this->utility->site_url('manage/area/delete/?msg=invalid'));
+									header('Location: '.$this->utility->site_url('manage/area/delete/'.$switch[1].'?msg=invalid'));
 								}
 							}
 							else

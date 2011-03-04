@@ -15,9 +15,9 @@
 			<div class="section">
 				<div class="article">
 					<h2>Confirm Deletion Of <small><?php echo $area->areaName; ?></small></h2>
-					<?php if($this->input->get('invalid') == true): ?>
+					<?php if($this->input->get('msg') == 'invalid'): ?>
 					<p class="error">invalid password</p>
-					<?php elseif($this->input->get('failed')): ?>
+					<?php elseif($this->input->get('msg') == 'failed'): ?>
 					<p class="error">an unknown error occured meaning your account was not deleted<br><small>please try again... if the problem persists contact us and we will remove your account for you</small></p>
 					<?php endif; ?>
 					

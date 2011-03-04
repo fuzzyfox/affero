@@ -2,6 +2,7 @@
 	<html lang="en">
 		<head>
 			<?php $this->head('Add Area Of Contribution'); ?>
+			<?php $this->script('ui'); ?>
 		</head>
 		<body>
 			<div id="header">
@@ -62,5 +63,8 @@
 			<div id="footer">
 				<?php echo $this->config->site->footer; ?>
 			</div>
+			<script type="text/javascript">
+				$ui.autoSlug(document.getElementById('name'), document.getElementById('slug'))
+			</script>
 		</body>
 	</html>

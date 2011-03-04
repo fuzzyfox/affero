@@ -86,6 +86,7 @@
 			echo "<!-- start default head content -->\r\n<meta http-equiv='Content-type' content='text/html; charset=utf-8'>\r\n";
 			//generic stylesheet
 			$this->stylesheet('generic');
+			$this->script('common');
 			//page title
 			echo "<title>$title</title>\r\n<!-- end default head content -->";
 		}
@@ -125,6 +126,19 @@
 		function stylesheet($name)
 		{
 			echo '<link rel="stylesheet" href="'.$this->site_url('asset/css/'.$name.'.css').'" type="text/css">'."\r\n";
+		}
+		
+		/**
+		 * script
+		 *
+		 * This simple helper prints the html for loading scripts within the
+		 * affero js directory
+		 *
+		 * @param string $name the name of the js file (ex. '.js')
+		 */
+		function script($name)
+		{
+			echo '<script type="text/javascript" src="'.$this->site_url('asset/js/'.$name.'.js').'"></script>'."\r\n";
 		}
 	}
 	
