@@ -12,7 +12,7 @@ var $ui = $userinterface = (function($c){
 		autoSlug : function(input, output){
 			$c.addevent(input, 'keyup', function(){
 				value = this.value.toLowerCase().replace(/\s/g, '_').replace(/[^a-z0-9_\-]/g, '');
-				output.setAttribute('value', value);
+				output.value = value;
 			});
 		},
 		

@@ -77,7 +77,7 @@
 					}
 				}
 				
-				$data['skills'] = $this->database->get('skill')->results;
+				$data['skills'] = $this->database->get('skill', null, '*', null, 'skillName', 'asc')->results;
 				$data['parents'] = $this->database->get('area', array('areaParentSlug'=>'root'), 'areaSlug, areaName');
 				$data['timeRequirements'] = $this->database->get('timeRequirement', null, 'timeRequirementID, timeRequirementShortDescription');
 				
@@ -86,102 +86,100 @@
 		}
 		
 		/**
-		 * tag
+		 * skill
 		 *
-		 * This function handles editing/deleting/creating tags
+		 * This function handles editing/deleting/creating skills
 		 */
-		function tag()
+		function skill()
 		{
-			if($this->utility->check_auth())
+			if($this->utility->check_auth()&&($this->input->post('token') == $_SESSION['user']['token']))
 			{
-				$urlSegment = func_get_arg(0);
-				$switch = explode('?', $urlSegment[7]);
-				$switch = $switch[0];
-				
-				print_r($_POST);
-				
-				if(($this->input->post('name') != false)&&($this->input->post('slug') != false))
+				if($this->input->post('add') != false)
 				{
-					$data = array(
-						//'skillTag' => strtolower(implode('_', explode(' ', $this->input->post('slug')))),
-						'skillTag' => strtolower($this->input->post('slug')),
-						'skillName' => $this->input->post('name')
-					);
+					//add an skill
 					
-					if($this->input->post('action') == 'add')
+					//check all needed fields submitted
+					if(($this->input->post('name') != false)&&($this->input->post('slug') != false))
 					{
-						//lets add the new tag, first does it already exist?
+						//create data array to put into the insert method for the database
+						$data = array(
+							'skillTag' => preg_replace('/[^a-z0-9_\-]/', '', str_replace(' ', '_', strtolower($this->input->post('slug')))),
+							'skillName' => $this->input->post('name')
+						);
+						
+						//check that the skill not yet in existance
 						if($this->database->get('skill', array('skillTag'=>$data['skillTag']), 'skillTag', 1)->num_rows == 0)
 						{
-							//ans = no so lets add this skill
+							//no existing skills matching found insert skill
 							$this->database->insert('skill', $data);
-							//redirect user back with success message
-							header('Location: '.$this->utility->site_url('manage?msg=skill-added#skills'));
+							//redirect with success msg
+							header('Location: '.$this->utility->site_url('manage?msg=skill-added'));
 						}
 						else
 						{
-							//inform user that the tag already exists
-							header('Location: '.$this->utility->site_url('manage?msg=skill-exists#skills'));
-						}
-					}
-					elseif($this->input->post('action') == 'edit')
-					{
-						/*
-						 we need to update the existing skill.
-						 as well as relink areas to the new tag BUT only
-						 if the slug has changed
-						*/
-						
-						if($this->input->post('existing') != $data['skillTag'])
-						{
-							//check another tag does not share new name
-							if($this->database->get('skill', array('skillTag'=>$data['skillTag']), 'skillTag', 1)->num_rows == 0)
-							{
-								//ans = no so lets add this skill
-								$this->database->update('skill', array('skillTag'=>$this->input->post('existing')), $data);
-								$this->database->update('areaSkill', array('skillTag'=>$this->input->post('existing')), array('skillTag'=>$this->input->post('existing')));
-								//redirect user back with success message
-								header('Location: '.$this->utility->site_url('manage?msg=skill-saved#skills'));
-							}
-							else
-							{
-								//inform user that the tag already exists
-								header('Location: '.$this->utility->site_url('manage?msg=skill-exists#skills'));
-							}
-						}
-						else
-						{
-							$this->database->update('skill', array('skillTag'=>$this->input->post('existing')), $data);
-							header('Location: '.$this->utility->site_url('manage?msg=skill-saved#skills'));
-						}
-					}
-					elseif($this->input->post('action') == 'delete')
-					{
-						//check token valid for security
-						if($_SESSION['user']['token'] == $this->input->post('token'))
-						{
-							//delete and redirect
-							$this->database->delete('skill', array('skillTag'=>$this->input->post('slug')));
-							$this->database->delete('areaSkill', array('skillTag'=>$this->input->post('slug')));
-							
-							header('Location: '.$this->utility->site_url('manage?msg=skill-delete-success#skills'));
-						}
-						else
-						{
-							//assume faul play and respond in kind
-							
+							//skill exists warn user
+							header('Location: '.$this->utility->site_url('manage?msg=skill-exists'));
 						}
 					}
 					else
 					{
-						//no action selected infrom user
-						header('Location: '.$this->utility->site_url('manage?msg=skill-invalid-action#skills'));
+						header('Location: '.$this->utility->site_url('manage?msg=skill-missing'));
+					}
+				}
+				elseif($this->input->post('edit') != false)
+				{
+					//edit an skill
+					
+					//check all needed fields entered
+					if(($this->input->post('name') != false)&&($this->input->post('slug') != false))
+					{
+						//create an array of new data
+						$data = array(
+							'skillTag' => preg_replace('/[^a-z0-9_\-]/', '', str_replace(' ', '_', strtolower($this->input->post('slug')))),
+							'skillName' => $this->input->post('name')
+						);
+						
+						//check that slug does not clash if has been changed
+						if(($data['skillTag'] == $this->input->post('edit'))||($this->database->get('skill', array('skillTag'=>$data['skillTag']), 'skillTag', 1)->num_rows == 0))
+						{
+							//no clash or tag unchanged do the update
+							$this->database->update('skill', array('skillTag'=>$this->input->post('edit')), $data);
+							$this->database->update('areaSkill', array('skillTag'=>$this->input->post('edit')), array('skillTag'=>$data['skillTag']));
+							//redirect with success msg
+							header('Location: '.$this->utility->site_url('manage?msg=skill-saved'));
+						}
+						else
+						{
+							//there is a clash between edit and other skill inform user
+							header('Location: '.$this->utility->site_url('manage?msg=skill-exists'));
+						}
+					}
+					else
+					{
+						header('Location: '.$this->utility->site_url('manage?msg=skill-missing'));
+					}
+				}
+				elseif($this->input->post('delete') != false)
+				{
+					//delete an skill
+					
+					//check the password is correct then delete
+					if($this->utility->hash_string($this->input->post('password'), $_SESSION['user']['username']) == $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPassword', 1)->results[0]->userPassword)
+					{
+						//valid password delete and redirect back with msg
+						$this->database->delete('skill', array('skillTag'=>$this->input->post('delete')));
+						$this->database->delete('areaSkill', array('skillTag'=>$this->input->post('delete')));
+						header('Location: '.$this->utility->site_url('manage?msg=skill-deleted'));
+					}
+					else
+					{
+						//invalid password inform user
+						header('Location: '.$this->utility->site_url('manage?msg=invalid-password'));
 					}
 				}
 				else
 				{
-					//something missing lets inform the user
-					header('Location: '.$this->utility->site_url('manage?msg=skill-missing-field#skills'));
+					//direct access = bad
 				}
 			}
 		}
@@ -193,306 +191,218 @@
 		 */
 		function area()
 		{
-			//get the url segments for loading specific views/calling correct functions
-			$urlSegment = func_get_arg(0);
-			
-			//check the user is logged in
-			if($this->utility->check_auth())
+			if($this->utility->check_auth()&&($this->input->post('token') == $_SESSION['user']['token']))
 			{
-				$switch = explode('?', $urlSegment[7]);
-				$switch = $switch[0];
-				$switch = explode('/', $switch);
-				
-				//use a nice simple switch to load the correct view/function
-				switch($switch[0])
+				if($this->input->post('add') != false)
 				{
-					case 'add': //if we need to add an area
-						//check we are not processing a form
-						if(!$this->input->post('submit'))
-						{
-							//refresh session token for security
-							$_SESSION['user']['token'] = uniqid(sha1(microtime()), true);
-							
-							//load information from database for dropdown menus
-							$data['parents'] = $this->database->get('area', array('areaParentSlug'=>'root'), 'areaSlug, areaName');
-							$data['timeRequirements'] = $this->database->get('timeRequirement', null, 'timeRequirementID, timeRequirementShortDescription');
-							
-							//load view
-							$this->view->load('backend/area_add', $data);
-						}
-						else
-						{
-							$this->area_add();
-						}
-					break;
-					case 'delete':
-						//check if we need to do some processing
-						if($this->input->post('password') != false)
-						{
-							//CSRF check
-							if($_SESSION['user']['token'] == $this->input->post('token'))
-							{
-								//time to delete area
-								
-								//check password matches for confimation
-								$userPass = $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPassword', 1);
-								if($this->utility->hash_string($this->input->post('password'), $_SESSION['user']['username']) == $userPass->results[0]->userPassword)
-								{
-									//make all the areas children root so we dont loose them
-									$this->database->update('area', array('areaParentSlug'=>$switch[1]), array('areaParentSlug'=>'root'));
-									//delete area
-									$this->database->delete('area', array('areaSlug'=>$switch[1]));
-									//redirect user with success message
-									header('Location: '.$this->utility->site_url('manage?msg=area-delete-success'));
-								}
-								else
-								{
-									//password not correct inform user
-									header('Location: '.$this->utility->site_url('manage/area/delete/'.$switch[1].'?msg=invalid'));
-								}
-							}
-							else
-							{
-								//assume faul play and respond in kind
-							}
-						}
-						else
-						{
-							//not needing to process yet load confirm form
-							$queryResource = $this->database->query('SELECT areaName, area.areaSlug, areaURL, areaDescription, areaParentSlug, timeRequirementShortDescription FROM area INNER JOIN timeRequirement ON timeRequirement.timeRequirementID = area.timeRequirementID WHERE areaSlug = '.$this->database->escape($switch[1]));
-							$data['area'] = mysql_fetch_object($queryResource);
-							$queryResource = $this->database->query('SELECT skillName FROM areaSkill INNER JOIN skill ON areaSkill.skillTag = skill.skillTag WHERE areaSkill.areaSlug = '.$this->database->escape($switch[1]));
-							$data['area']->skills = array();
-							while($row = mysql_fetch_object($queryResource))
-							{
-								$data['area']->skills[] = $row->skillName;
-							}
-							if($data['area']->areaParentSlug != 'root')
-							{
-								$parent = $this->database->get('area', array('areaSlug'=>$data['area']->areaParentSlug), 'areaName', 1);
-								$data['area']->areaParent = $parent->results[0]->areaName;
-							}
-							unset($data['area']->areaParentSlug);
-							$this->view->load('backend/area_delete', $data);
-						}
-					break;
-					default:
-						//nope, not in existance, set http header to 404
-						header('HTTP/1.0 404 Not Found');
-						//load 404 error file
-						include(dirname(__FILE__).'/../../asset/error/404.html');
-					break;
-				}
-			}
-		}
-		
-		/**
-		 * area_add
-		 *
-		 * to reduce the size of the area function and for readability when a
-		 * user adds a new area of contribution this function will be called into
-		 * action to do the processing.
-		 *
-		 * @access private
-		 */
-		private function area_add()
-		{
-			if($this->input->post('token') == $_SESSION['user']['token'])
-			{
-				//check that all required fields were submitted
-				if(($this->input->post('name') == false)||
-				   ($this->input->post('url') == false)||
-				   ($this->input->post('time') == 'null'))
-				{
-					//something was not entered, inform the user
-					header('Location: '.$this->utility->site_url('manage/area/add').'?invalid=missing');
-				}
-				//check that the slug is not used already
-				elseif($this->database->get('area', array('areaSlug'=>$this->input->post('slug')), 'areaSlug', 1)->num_rows == 0)
-				{
-					//start getting ready to add data to the database
-					$data = array(
-						'areaURL' => $this->input->post('url'),
-						'areaName' => $this->input->post('name'),
-						'areaDescription' => $this->input->post('description'),
-						'timeRequirementID' => $this->input->post('time'),
-						'areaParentSlug' => $this->input->post('parent'),
-					);
+					//add an area
 					
-					//check slug not empty and in correct format
-					if($this->input->post('slug') == false)
+					//check all needed fields submitted
+					if(($this->input->post('name') != false)&&
+					   ($this->input->post('slug') != false)&&
+					   ($this->input->post('url') != false)&&
+					   ($this->input->post('time') != 'null'))
 					{
-						//index 'areaSlug' stores the area name in underscored form + unique id
-						$data['areaSlug'] = implode('_', explode(' ', strtolower($this->input->post('name')))).'_'.uniqid();
+						//create data array to put into the insert method for the database
+						$data = array(
+							'areaSlug' => preg_replace('/[^a-z0-9_\-]/', '', str_replace(' ', '_', strtolower($this->input->post('slug')))),
+							'areaName' => $this->input->post('name'),
+							'areaURL' => $this->input->post('url'),
+							'areaDescription' => $this->input->post('description'),
+							'areaParentSlug' => $this->input->post('parent'),
+							'timeRequirementID' => $this->input->post('time')
+						);
+						
+						//check that the area not yet in existance
+						if($this->database->get('area', array('areaSlug'=>$data['areaSlug']), 'areaSlug', 1)->num_rows == 0)
+						{
+							//no existing areas matching found insert area
+							$this->database->insert('area', $data);
+							
+							/*
+							 deal with skills
+							*/
+							//keep areaslug available
+							$areaSlug = $data['areaSlug'];
+							
+							//unset $data for reuse
+							unset($data);
+							
+							//check if skills were entered
+							if($this->input->post('tags') != false)
+							{
+								//split tags up
+								$skills = explode(',', $this->input->post('tags'));
+								
+								//clear whitespace and remove empty tags
+								$cleanSkills = array();
+								for($i = 0; $i < count($tags); $i++)
+								{
+									if(trim($skills[$i]) != '')
+									{
+										$cleanSkills[] = trim($skills[$i]);
+									}
+								}
+								$skills = $cleanSkills;
+								
+								//loop through tags and link them to the area
+								foreach($skills as $skill)
+								{
+									//check if skill exists
+									$queryResource = $this->database->query("SELECT skillTag FROM skill WHERE skillTag = ".$this->database->escape(strtolower($skill))." OR skillName = ".$this->database->escape($skill)." LIMIT 1");
+									$existingSkill = mysql_fetch_object($queryResource);
+									
+									if($this->database->num_rows() == 0)
+									{
+										//skill not matched so lets create it
+										$data = array(
+											'skillTag' => preg_replace('/[^a-z0-9_\-]/', '', str_replace(' ', '_', strtolower($skill))),
+											'skillName' => $skill
+										);
+										$this->database->insert('skill', $data);
+										
+										//make link
+										$this->database->insert('areaSkill', array('areaSlug'=>$areaSlug, 'skillTag'=>$data['skillTag']));
+									}
+									else
+									{
+										//skill found so just link it
+										$this->database->insert('areaSkill', array('areaSlug'=>$areaSlug, 'skillTag'=>$existingSkill->skillTag));
+									}
+								}
+							}
+							
+							//redirect with success msg
+							header('Location: '.$this->utility->site_url('manage?msg=area-added'));
+						}
+						else
+						{
+							//skill exists warn user
+							header('Location: '.$this->utility->site_url('manage?msg=area-exists'));
+						}
 					}
 					else
 					{
-						$data['areaSlug'] = strtolower($this->input->post('slug'));
+						header('Location: '.$this->utility->site_url('manage?msg=area-missing'));
 					}
+				}
+				elseif($this->input->post('edit') != false)
+				{
+					//edit an area
 					
-					//add information to the database
-					$this->database->insert('area', $data);
-					
-					/*
-					 deal with tags now
-					*/
-					
-					//prep $data for repurposing
-					$areaSlug = $data['areaSlug'];
-					unset($data);
-					
-					//split tags up
-					$tags = explode(',', $this->input->post('tags'));
-					//check the last tag is not empty (this happens from time to time)
-					if($tags[count($tags)-1] == '')
+					//check all needed fields submitted
+					if(($this->input->post('name') != false)&&
+					   ($this->input->post('slug') != false)&&
+					   ($this->input->post('url') != false)&&
+					   ($this->input->post('time') != 'null'))
 					{
-						//last tag is empty lets remove it
-						unset($tags[count($tags)-1]);
-					}
-					
-					//check if tags already exist
-					foreach($tags as $tag)
-					{
-						$tag = trim($tag);
-						//run a query so we can get the number of rows
-						$queryResource = $this->database->query("SELECT skillTag FROM skill WHERE skillTag = ".$this->database->escape(strtolower($tag))." OR skillName = ".$this->database->escape($tag)." LIMIT 1");
-						if($this->database->num_rows() == 1)
+						//create data array to put into the insert method for the database
+						$data = array(
+							'areaSlug' => preg_replace('/[^a-z0-9_\-]/', '', str_replace(' ', '_', strtolower($this->input->post('slug')))),
+							'areaName' => $this->input->post('name'),
+							'areaURL' => $this->input->post('url'),
+							'areaDescription' => $this->input->post('description'),
+							'areaParentSlug' => $this->input->post('parent'),
+							'timeRequirementID' => $this->input->post('time')
+						);
+						
+						//check that the area not yet in existance OR that slug is unchanged
+						if(($this->input->post('edit') == $data['areaSlug'])||($this->database->get('area', array('areaSlug'=>$data['areaSlug']), 'areaSlug', 1)->num_rows == 0))
 						{
-							//get the skillTag out of the db and make link in areaSkill
-							$skill = mysql_fetch_object($queryResource);
+							//no existing areas matching found update area
+							$this->database->update('area', array('areaSlug'=>$this->input->post('edit')), $data);
 							
-							//repurpose $data for the next save in the database
-							$data = array(
-								'areaSlug' => $areaSlug,
-								'skillTag' => $skill->skillTag
-							);
+							/*
+							 deal with skills
+							*/
+							//as this is an update for ease lets just delete all links to the old version and add for the new
+							$this->database->delete('areaSkill', array('areaSlug'=>$this->input->post('edit')));
 							
-							//insert into database
-							$this->database->insert('areaSkill', $data);
+							//keep areaslug available
+							$areaSlug = $data['areaSlug'];
+							
+							//unset $data for reuse
+							unset($data);
+							
+							//check if skills were entered
+							if($this->input->post('tags') != false)
+							{
+								//split tags up
+								$skills = explode(',', $this->input->post('tags'));
+								
+								//clear whitespace and remove empty tags
+								$cleanSkills = array();
+								for($i = 0; $i < count($skills); $i++)
+								{
+									if(trim($skills[$i]) != '')
+									{
+										$cleanSkills[] = trim($skills[$i]);
+									}
+								}
+								$skills = $cleanSkills;
+								
+								//loop through tags and link them to the area
+								foreach($skills as $skill)
+								{
+									//check if skill exists
+									$queryResource = $this->database->query("SELECT skillTag FROM skill WHERE skillTag = ".$this->database->escape(strtolower($skill))." OR skillName = ".$this->database->escape($skill)." LIMIT 1");
+									$existingSkill = mysql_fetch_object($queryResource);
+									
+									if($this->database->num_rows() == 0)
+									{
+										//skill not matched so lets create it
+										$data = array(
+											'skillTag' => preg_replace('/[^a-z0-9_\-]/', '', str_replace(' ', '_', strtolower($skill))),
+											'skillName' => $skill
+										);
+										$this->database->insert('skill', $data);
+										
+										//make link
+										$this->database->insert('areaSkill', array('areaSlug'=>$areaSlug, 'skillTag'=>$data['skillTag']));
+									}
+									else
+									{
+										//skill found so just link it
+										$this->database->insert('areaSkill', array('areaSlug'=>$areaSlug, 'skillTag'=>$existingSkill->skillTag));
+									}
+								}
+							}
+							
+							//redirect with success msg
+							header('Location: '.$this->utility->site_url('manage?msg=area-saved'));
 						}
 						else
 						{
-							//tag does not exist, so we need to add it to the database
-							$data = array(
-								'skillTag' => implode('_', explode(' ', strtolower($tag))),
-								'skillName' => $tag
-							);
-							$this->database->insert('skill', $data);
-							
-							//link area and new tag
-							$data = array(
-								'skillTag' => implode('_', explode(' ', strtolower($tag))),
-								'areaSlug' => $areaSlug
-							);
-							$this->database->insert('areaSkill', $data);
+							//skill exists warn user
+							header('Location: '.$this->utility->site_url('manage?msg=area-exists'));
 						}
 					}
+					else
+					{
+						header('Location: '.$this->utility->site_url('manage?msg=area-missing'));
+					}
+				}
+				elseif($this->input->post('delete') != false)
+				{
+					//delete an area
 					
-					//all done return user to management page
-					header('Location: '.$this->utility->site_url('manage'));
+					//check the password is correct then delete
+					if($this->utility->hash_string($this->input->post('password'), $_SESSION['user']['username']) == $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPassword', 1)->results[0]->userPassword)
+					{
+						//valid password delete and redirect back with msg
+						$this->database->delete('area', array('areaSlug'=>$this->input->post('delete')));
+						$this->database->delete('areaSkill', array('areaSlug'=>$this->input->post('delete')));
+						header('Location: '.$this->utility->site_url('manage?msg=area-deleted'));
+					}
+					else
+					{
+						//invalid password inform user
+						header('Location: '.$this->utility->site_url('manage?msg=invalid-password'));
+					}
 				}
 				else
 				{
-					//slug taken
-					header('Location: '.$this->utility->site_url('manage/area/add?invalid=slug'));
-				}
-			}
-		}
-		
-		/**
-		 * area_edit
-		 *
-		 * to reduce the size of the area function and for readability when a
-		 * user edits an area of contribution this function will be called into
-		 * action to do the processing.
-		 *
-		 * @access private
-		 */
-		private function area_edit()
-		{
-			if($this->input->post('token') == $_SESSION['user']['token'])
-			{
-				//check all required feilds submitted
-				if(($this->input->post('name') == false)||
-				   ($this->input->post('url') == false)||
-				   ($this->input->post('time') == 'null'))
-				{
-					//something was not entered, inform the user
-					header('Location: '.$this->utility->site_url('manage/area/add').'?invalid=missing');
-				}
-				elseif($this->input->post('area') == $this->input->post('slug'))
-				{
-					$data = array(
-						'areaURL' => $this->input->post('url'),
-						'areaName' => $this->input->post('name'),
-						'areaDescription' => $this->input->post('description'),
-						'timeRequirementID' => $this->input->post('time'),
-						'areaParentSlug' => $this->input->post('parent'),
-					);
-					
-					//update information in database
-					$this->database->update('area', array('areaSlug'=>$this->input->post('area')), $data);
-					
-					/*
-					 now deal with tags
-					*/
-					
-					//prep $data for repurposing
-					unset($data);
-					
-					//split tags up
-					$tags = explode(',', $this->input->post('tags'));
-					//check the last tag is not empty (this happens from time to time)
-					if($tags[count($tags)-1] == '')
-					{
-						//last tag is empty lets remove it
-						unset($tags[count($tags)-1]);
-					}
-					
-					//check if tags already exist
-					foreach($tags as $tag)
-					{
-						$tag = trim($tag);
-						//run a query so we can get the number of rows
-						$queryResource = $this->database->query("SELECT skillTag FROM skill WHERE skillTag = ".$this->database->escape(strtolower($tag))." OR skillName = ".$this->database->escape($tag)." LIMIT 1");
-						if($this->database->num_rows() == 1)
-						{
-							//get the skillTag out of the db and make link in areaSkill
-							$skill = mysql_fetch_object($queryResource);
-							
-							//repurpose $data for the next save in the database
-							$data = array(
-								'areaSlug' => $this->input->post('area'),
-								'skillTag' => $skill->skillTag
-							);
-							
-							//insert into database
-							$this->database->insert('areaSkill', $data);
-						}
-						else
-						{
-							//tag does not exist, so we need to add it to the database
-							$data = array(
-								'skillTag' => implode('_', explode(' ', strtolower($tag))),
-								'skillName' => $tag
-							);
-							$this->database->insert('skill', $data);
-							
-							//link area and new tag
-							$data = array(
-								'skillTag' => implode('_', explode(' ', strtolower($tag))),
-								'areaSlug' => $this->input->post('area')
-							);
-							$this->database->insert('areaSkill', $data);
-						}
-					}
-					
-					//all done return user to management page
-					header('Location: '.$this->utility->site_url('manage'));
-				}
-				else
-				{
-					//slug was changed, lets create new entry and remove old
+					//direct access = bad
 				}
 			}
 		}

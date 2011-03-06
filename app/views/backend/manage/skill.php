@@ -22,7 +22,7 @@
 	</div>
 	
 	<!-- add a skill -->
-	<form action="<?php echo $this->site_url('manage/tag'); ?>" method="post" id="skill-form-add">
+	<form action="<?php echo $this->site_url('manage/skill'); ?>" method="post" id="skill-form-add">
 		<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
 		<label for="name">Name</label>
 		<input type="text" name="name" id="skill-add-name">
@@ -34,7 +34,7 @@
 	</form>
 	
 	<!-- edit an existing skill -->
-	<form style="display:none;" action="<?php echo $this->site_url('manage/tag'); ?>" method="post" id="skill-form-edit">
+	<form style="display:none;" action="<?php echo $this->site_url('manage/skill'); ?>" method="post" id="skill-form-edit">
 		<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
 		<label for="name">Name</label>
 		<input type="text" name="name" id="skill-edit-name">
@@ -46,7 +46,7 @@
 	</form>
 	
 	<!-- delete an existing skill -->
-	<form style="display:none;" action="<?php echo $this->site_url('manage/tag'); ?>" method="post" id="skill-form-delete">
+	<form style="display:none;" action="<?php echo $this->site_url('manage/skill'); ?>" method="post" id="skill-form-delete">
 		<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
 		<p>You are about to delete the skill "<strong id="skill-delete-name">none selected</strong>"</p>
 		<label for="password">Confirm Password</label>

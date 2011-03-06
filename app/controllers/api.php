@@ -17,10 +17,15 @@
 	/**
 	 * Api
 	 *
-	 * This class controls the processing behind the JSON API
+	 * This class controls the processing behind the JSON API (readonly)
 	 */
 	class Api extends Controller
 	{
+		/**
+		 * area
+		 *
+		 * this handles all api calls relating to areas
+		 */
 		function area()
 		{
 			/*
@@ -85,6 +90,27 @@
 					}
 					$data['area'][] = $parent;
 				}
+			}
+			
+			echo json_encode($data);
+		}
+		
+		/**
+		 * timeRequirement
+		 *
+		 * this handles all api calls related to times
+		 */
+		function timeRequirement()
+		{
+			$data = array();
+			
+			if(($this->input->get('id') != false)&&(is_numeric($this->input->get('id'))))
+			{
+				$data['time'] = $this->database->get('timeRequirement', array('timeRequirementID'=>$this->input->get('id')))->results;
+			}
+			else
+			{
+				$data['time'] = $this->database->get('timeRequirement')->results;
 			}
 			
 			echo json_encode($data);

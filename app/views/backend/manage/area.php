@@ -20,7 +20,7 @@
 <!-- forms -->
 <div style="display:block;width:50%;height:358px;float:right;">
 	<!-- tabs to switch between forms -->
-	<div id="skill-form-tabs" class="tabs">
+	<div id="area-form-tabs" class="tabs">
 		<ul>
 			<li rel="area-form-add" class="active">add</li>
 			<li rel="area-form-edit">edit</li>
@@ -103,9 +103,9 @@
 	</form>
 	
 	<!-- delete an existing skill -->
-	<form style="display:none;" action="<?php echo $this->site_url('manage/tag'); ?>" method="post" id="area-form-delete">
+	<form style="display:none;" action="<?php echo $this->site_url('manage/area'); ?>" method="post" id="area-form-delete">
 		<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
-		<p>You are about to delete the skill "<strong id="area-delete-name">none selected</strong>"</p>
+		<p>You are about to delete the area "<strong id="area-delete-name">none selected</strong>"</p>
 		<label for="password">Confirm Password</label>
 		<input type="password" name="password" id="area-delete-password">
 		<div class="controls">
