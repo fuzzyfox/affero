@@ -15,73 +15,26 @@
 			</div>
 			
 			<div class="section">
-				<div id="tabs">
+				<div id="main-tabs" class="tabs">
 					<ul>
 						<li rel="areas" class="active">Areas Of Contribution</li>
 						<li rel="skills">Skills</li>
 						<li rel="times">Time Requirements</li>
 					</ul>
 				</div>
+				<!-- Area Of Contribution Management -->
 				<div class="section" id="areas">
-					<?php if(count($areas) > 0): ?>
-					<ul style="height:400px;overflow-y: scroll;">
-						<?php foreach($areas as $parent): ?>
-						<li>
-							<?php echo $parent->areaName; ?> -
-							<a href="<?php echo $parent->areaURL; ?>">view</a> |
-							<!--<a href="<?php echo $this->site_url('manage/area/edit/'.$parent->areaSlug); ?>">edit</a> |-->
-							<a href="<?php echo $this->site_url('manage/area/delete/'.$parent->areaSlug); ?>">delete</a>
-							<?php if(isset($parent->children)): ?>
-							<ul>
-								<?php foreach($parent->children as $child): ?>
-								<li>
-									<?php echo $child->areaName; ?> -
-									<a href="<?php echo $child->areaURL; ?>">view</a> |
-									<!--<a href="<?php echo $this->site_url('manage/area/edit/'.$child->areaSlug); ?>">edit</a> |-->
-									<a href="<?php echo $this->site_url('manage/area/delete/'.$child->areaSlug); ?>">delete</a>
-								</li>
-								<?php endforeach; ?>
-							</ul>
-							<?php endif; ?>
-						</li>
-						<?php endforeach; ?>
-					</ul>
-					<?php else: ?>
-					<p>No areas of contribution yet</p>
-					<?php endif; ?>
-					<button class="right" style="margin: -40px 30px 0 0;" type="button" onclick="location.href='<?php echo $this->site_url('manage/area/add'); ?>'">add</button>
-					<div class="clear">&nbsp;</div>
+					<?php include('manage/area.php'); ?>
 				</div>
+				
+				<!-- Skill Management -->
 				<div class="section" id="skills" style="display:none;">
-					<select size="30" style="float:left;display:block;border:none;width:40%;height:390px;">
-						<?php if(count($skills) > 0): ?>
-							<?php foreach($skills as $skill): ?>
-							<option rel="<?php echo $skill->skillTag; ?>">
-								<?php echo $skill->skillName; ?>
-							</option>
-							<?php endforeach; ?>
-						<?php else: ?>
-							<option>No skills yet</option>
-						<?php endif; ?>
-					</select>
-					<form style="display:block;width:50%;height:358px;float:right;" action="<?php echo $this->site_url('manage/tag'); ?>" method="post" id="skill-form">
-						<input type="hidden" name="existing" id="existing" value="false">
-						<input type="hidden" name="token" id="token" value="<?php echo $_SESSION['user']['token']; ?>">
-						<label for="name">Name</label>
-						<input type="text" name="name" id="name">
-						<label for="slug">Slug</label>
-						<input type="text" name="slug" id="slug">
-						<div class="controls">
-							<input style="display:inline" type="radio" name="action" value="add"> add
-							<input style="display:inline" type="radio" name="action" value="edit"> edit
-							<input style="display:inline" type="radio" name="action" value="delete"> delete
-							<button type="submit">submit</button>
-						</div>
-					</form>
-					<div class="clear">&nbsp;</div>
+					<?php include('manage/skill.php'); ?>
 				</div>
+				
+				<!-- Time Requirement Management -->
 				<div class="section" id="times" style="display:none;">
-					<div class="clear">&nbsp;</div>
+					<?php include('manage/time.php'); ?>
 				</div>
 			</div>
 			
@@ -90,6 +43,24 @@
 				<?php echo $this->config->site->footer; ?>
 			</div>
 			<script type="text/javascript">
+				//quick access to the key form elements
+				var form = {
+					skill : {
+						add : {
+							name : document.getElementById('skill-add-name'),
+							slug : document.getElementById('skill-add-slug')
+						},
+						edit : {
+							name : document.getElementById('skill-edit-name'),
+							slug : document.getElementById('skill-edit-slug'),
+							submit : document.getElementById('skill-edit')
+						},
+						del : {
+							name : document.getElementById('skill-delete-name'),
+							submit : document.getElementById('skill-delete')
+						}
+					}
+				};
 				/*
 				 get the skills to add events to them for UI enhancements
 				*/
@@ -97,35 +68,107 @@
 				var skills = document.getElementById('skills');
 				skills = skills.getElementsByTagName('select');
 				skills = skills[0];
-				skills = skills.getElementsByTagName('option');
-				//quick access to the key form elements
-				var form = {
-					name : document.getElementById('name'),
-					slug : document.getElementById('slug')
-				};
 				//add skill events to each skill
-				$c.each(skills, function(key, value){
-					//add the event on click
-					$c.addevent(value, 'click', function(){
-						document.getElementById('name').setAttribute('value', $c.trim(this.innerHTML));
-						document.getElementById('slug').setAttribute('value', this.getAttribute('rel'));
-						document.getElementById('existing').setAttribute('value', this.getAttribute('rel'));
-					});
+				$c.addevent(skills, 'change', function(){
+					form.skill.edit.submit.value = this.options[this.selectedIndex].value;
+					form.skill.del.submit.value = this.options[this.selectedIndex].value;
+					form.skill.edit.slug.value = this.options[this.selectedIndex].value;
+					form.skill.edit.name.value = $c.trim(this.options[this.selectedIndex].innerHTML);
+					form.skill.del.name.innerHTML = $c.trim(this.options[this.selectedIndex].innerHTML);
 				});
 				
 				/*
 				 auto create skill slugs
 				*/
-				$ui.autoSlug(form.name, form.slug);
+				$ui.autoSlug(form.skill.add.name, form.skill.add.slug);
+				$ui.autoSlug(form.skill.edit.name, form.skill.edit.slug);
+				$ui.autoSlug(form.skill.edit.name, form.skill.edit.submit);
+				$ui.autoSlug(form.skill.edit.slug, form.skill.edit.submit);
 				
 				/*
 				 tab switching
 				*/
 				//get tabs
-				var tabs = document.getElementById('tabs');
-				tabs = tabs.getElementsByTagName('li');
+				var maintabs = document.getElementById('main-tabs');
+				maintabs = maintabs.getElementsByTagName('li');
+				var skillformtabs = document.getElementById('skill-form-tabs');
+				skillformtabs = skillformtabs.getElementsByTagName('li');
 				//enable tabs
-				$ui.tabs(tabs);
+				$ui.tabs(maintabs);
+				$ui.tabs(skillformtabs);
+				
+				/*
+				 ajax function for editing areas of contrib
+				*/
+				var $a = $ajax = (function(){
+					$ = {
+						makeRequest : function(file, fn){
+							var request, response;
+							if(window.XMLHttpRequest)
+							{
+								//IE7+/Firefox/Chrome/Opera/Safari support
+								request = new XMLHttpRequest();
+							}
+							else
+							{
+								//IE6/IE5
+								request = new ActiveXObject("Microsoft.XMLHTTP");
+							}
+							request.onstatechange = function(){
+								if((request.readyState == 4)&&(request.status == 200))
+								{
+									fn(request.responseText);
+								}
+							}
+							request.open('GET', file, true);
+							request.send();
+						},
+						getJSON : function(file, fn){
+							var json;
+							this.makeRequest(file, function(data){
+								json = JSON.parse(data);
+								fn(json);
+							});
+						}
+					};
+					return $;
+				})();
+				
+				/*
+				 enable area edit
+				*/
+				//the skills themselves
+				var areas = document.getElementById('areas');
+				areas = areas.getElementsByTagName('select');
+				areas = areas[0];
+				//add skill events to each skill
+				$c.addevent(areas, 'change', function(){
+					var xmlhttp;
+					if (window.XMLHttpRequest)
+					  {// code for IE7+, Firefox, Chrome, Opera, Safari
+					  xmlhttp=new XMLHttpRequest();
+					  }
+					else
+					  {// code for IE6, IE5
+					  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+					  }
+					xmlhttp.onreadystatechange=function()
+					  {
+					  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+						{
+							data = JSON.parse(xmlhttp.responseText);
+							document.getElementById('area-edit-name').value = data.area[0].areaName;
+							document.getElementById('area-edit-slug').value = data.area[0].areaSlug;
+							document.getElementById('area-edit-url').value = data.area[0].areaURL;
+							if(typeof(data.area[0].areaDescription) != 'undefined')
+							{
+								document.getElementById('area-edit-description').innerHTML = data.area[0].areaDescription;
+							}
+						}
+					  }
+					xmlhttp.open("GET",'<?php echo $this->site_url('api/area?slug='); ?>'+this.value,true);
+					xmlhttp.send();
+				});
 			</script>
 		</body>
 	</html>

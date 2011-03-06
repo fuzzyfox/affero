@@ -1,8 +1,8 @@
-#tabs {
-	margin : 0 -10px -10px 0;
+.tabs {
+	margin : 0 auto -10px auto;
+	text-align : center;
 }
-#tabs li {
-	margin : 0;
+.tabs li {
 	display : inline;
 	border : 1px solid #ccc;
 	border-radius : 3px;
@@ -21,12 +21,12 @@
 	position : relative;
 	cursor : default;
 }
-#tabs li:hover {
+.tabs li:hover {
 	background : #eee;
 	background : -moz-linear-gradient(top, #ccc, #eee);
 	background : -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#eee));
 }
-#tabs li.active {
+.tabs li.active {
 	background : #fff;
 	background : -moz-linear-gradient(top, #fff, #eee);
 	background : -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eee));
