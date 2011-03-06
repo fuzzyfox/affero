@@ -76,6 +76,31 @@ var $c = $common = (function(){
 		 */
 		trim : function(str){
 			return str.replace(/^\s*/, '').replace(/\s*$/, '');
+		},
+		/**
+		 * a simple ajax control for quick easy ajax calls
+		 * @param method {string} method of request in CAPS
+		 * @param url {string} the url we want to make the request to
+		 * @param callback {function} the function to run on success
+		 */
+		ajax : function(method, url, callback){
+			var xhr;
+			if(window.XMLHttpRequest)
+			{
+				xhr = new XMLHttpRequest();
+			}
+			else
+			{
+				xhr = new ActiveXObject('Microsoft.XMLHTTP');
+			}
+			xhr.onreadystatechange = function(){
+				if((xhr.readyState == 4)&&(xhr.status == 200))
+				{
+					callback(xhr.responseText);
+				}
+			};
+			xhr.open(method, url, true);
+			xhr.send();
 		}
 	};
 	

@@ -98,76 +98,64 @@
 				$ui.tabs(skillformtabs);
 				
 				/*
-				 ajax function for editing areas of contrib
-				*/
-				var $a = $ajax = (function(){
-					$ = {
-						makeRequest : function(file, fn){
-							var request, response;
-							if(window.XMLHttpRequest)
-							{
-								//IE7+/Firefox/Chrome/Opera/Safari support
-								request = new XMLHttpRequest();
-							}
-							else
-							{
-								//IE6/IE5
-								request = new ActiveXObject("Microsoft.XMLHTTP");
-							}
-							request.onstatechange = function(){
-								if((request.readyState == 4)&&(request.status == 200))
-								{
-									fn(request.responseText);
-								}
-							}
-							request.open('GET', file, true);
-							request.send();
-						},
-						getJSON : function(file, fn){
-							var json;
-							this.makeRequest(file, function(data){
-								json = JSON.parse(data);
-								fn(json);
-							});
-						}
-					};
-					return $;
-				})();
-				
-				/*
 				 enable area edit
 				*/
-				//the skills themselves
+				//the areas themselves
 				var areas = document.getElementById('areas');
 				areas = areas.getElementsByTagName('select');
 				areas = areas[0];
-				//add skill events to each skill
+				//add area to populate form with
 				$c.addevent(areas, 'change', function(){
-					var xmlhttp;
-					if (window.XMLHttpRequest)
-					  {// code for IE7+, Firefox, Chrome, Opera, Safari
-					  xmlhttp=new XMLHttpRequest();
-					  }
-					else
-					  {// code for IE6, IE5
-					  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-					  }
-					xmlhttp.onreadystatechange=function()
-					  {
-					  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-						{
-							data = JSON.parse(xmlhttp.responseText);
-							document.getElementById('area-edit-name').value = data.area[0].areaName;
-							document.getElementById('area-edit-slug').value = data.area[0].areaSlug;
-							document.getElementById('area-edit-url').value = data.area[0].areaURL;
-							if(typeof(data.area[0].areaDescription) != 'undefined')
+					$c.ajax('GET', '<?php echo $this->site_url('api/area?slug='); ?>'+this.value, function(data){
+						data = JSON.parse(data);
+						document.getElementById('area-edit-name').value = data.area[0].areaName;
+						document.getElementById('area-edit-slug').value = data.area[0].areaSlug;
+						document.getElementById('area-edit-url').value = data.area[0].areaURL;
+						
+						document.getElementById('area-edit-description').innerHTML = data.area[0].areaDescription;
+						
+						//set parent
+						var parent = document.getElementById('area-edit-parent');
+						parent = parent.getElementsByTagName('option');
+						$c.each(parent, function(key, option){
+							if(option.value == data.area[0].areaParentSlug)
 							{
-								document.getElementById('area-edit-description').innerHTML = data.area[0].areaDescription;
+								option.setAttribute('selected', 'selected');
 							}
+							else
+							{
+								option.removeAttribute('selected');
+							}
+						});
+						
+						//set tags
+						if(typeof(data.area[0].tags) != 'undefined')
+						{
+							var tags = [];
+							$c.each(data.area[0].tags, function(key, value){
+								tags.push(value.skillName);
+							});
+							document.getElementById('area-edit-tags').value = tags.join(', ');
 						}
-					  }
-					xmlhttp.open("GET",'<?php echo $this->site_url('api/area?slug='); ?>'+this.value,true);
-					xmlhttp.send();
+						else
+						{
+							document.getElementById('area-edit-tags').value = '';
+						}
+						
+						//set time requirement
+						var time = document.getElementById('area-edit-time');
+						time = time.getElementsByTagName('option');
+						$c.each(time, function(key, option){
+							if(option.value == data.area[0].timeRequirementID)
+							{
+								option.setAttribute('selected', 'selected');
+							}
+							else
+							{
+								option.removeAttribute('selected');
+							}
+						});
+					});
 				});
 			</script>
 		</body>

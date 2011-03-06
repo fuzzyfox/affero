@@ -78,6 +78,8 @@
 				}
 				
 				$data['skills'] = $this->database->get('skill')->results;
+				$data['parents'] = $this->database->get('area', array('areaParentSlug'=>'root'), 'areaSlug, areaName');
+				$data['timeRequirements'] = $this->database->get('timeRequirement', null, 'timeRequirementID, timeRequirementShortDescription');
 				
 				$this->view->load('backend/manage_index', $data);
 			}

@@ -28,19 +28,24 @@
 			*/
 			if($this->input->get('slug') != false)
 			{
-				$queryResource = $this->database->query("SELECT areaSlug, areaName, areaURL, timeRequirementShortDescription, areaParentSlug FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE area.areaSlug = ".$this->database->escape($this->input->get('slug')));
+				$queryResource = $this->database->query("SELECT * FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE area.areaSlug = ".$this->database->escape($this->input->get('slug')));
 			}
 			else
 			{
-				$queryResource = $this->database->query("SELECT areaSlug, areaName, areaURL, timeRequirementShortDescription, areaParentSlug FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE area.areaParentSlug = 'root'");
+				$queryResource = $this->database->query("SELECT * FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE area.areaParentSlug = 'root'");
 			}
 			
-			while($queryParents = mysql_fetch_object($queryResource))
+			while($queryParent = mysql_fetch_object($queryResource))
 			{
-				$query['parents'][] = $queryParents;
+				$qr = $this->database->query('SELECT skill.skillTag, skill.skillName FROM areaSkill INNER JOIN skill ON areaSkill.skillTag = skill.skillTag WHERE areaSkill.areaSlug = '.$this->database->escape($queryParent->areaSlug));
+				while($skill = mysql_fetch_object($qr))
+				{
+					$queryParent->tags[] = $skill;
+				}
+				$query['parents'][] = $queryParent;
 			}
 			
-			if($this->database->num_rows() > 0)
+			if(count($query['parents']) > 0)
 			{
 				$this->database->free_result();
 				/*
@@ -48,16 +53,21 @@
 				*/
 				if($this->input->get('slug') != false)
 				{
-					$queryResource = $this->database->query("SELECT areaSlug, areaName, areaURL, areaDescription, timeRequirementShortDescription, areaParentSlug FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID  WHERE area.areaParentSlug = ".$this->database->escape($this->input->get('slug')));
+					$queryResource = $this->database->query("SELECT * FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID  WHERE area.areaParentSlug = ".$this->database->escape($this->input->get('slug')));
 				}
 				else
 				{
-					$queryResource = $this->database->query("SELECT areaSlug, areaName, areaURL, areaDescription, timeRequirementShortDescription, areaParentSlug FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID  WHERE area.areaParentSlug != 'root'");
+					$queryResource = $this->database->query("SELECT * FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID  WHERE area.areaParentSlug != 'root'");
 				}
 				
 				$query['children'] = array();
 				while($queryChildren = mysql_fetch_object($queryResource))
 				{
+					$qr = $this->database->query('SELECT skill.skillTag, skill.skillName FROM areaSkill INNER JOIN skill ON areaSkill.skillTag = skill.skillTag WHERE areaSkill.areaSlug = '.$this->database->escape($queryChildren->areaSlug));
+					while($skill = mysql_fetch_object($qr))
+					{
+						$queryChildren->tags[] = $skill;
+					}
 					$query['children'][] = $queryChildren;
 				}
 				/*

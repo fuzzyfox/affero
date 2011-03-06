@@ -75,7 +75,7 @@
 		<label for="url">URL</label>
 		<input type="text" name="url" id="area-edit-url">
 		<label for="description">Description</label>
-		<textarea rows="10" cols="40" name="description" id="area-edit-desciption"></textarea>
+		<textarea rows="10" cols="40" name="description" id="area-edit-description"></textarea>
 		
 		<label for="parent">Parent</label>
 		<!-- select parent -->
