@@ -4,6 +4,7 @@
 			<?php $this->head('Affero Settings'); ?>
 			<?php $this->stylesheet('ui'); ?>
 			<?php $this->script('ui'); ?>
+			<?php $this->script('manage'); ?>
 		</head>
 		<body>
 			<div id="header">
