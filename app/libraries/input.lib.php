@@ -138,7 +138,8 @@
 		{
 			if(!preg_match('/^[a-z0-9:_\/-]+$/i', $key))
 			{
-				exit('Stop trying to expoit my keys');
+				print_r($key);
+				exit($key.' Stop trying to expoit my keys');
 			}
 			return $key;
 		}

@@ -317,7 +317,7 @@
 			}
 			
 			//put it all together
-			$queryString = $select.$where.$limit.$order;
+			$queryString = $select.$where.$order.$limit;
 			
 			//run the query
 			$this->query($queryString);

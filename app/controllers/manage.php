@@ -185,6 +185,88 @@
 		}
 		
 		/**
+		 * timeRequirement
+		 *
+		 * This function handles the editing/deleting/creating of time requirements
+		 */
+		function timeRequirement()
+		{
+			if($this->utility->check_auth()&&($this->input->post('token') == $_SESSION['user']['token']))
+			{
+				if($this->input->post('add') != false)
+				{
+					//add a time requirement
+					
+					//check all needed fields submitted
+					if($this->input->post('short') != false)
+					{
+						//create data array to put into the insert method for the database
+						$data = array(
+							'timeRequirementShortDescription' => $this->input->post('short'),
+							'timeRequirementLongDescription' => $this->input->post('long')
+						);
+						
+						//insert time requirement
+						$this->database->insert('timeRequirement', $data);
+						//redirect with success msg
+						header('Location: '.$this->utility->site_url('manage?msg=time-added'));
+					}
+					else
+					{
+						header('Location: '.$this->utility->site_url('manage?msg=time-missing'));
+					}
+				}
+				elseif($this->input->post('edit') != false)
+				{
+					//edit an time requirement
+					
+					//check all needed fields submitted
+					if($this->input->post('short') != false)
+					{
+						//create data array to put into the insert method for the database
+						$data = array(
+							'timeRequirementShortDescription' => $this->input->post('short'),
+							'timeRequirementLongDescription' => $this->input->post('long')
+						);
+						
+						//insert time requirement
+						$this->database->update('timeRequirement', array('timeRequirementID'=>$this->input->post('edit')), $data);
+						//redirect with success msg
+						header('Location: '.$this->utility->site_url('manage?msg=time-saved'));
+					}
+					else
+					{
+						header('Location: '.$this->utility->site_url('manage?msg=time-missing'));
+					}
+				}
+				elseif($this->input->post('delete') != false)
+				{
+					//delete an time requirment
+					
+					//check the password is correct then delete
+					if($this->utility->hash_string($this->input->post('password'), $_SESSION['user']['username']) == $this->database->get('user', array('username'=>$_SESSION['user']['username']), 'userPassword', 1)->results[0]->userPassword)
+					{
+						//valid password delete and redirect back with msg
+						$this->database->delete('timeRequirement', array('timeRequirementID'=>$this->input->post('delete')));
+						//get the first time requirement in the table to reassign areas to
+						$newTimeRequirementID = $this->database->get('timeRequirement', null, 'timeRequirementID', 1, 'timeRequirementID', 'asc')->results[0]->timeRequirementID;
+						$this->database->update('area', array('timeRequirementID'=>$this->input->post('delete')), array('timeRequirementID'=>$newTimeRequirementID));
+						header('Location: '.$this->utility->site_url('manage?msg=time-deleted'));
+					}
+					else
+					{
+						//invalid password inform user
+						header('Location: '.$this->utility->site_url('manage?msg=invalid-password'));
+					}
+				}
+				else
+				{
+					//direct access = bad
+				}
+			}
+		}
+		
+		/**
 		 * area
 		 *
 		 * This function handles editing/deleting/creating areas

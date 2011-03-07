@@ -25,7 +25,7 @@
 	<form action="<?php echo $this->site_url('manage/timeRequirement'); ?>" method="post" id="time-form-add">
 		<input type="hidden" name="token" value="<?php echo $_SESSION['user']['token']; ?>">
 		<label for="short">Short Description</label>
-		<input type="text" name="short id="time-add-short">
+		<input type="text" name="short" id="time-add-short">
 		<label for="long">Long Description</label>
 		<textarea name="long" id="time-add-long" cols="40" rows="10"></textarea>
 		<div class="controls">
