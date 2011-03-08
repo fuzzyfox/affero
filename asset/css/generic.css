@@ -182,6 +182,10 @@ tr:nth-child(odd) {
 	-webkit-border-radius : 5px;
 	display : block;
 }
+.section.aside {
+	width : 210px;
+	margin : 0 0 10px 10px;
+}
 
 #footer {
 	text-align : center;
