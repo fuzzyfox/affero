@@ -18,7 +18,12 @@
 	 * @license MPL 1.1/LGPL 2.1/GPL 2.0
 	 */
 	
-	
+	/**
+	 * View
+	 *
+	 * A collection of helper functions for use in views to make life a little
+	 * easier and development quicker
+	 */
 	class View extends Utility
 	{
 		/**

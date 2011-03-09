@@ -130,11 +130,11 @@
 		 * a nasty key in an array/object such as those containing
 		 * non-alphanumeric text (with a few exceptions)
 		 *
-		 * @access private
+		 * @access public
 		 * @param string $key the key to check
 		 * @return string the key is safe so returned unaltered
 		 */
-		private function clean_key($key)
+		public function clean_key($key)
 		{
 			if(!preg_match('/^[a-z0-9:_\/-]+$/i', $key))
 			{

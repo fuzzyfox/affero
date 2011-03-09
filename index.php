@@ -42,8 +42,8 @@
 	
 	//setup url mapping
 	$urls = array(
-		'/affero/((index\.php/)?)api/((?P<format>(json|xml))?)(/?)(?P<method>[a-zA-Z0-9_]*)(/?)(.*)' => 'Api',
-		'/affero/((index\.php/)?)(?P<controller>[a-zA-Z0-9_]*)(/?)(?P<method>[a-zA-Z0-9_]*)(/?)(.*)' => 'Controller'
+		'/affero/(index\.php/)?api/((?P<format>(json|xml))?)(/?)(?P<method>[a-zA-Z0-9_]*)(/?(?P<query_string>(\?.+=.*)(\&.+=.*)?)?)' => 'Rest',
+		'/affero/((index\.php/)?)(?P<controller>[a-zA-Z0-9_]*)(/?)(?P<method>[a-zA-Z0-9_]*)(/?.*)' => 'Controller'
 	);
 	
 	/**
@@ -147,20 +147,6 @@
 			$this->GET($args);
 		}
 		
-	}
-	
-	/**
-	 * API
-	 *
-	 * This controlls all api calls
-	 */
-	class Api extends Controller
-	{
-		function GET($args)
-		{
-			print_r($args);
-			print_r($_GET);
-		}
 	}
 	
 	//make the mapping work!
