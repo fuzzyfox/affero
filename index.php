@@ -42,7 +42,7 @@
 	
 	//setup url mapping
 	$urls = array(
-		//'/affero/((index\.php)?(/?))' => 'Frontend',
+		'/affero/((index\.php/)?)api/((?P<format>(json|xml))?)(/?)(?P<method>[a-zA-Z0-9_]*)(/?)(.*)' => 'Api',
 		'/affero/((index\.php/)?)(?P<controller>[a-zA-Z0-9_]*)(/?)(?P<method>[a-zA-Z0-9_]*)(/?)(.*)' => 'Controller'
 	);
 	
@@ -103,7 +103,7 @@
 		{
 			//save segments for use in classes
 			//ensure we have a controller and method set (defaults if not)
-			$controller = (isset($args['controller'])&&($args['controller'] != null))?$args['controller']:'defacto';
+			$controller = (isset($args['controller'])&&($args['controller'] != null))?$args['controller']:'affero';
 			$method = (isset($args['method'])&&($args['method'] != null))?$args['method']:'index';
 			
 			//load the controller and its relevant method if posible
@@ -147,6 +147,20 @@
 			$this->GET($args);
 		}
 		
+	}
+	
+	/**
+	 * API
+	 *
+	 * This controlls all api calls
+	 */
+	class Api extends Controller
+	{
+		function GET($args)
+		{
+			print_r($args);
+			print_r($_GET);
+		}
 	}
 	
 	//make the mapping work!

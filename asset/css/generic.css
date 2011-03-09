@@ -112,6 +112,9 @@ input, textarea, select {
 	color : #82847f;
 	font : 13px "Trebuchet MS", Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
+input[disabled=disabled], select[disabled=disabled], textarea[disabled=disabled] {
+	background : #eee;
+}
 
 button, .button {
 	display : block;

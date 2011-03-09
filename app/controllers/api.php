@@ -35,6 +35,10 @@
 			{
 				$queryResource = $this->database->query("SELECT * FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE area.areaSlug = ".$this->database->escape($this->input->get('slug')));
 			}
+			elseif($this->input->get('timeReq') != false)
+			{
+				$queryResource = $this->database->query("SELECT * FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE area.timeRequirementId = ".$this->database->escape($this->input->get('timeReq')));
+			}
 			else
 			{
 				$queryResource = $this->database->query("SELECT * FROM area INNER JOIN timeRequirement ON area.timeRequirementID = timeRequirement.timeRequirementID WHERE area.areaParentSlug = 'root'");
@@ -92,6 +96,11 @@
 				}
 			}
 			
+			//prevent browsers caching the page
+			header('Cache-Control: no-cache, must-revalidate');
+			//set correct mime
+			header('Content-type: application/json');
+			//responde with data
 			echo json_encode($data);
 		}
 		
@@ -113,6 +122,11 @@
 				$data['time'] = $this->database->get('timeRequirement')->results;
 			}
 			
+			//prevent browsers caching the page
+			header('Cache-Control: no-cache, must-revalidate');
+			//set correct mime
+			header('Content-type: application/json');
+			//responde with data
 			echo json_encode($data);
 		}
 	}

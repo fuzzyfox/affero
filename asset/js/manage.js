@@ -87,7 +87,7 @@ areas = areas.getElementsByTagName('select');
 areas = areas[0];
 //add area to populate form with
 $c.addevent(areas, 'change', function(){
-   $c.ajax('GET', '<?php echo $this->site_url('api/area?slug='); ?>'+this.value, function(data){
+    $c.ajax('GET', '<?php echo $this->site_url('api/area?slug='); ?>'+this.value, function(data){
 	   data = JSON.parse(data);
 	   
 	   /*

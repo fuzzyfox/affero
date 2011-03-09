@@ -44,9 +44,10 @@
 	$config->invite = (object)array(
 		'replyto' => 'noreply@mozhunt.com',
 		'subject' => 'You\'ve been invited to use Affero',
-		'template' => '{sender} has invited you to join Affero\n\n
-to create your account visit:\n\n
-http://'.$config->site->url.'/backend/create?token={token}\n\n
+		'template' => '{sender} has invited you to join Affero. To create your account visit:
+
+http://'.$config->site->url.'/user/create?token={token}
+
 Look foward to seeing you soon!'
 	);
 	

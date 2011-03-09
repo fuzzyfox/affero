@@ -11,7 +11,7 @@ ErrorDocument 405 /affero/asset/error/405.html
 ErrorDocument 500 /affero/asset/error/500.html
 
 #set index.html as default page in a directory
-DirectoryIndex index.html index.php
+DirectoryIndex index.php index.html
 
 #setup url rewritting
 RewriteEngine on
