@@ -42,7 +42,7 @@
 	
 	//setup url mapping
 	$urls = array(
-		'/affero/(index\.php/)?api/((?P<format>(json|xml))?)(/?)(?P<method>[a-zA-Z0-9_]*)(/?(?P<query_string>(\?.+=.*)(\&.+=.*)?)?)' => 'Rest',
+		'/affero/(index\.php/)?api/((?P<format>(json|xml))?)(/?)(?P<method>[a-zA-Z0-9_]*)(/?(?P<query_string>(\?[a-zA-Z0-9_\-]+=.*)(\&[a-zA-Z0-9_\-]+=.*)?)?)' => 'Rest',
 		'/affero/((index\.php/)?)(?P<controller>[a-zA-Z0-9_]*)(/?)(?P<method>[a-zA-Z0-9_]*)(/?.*)' => 'Controller'
 	);
 	

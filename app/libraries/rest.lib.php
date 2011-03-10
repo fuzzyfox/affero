@@ -119,7 +119,7 @@
 				}
 			}
 			
-			$query = 'SELECT * FROM area INNER JOIN areaSkill ON area.areaSlug = areaSkill.areaSlug INNER JOIN skill ON skill.skillTag = areaSkill.skillTag';
+			$query = 'SELECT area.areaSlug FROM area INNER JOIN areaSkill ON area.areaSlug = areaSkill.areaSlug INNER JOIN skill ON skill.skillTag = areaSkill.skillTag';
 			
 			if($where == '')
 			{
@@ -147,6 +147,88 @@
 			}
 			
 			echo json_encode((object)$this->data);
+		}
+		
+		
+		private function get_test($args)
+		{
+			/*
+			 get constraints
+			*/
+			if(isset($args['query_string'])&&($args['query_string'] != null))
+			{
+				$constraints = explode('&', substr(urldecode($args['query_string']), 1));
+				foreach($constraints as $constraint)
+				{
+					$constraint = explode('=', $constraint, 2);
+					if(($this->input->clean_key($constraint[0]) != 'tag')&&(array_key_exists($this->input->clean_key($constraint[0]), $this->alias)))
+					{
+						$cleanConstraints[$this->alias[$this->input->clean_key($constraint[0])]] = $this->input->get($constraint[0]);
+					}
+					elseif($this->input->clean_key($constraint[0]) == 'tag')
+					{
+						$tags = explode('|', $this->input->get($constraint[0]));
+					}
+					else
+					{
+						header('HTTP/1.0 400 Bad Request');
+						die('Bad Request');
+					}
+				}
+				/*
+				 generate query string
+				*/
+				foreach($cleanConstraints as $field => $value)
+				{
+					if(preg_match('/area/i', $field))
+					{
+						$field = 'area.'.$field;
+					}
+					$where[] = $field.' = '.$this->database->escape($value);
+				}
+				$constraints = implode(' AND ', $where);
+				
+				foreach($tags as $tag)
+				{
+					$tagsf[] = 'skill.skillTag LIKE '.$this->database->escape($tag).' OR skill.skillName LIKE '.$this->database->escape($tag);
+				}
+				$tags = implode(' OR ', $tagsf);
+				
+				//run query
+				$query = $this->database->query('SELECT area.areaSlug FROM area INNER JOIN areaSkill ON areaSkill.areaSlug = area.areaSlug INNER JOIN skill ON areaSkill.skillTag = skill.skillTag WHERE '.$constraints.' OR '.$tags);
+				
+				//get slugs
+				$slugs = array();
+				while($area = mysql_fetch_array($query))
+				{
+					if(!in_array($area['areaSlug'], $slugs))
+					{
+						array_push($slugs, $area['areaSlug']);
+					}
+				}
+				
+				/*
+				 get area(s) data
+				*/
+				$data = array();
+				foreach($slugs as $slug)
+				{
+					$query = $this->database->query('SELECT * FROM area INNER JOIN timeRequirement ON timeRequirement.timeRequirementID = area.timeRequirementID WHERE area.areaSlug = '.$this->database->escape($slug).' LIMIT 1');
+					$tmp = mysql_fetch_array($query);
+					foreach($tmp as $key => $value)
+					{
+						//swap out keys into $area
+					}
+					//get tags
+					//cast area and tags to objects
+					//add area and tags to data
+				}
+				print_r($data);
+			}
+			
+			/*
+			 
+			*/
 		}
 	}
 	
