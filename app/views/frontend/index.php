@@ -84,7 +84,8 @@
 			</div>
 			
 			<script type="text/javascript">
-				var checks = document.getElementById('time').getElementsByTagName('tr')[0].getElementsByTagName('td');
+				var checks = document.getElementById('time').getElementsByTagName('tr')[0].getElementsByTagName('td'),
+				times = {};
 				$c.each(checks, function(key, value){
 					$c.addevent(value, 'click', function(){
 						var input = value.getElementsByTagName('input')[0];
@@ -92,18 +93,21 @@
 						{
 							input.setAttribute('checked', 'checked');
 							value.setAttribute('class', 'checked');
-							$c.ajax('GET', '<?php echo $this->site_url('api/area?time='); ?>'+input.value, function(data){
-								data = JSON.parse(data);
-								$c.each(data.area, function(k, v){
-									console.log(v);
-								});
-							});
+							times[] = input.value;
 						}
 						else
 						{
 							input.removeAttribute('checked');
 							value.removeAttribute('class');
+							for(var i = 0; i < times.length; i++)
+							{
+								if(times[i] = input.value)
+								{
+									delete times[i];
+								}
+							}
 						}
+						console.log(times);
 					});
 				});
 			</script>
