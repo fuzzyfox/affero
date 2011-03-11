@@ -101,6 +101,24 @@ var $c = $common = (function(){
 			};
 			xhr.open(method, url, true);
 			xhr.send();
+		},
+		stopevent : function(e){
+			if (e.stopPropagation)
+			{
+				e.stopPropagation();
+			}
+			else
+			{
+				e.cancelBubble = true;
+			}
+			if (e.preventDefault)
+			{
+				e.preventDefault();
+			}
+			else
+			{
+				e.returnValue = false;
+			}
 		}
 	};
 	
