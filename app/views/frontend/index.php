@@ -49,7 +49,6 @@
 				query = [];
 				$c.each(checks, function(key, value){
 					$c.addevent(value, 'click', function(){
-						console.log(value.value);
 						if(value.getAttribute('checked') != 'checked')
 						{
 							value.setAttribute('checked', 'checked');
@@ -71,18 +70,49 @@
 					//prevent form submit
 					$c.stopevent(e);
 					
+					//empty the results section
+					document.getElementById('recomendations').innerHTML = '';
+					
 					if(document.getElementById('tags').value != null)
 					{
-						query.push(document.getElementById('tags').value.split(/, */).join('|'));
-						console.log(query);
+						query['tag'] = document.getElementById('tags').value.split(/, */).join('|');
 					}
 					
-					for(var i = 0; i < times.length; i++)
+					if(times.length > 0)
 					{
-						$c.ajax('GET', '<?php echo $this->site_url('api/json/area'); ?>'+query, function(data){
+						for(var i = 0; i < times.length; i++)
+						{
+							$c.ajax('GET', '<?php echo $this->site_url('api/json/area?timeID='); ?>'+times[i]+((query['tag'] != '')?'&tag='+query['tag']:''), function(data){
+								data = JSON.parse(data);
+								if(data.length > 0)
+								{
+									$c.each(data, function(key, value){
+										var tags = [];
+										$c.each(value.tag, function(k, v){
+											tags.push(v.name);
+										});
+										document.getElementById('recomendations').innerHTML += '<div id="'+value.slug+'" class="area"><h2><a href="<?php echo $this->site_url('manage/out/'); ?>'+value.url+'">'+value.name+'</a></h2><p class="time"><strong>Time Required:</strong> '+value.timeShort+'</p><div class="description">'+value.description+'</div><div class="tags"><strong>Tags: </strong>'+tags.join(', ')+'</div></div>';
+									});
+								}
+							});
+						};
+					}
+					else
+					{
+						$c.ajax('GET', '<?php echo $this->site_url('api/json/area'); ?>'+((query['tag'] != '')?'?tag='+query['tag']:''), function(data){
 							data = JSON.parse(data);
+							if(data.length > 0)
+							{
+								$c.each(data, function(key, value){
+									var tags = [];
+									$c.each(value.tag, function(k, v){
+										tags.push(v.name);
+									});
+									document.getElementById('recomendations').innerHTML += '<div id="'+value.slug+'" class="area"><h2><a href="<?php echo $this->site_url('manage/out/'); ?>'+value.url+'">'+value.name+'</a></h2><p class="time"><strong>Time Required:</strong> '+value.timeShort+'</p><div class="description">'+value.description+'</div><div class="tags"><strong>Tags: </strong>'+tags.join(', ')+'</div></div>';
+								});
+							}
 						});
-					};
+					}
 				});
 			</script>
 		</body>

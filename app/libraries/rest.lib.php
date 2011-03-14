@@ -56,7 +56,7 @@
 						//
 					break;
 					case 'json':
-						$this->respond(200, json_encode($this->data), 'application/json');
+						//$this->respond(200, json_encode($this->data), 'application/json');
 					break;
 					default:
 						//do nothing
@@ -139,7 +139,7 @@
 				}
 				
 				//run query
-				$query = $this->database->query('SELECT area.areaSlug FROM area'.(($tags != '')?' INNER JOIN areaSkill ON areaSkill.areaSlug = area.areaSlug INNER JOIN skill ON areaSkill.skillTag = skill.skillTag':null).((($constraints != '')||($tags != ''))?' WHERE ':'').(($constraints != '')?$constraints.(($tags != '')?' AND (':null):null).(($tags != '')?$tags.')':null));
+				$query = $this->database->query('SELECT area.areaSlug FROM area'.(($tags != '')?' INNER JOIN areaSkill ON areaSkill.areaSlug = area.areaSlug INNER JOIN skill ON areaSkill.skillTag = skill.skillTag':null).((($constraints != '')||($tags != ''))?' WHERE ':'').(($constraints != '')?$constraints.(($tags != '')?' AND (':null):null).(($tags != '')?$tags.(($constraints != '')?$constraints.(($tags != '')?')':null):null):null));
 				
 				//get slugs
 				$slugs = array();
@@ -237,6 +237,29 @@
 				}
 				
 				$this->data = $data;
+			}
+		}
+		
+		private function get_time($args)
+		{
+			if(isset($args['query_string'])&&($args['query_string'] != null))
+			{
+				$constraints = explode('&', substr(urldecode($args['query_string']), 1));
+				foreach($constraints as $constraint)
+				{
+					$constraint = explode('=', $constraint, 2);
+					if(array_key_exists($this->input->clean_key($constraint[0]), $this->alias))
+					{
+						$cleanConstraints[$this->alias[$this->input->clean_key($constraint[0])]] = $this->input->get($constraint[0]);
+					}
+					else
+					{
+						header('HTTP/1.0 400 Bad Request');
+						die('Bad Request');
+					}
+				}
+				
+				print_r($this->database->get('timeRequirement', $cleanConstraints));
 			}
 		}
 	}

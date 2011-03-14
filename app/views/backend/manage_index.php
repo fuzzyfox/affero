@@ -117,18 +117,18 @@
 						/*
 						 edit area
 						*/
-						document.getElementById('area-edit-name').value = data.area[0].areaName;
-						document.getElementById('area-edit-slug').value = data.area[0].areaSlug;
-						document.getElementById('area-edit').value = data.area[0].areaSlug;
-						document.getElementById('area-edit-url').value = data.area[0].areaURL;
+						document.getElementById('area-edit-name').value = data[0].name;
+						document.getElementById('area-edit-slug').value = data[0].slug;
+						document.getElementById('area-edit').value = data[0].slug;
+						document.getElementById('area-edit-url').value = data[0].url;
 						
-						document.getElementById('area-edit-description').innerHTML = data.area[0].areaDescription;
+						document.getElementById('area-edit-description').innerHTML = data[0].description;
 						
 						//set parent
 						var parent = document.getElementById('area-edit-parent');
 						parent = parent.getElementsByTagName('option');
 						$c.each(parent, function(key, option){
-							if(option.value == data.area[0].areaParentSlug)
+							if(option.value == data[0].parent)
 							{
 								option.setAttribute('selected', 'selected');
 							}
@@ -139,7 +139,24 @@
 						});
 						
 						//if has no parent but has children then hide that option
-						if(typeof(data.area[0].children) != 'undefined')
+						$c.ajax('GET', '<?php echo $this->site_url('api/area?parent='); ?>'+data[0].slug, function(d){
+							d = JSON.parse(d);
+							if(d.length > 0)
+							{
+								//hide select
+								document.getElementById('area-edit-parent').style.display = 'none';
+								//hide label
+								document.getElementById('area-edit-parent').previousSibling.previousSibling.previousSibling.previousSibling.style.display = 'none';
+							}
+							else
+							{
+								//show select
+								document.getElementById('area-edit-parent').style.display = 'block';
+								//show label
+								document.getElementById('area-edit-parent').previousSibling.previousSibling.previousSibling.previousSibling.style.display = 'block';
+							}
+						});
+						/*if(typeof(data[0].parent) != 'undefined')
 						{
 							//hide select
 							document.getElementById('area-edit-parent').style.display = 'none';
@@ -152,14 +169,14 @@
 							document.getElementById('area-edit-parent').style.display = 'block';
 							//show label
 							document.getElementById('area-edit-parent').previousSibling.previousSibling.previousSibling.previousSibling.style.display = 'block';
-						}
+						}*/
 						
 						//set tags
-						if(typeof(data.area[0].tags) != 'undefined')
+						if(typeof(data[0].tag) != 'undefined')
 						{
 							var tags = [];
-							$c.each(data.area[0].tags, function(key, value){
-								tags.push(value.skillName);
+							$c.each(data[0].tag, function(key, value){
+								tags.push(value.name);
 							});
 							document.getElementById('area-edit-tags').value = tags.join(', ');
 						}
@@ -172,7 +189,7 @@
 						var time = document.getElementById('area-edit-time');
 						time = time.getElementsByTagName('option');
 						$c.each(time, function(key, option){
-							if(option.value == data.area[0].timeRequirementID)
+							if(option.value == data[0].timeID)
 							{
 								option.setAttribute('selected', 'selected');
 							}
@@ -185,8 +202,8 @@
 						/*
 						 delete area
 						*/
-						document.getElementById('area-delete-name').innerHTML = data.area[0].areaName;
-						document.getElementById('area-delete').value = data.area[0].areaSlug;
+						document.getElementById('area-delete-name').innerHTML = data[0].name;
+						document.getElementById('area-delete').value = data[0].slug;
 					});
 				});
 				
@@ -198,7 +215,7 @@
 				times = times[0];
 				//add area to populate form with
 				$c.addevent(times, 'change', function(){
-					$c.ajax('GET', '<?php echo $this->site_url('api/timeRequirement?id='); ?>'+this.value, function(data){
+					$c.ajax('GET', '<?php echo $this->site_url('api/time?timeID='); ?>'+this.value, function(data){
 						data = JSON.parse(data);
 						document.getElementById('time-edit-short').value = $c.trim(times.options[times.selectedIndex].innerHTML);
 						document.getElementById('time-edit-long').innerHTML = data.time[0].timeRequirementLongDescription;
