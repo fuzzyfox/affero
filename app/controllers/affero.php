@@ -25,7 +25,8 @@
 		
 		function index()
 		{
-			$this->view->load('frontend/index');
+			$data['timeRequirements'] = $this->database->get('timeRequirement', null, 'timeRequirementID, timeRequirementShortDescription');
+			$this->view->load('frontend/index', $data);
 		}
 		
 	}

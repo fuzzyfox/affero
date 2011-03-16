@@ -22,14 +22,14 @@
 			<div class="section">
 				<div class="article">
 					<form action="#" method="post" id="conditions">
-						<label for="time">Time Available</label>
+						<label for="time">Time Available <small>Tick all that apply</small></label>
 						<div id="time">
-							<p><input type="checkbox" name="time[]" value="1"> A Few Minutes</p>
-							<p><input type="checkbox" name="time[]" value="2"> A Few Hours</p>
-							<p><input type="checkbox" name="time[]" value="3"> A Few Days</p>
-							<p><input type="checkbox" name="time[]" value="4"> A Few Weeks Or More</p>
+							<?php foreach($timeRequirements->results as $timeRequirement): ?>
+							<p><input type="checkbox" name="time[]" value="<?php echo $timeRequirement->timeRequirementID?>"> <?php echo $timeRequirement->timeRequirementShortDescription; ?></p>
+							<?php endforeach; ?>
 						</div>
 						<label for="tags">Keywords</label>
+						<p></p>
 						<input type="" name="tags" id="tags">
 						<div class="controls">
 							<button type="submit">go</button>

@@ -218,7 +218,7 @@
 					$c.ajax('GET', '<?php echo $this->site_url('api/time?timeID='); ?>'+this.value, function(data){
 						data = JSON.parse(data);
 						document.getElementById('time-edit-short').value = $c.trim(times.options[times.selectedIndex].innerHTML);
-						document.getElementById('time-edit-long').innerHTML = data.time[0].timeRequirementLongDescription;
+						document.getElementById('time-edit-long').innerHTML = data[0].timeLong;
 						document.getElementById('time-edit').value = times.value;
 						document.getElementById('time-delete-short').innerHTML = $c.trim(times.options[times.selectedIndex].innerHTML);
 						document.getElementById('time-delete').value = times.value;

@@ -56,7 +56,7 @@
 						//
 					break;
 					case 'json':
-						//$this->respond(200, json_encode($this->data), 'application/json');
+						$this->respond(200, json_encode($this->data), 'application/json');
 					break;
 					default:
 						//do nothing
@@ -139,8 +139,7 @@
 				}
 				
 				//run query
-				$query = $this->database->query('SELECT area.areaSlug FROM area'.(($tags != '')?' INNER JOIN areaSkill ON areaSkill.areaSlug = area.areaSlug INNER JOIN skill ON areaSkill.skillTag = skill.skillTag':null).((($constraints != '')||($tags != ''))?' WHERE ':'').(($constraints != '')?$constraints.(($tags != '')?' AND (':null):null).(($tags != '')?$tags.(($constraints != '')?$constraints.(($tags != '')?')':null):null):null));
-				
+				$query = $this->database->query('SELECT area.areaSlug FROM area'.(($tags != '')?' INNER JOIN areaSkill ON areaSkill.areaSlug = area.areaSlug INNER JOIN skill ON areaSkill.skillTag = skill.skillTag':null).((($constraints != '')||($tags != ''))?' WHERE ':'').(($constraints != '')?$constraints.(($tags != '')?' AND (':null):null).(($tags != '')?$tags.(($constraints != '')?(($tags != '')?')':null):null):null));
 				//get slugs
 				$slugs = array();
 				while($area = mysql_fetch_array($query))
@@ -259,7 +258,45 @@
 					}
 				}
 				
-				print_r($this->database->get('timeRequirement', $cleanConstraints));
+				$times = (array)$this->database->get('timeRequirement', $cleanConstraints)->results;
+				
+				$alias = $this->alias;
+				unset($alias['tag']);
+				$alias = array_flip($alias);
+				$tmp = array();
+				$data = array();
+				
+				foreach($times as $time)
+				{
+					foreach($time as $key => $value)
+					{
+						$tmp[$alias[$key]] = $value;
+					}
+					array_push($data, $tmp);
+				}
+				
+				$this->data = $data;
+			}
+			else
+			{
+				$times = (array)$this->database->get('timeRequirement')->results;
+				
+				$alias = $this->alias;
+				unset($alias['tag']);
+				$alias = array_flip($alias);
+				$tmp = array();
+				$data = array();
+				
+				foreach($times as $time)
+				{
+					foreach($time as $key => $value)
+					{
+						$tmp[$alias[$key]] = $value;
+					}
+					array_push($data, $tmp);
+				}
+				
+				$this->data = $data;
 			}
 		}
 	}
