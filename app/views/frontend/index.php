@@ -29,7 +29,7 @@
 							<?php endforeach; ?>
 						</div>
 						<label for="tags">Keywords</label>
-						<p></p>
+						<p>Any skills, interests, or specific products! Just enter them bellow (comma seperated)</p>
 						<input type="" name="tags" id="tags">
 						<div class="controls">
 							<button type="submit">go</button>
@@ -91,7 +91,7 @@
 										$c.each(value.tag, function(k, v){
 											tags.push(v.name);
 										});
-										document.getElementById('recomendations').innerHTML += '<div id="'+value.slug+'" class="area"><h2><a href="<?php echo $this->site_url('manage/out/'); ?>'+value.url+'">'+value.name+'</a></h2><p class="time"><strong>Time Required:</strong> '+value.timeShort+'</p><div class="description">'+value.description+'</div><div class="tags"><strong>Tags: </strong>'+tags.join(', ')+'</div></div>';
+										document.getElementById('recomendations').innerHTML += '<div id="'+value.slug+'" class="area"><h2><a href="<?php echo $this->site_url('affero/out/'); ?>'+value.slug+'/'+value.url+'">'+value.name+'</a></h2><p class="time"><strong>Time Required:</strong> '+value.timeShort+'</p><div class="description">'+value.description+'</div><div class="tags"><strong>Tags: </strong>'+tags.join(', ')+'</div></div>';
 									});
 								}
 							});
@@ -108,7 +108,7 @@
 									$c.each(value.tag, function(k, v){
 										tags.push(v.name);
 									});
-									document.getElementById('recomendations').innerHTML += '<div id="'+value.slug+'" class="area"><h2><a href="<?php echo $this->site_url('manage/out/'); ?>'+value.url+'">'+value.name+'</a></h2><p class="time"><strong>Time Required:</strong> '+value.timeShort+'</p><div class="description">'+value.description+'</div><div class="tags"><strong>Tags: </strong>'+tags.join(', ')+'</div></div>';
+									document.getElementById('recomendations').innerHTML += '<div id="'+value.slug+'" class="area"><h2><a href="<?php echo $this->site_url('affero/out/'); ?>'+value.slug+'/'+value.url+'">'+value.name+'</a></h2><p class="time"><strong>Time Required:</strong> '+value.timeShort+'</p><div class="description">'+value.description+'</div><div class="tags"><strong>Tags: </strong>'+tags.join(', ')+'</div></div>';
 								});
 							}
 						});

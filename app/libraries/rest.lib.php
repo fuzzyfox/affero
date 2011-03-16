@@ -41,6 +41,15 @@
 			)
 		);
 		
+		/**
+		 * GET
+		 * 
+		 * Responds to all get requests to the api and routes calls off to the
+		 * relevant functions to produce a response. It is also in charge of
+		 * formatting the response into either XML or JSON.
+		 * 
+		 * @param array $args the aguments supplied by gluephp about the url
+		 */
 		function GET($args)
 		{
 			//set the format based on url OR fall back to json
@@ -73,6 +82,16 @@
 			//print_r($_GET);
 		}
 		
+		/**
+		 * respond
+		 * 
+		 * This is used to send the response by setting the headers, and echoing
+		 * the content to the calling body.
+		 *
+		 * @param int $status the relevant http status code
+		 * @param string $data the data to respond with
+		 * @param string $mime the mime type of the content we are responding with
+		 */
 		private function respond($status, $data, $mime)
 		{
 			header('HTTP/1.0 '.$status);
@@ -80,6 +99,14 @@
 			echo $data;
 		}
 		
+		/**
+		 * get_area
+		 *
+		 * Spits out all the data relating to areas based on constraints passed
+		 * via the url IF required.
+		 *
+		 * @param array $args the aguments supplied by gluephp about the url
+		 */
 		private function get_area($args)
 		{
 			/*
@@ -239,6 +266,14 @@
 			}
 		}
 		
+		/**
+		 * get_time
+		 *
+		 * Responds with data about time requirements based on constraints passed
+		 * via the url IF required.
+		 *
+		 * @param array $args the aguments supplied by gluephp about the url
+		 */
 		private function get_time($args)
 		{
 			if(isset($args['query_string'])&&($args['query_string'] != null))

@@ -156,20 +156,6 @@
 								document.getElementById('area-edit-parent').previousSibling.previousSibling.previousSibling.previousSibling.style.display = 'block';
 							}
 						});
-						/*if(typeof(data[0].parent) != 'undefined')
-						{
-							//hide select
-							document.getElementById('area-edit-parent').style.display = 'none';
-							//hide label
-							document.getElementById('area-edit-parent').previousSibling.previousSibling.previousSibling.previousSibling.style.display = 'none';
-						}
-						else
-						{
-							//show select
-							document.getElementById('area-edit-parent').style.display = 'block';
-							//show label
-							document.getElementById('area-edit-parent').previousSibling.previousSibling.previousSibling.previousSibling.style.display = 'block';
-						}*/
 						
 						//set tags
 						if(typeof(data[0].tag) != 'undefined')
