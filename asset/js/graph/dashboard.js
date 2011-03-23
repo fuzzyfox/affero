@@ -95,7 +95,6 @@ var $g = (function($c){
 			*/
 			var r = {},
 			i = 0,
-			paper = {},
 			pie = {};
 			/*
 			 deal with plotting the graph
@@ -116,6 +115,7 @@ var $g = (function($c){
 			//plot graph
 			pie = r.g.piechart(150, 170, 100, graphdata, ((typeof legenddata != 'undefined')?{legend: legenddata, legendpos: "east"}:null));
 			
+			//effects
 			pie.hover(function () {
 				this.sector.stop();
 				this.sector.scale(1.1, 1.1, this.cx, this.cy);
@@ -132,8 +132,66 @@ var $g = (function($c){
 				}
 			});
 			
-			//enpty the default legend
+			//empty the default legend
 			document.getElementById(legend).innerHTML = '<p>See graph.</p>'
+		},
+		
+		line : function(canvas, xdata, ydata, legend, legenddata){
+			/*
+			 declare variables
+			*/
+			var r = {},
+			i = 0,
+			paper = {},
+			lines = {};
+			
+			/*
+			 deal with drawing the graph
+			*/
+			//clear canvas
+			document.getElementById(canvas).innerHTML = '';
+			
+			//init raphael.js
+			r = window.Raphael(canvas, 400, 340);
+			
+			//plot lines
+			lines = r.g.linechart(25, 10, 340, 320, xdata, ydata, {axis: '0 0 0 1', symbol: "o", smooth: true});
+			
+			//effects
+			lines.hoverColumn(function(){
+				this.tags = r.set();
+				for (var i = 0, ii = this.y.length; i < ii; i++) {
+					this.tags.push(r.g.tag(this.x, this.y[i], this.values[i], 160, 10).insertBefore(this).attr([{fill: "#444", stroke: false}, {fill: '#fff'}]));
+				}
+			}, function () {
+				this.tags && this.tags.remove();
+			});
+			lines.symbols.attr({r: 3});
+			
+			/*
+			 deal with legend
+			*/
+			if(typeof legenddata != 'undefined')
+			{
+				//empty the legend
+				document.getElementById(legend).innerHTML = '';
+				//get colors for legend
+				lines = document.getElementById(canvas).getElementsByTagName('svg')[0].getElementsByTagName('path');
+				//for each of the first set of bars lets grab the colours
+				for(i = 0; i < legenddata.length; i++)
+				{
+					//create a container
+					document.getElementById(legend).innerHTML += '<div id="bar-'+i+'"></div>';
+					//start drawing the bar graph icon
+					paper = Raphael('line-'+i, 30, 30);
+					//bars[i+2] to avoid using the axis for colours
+					paper.path('M3.625,25.062c-0.539-0.115-0.885-0.646-0.77-1.187l0,0L6.51,6.584l2.267,9.259l1.923-5.188l3.581,3.741l3.883-13.103l2.934,11.734l1.96-1.509l5.271,11.74c0.226,0.504,0,1.095-0.505,1.321l0,0c-0.505,0.227-1.096,0-1.322-0.504l0,0l-4.23-9.428l-2.374,1.826l-1.896-7.596l-2.783,9.393l-3.754-3.924L8.386,22.66l-1.731-7.083l-1.843,8.711c-0.101,0.472-0.515,0.794-0.979,0.794l0,0C3.765,25.083,3.695,25.076,3.625,25.062L3.625,25.062z').attr({fill:lines[i+1].getAttribute('stroke'), stroke:'none'});
+					//append the legend data
+					document.getElementById('line-'+i).innerHTML += '<p>'+legenddata[i]+'</p>';
+					//float the icon right
+					document.getElementById('line-'+i).getElementsByTagName('svg')[0].setAttribute('class', 'right');
+				}
+			}
 		}
 	};
 	

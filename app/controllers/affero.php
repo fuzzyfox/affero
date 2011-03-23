@@ -52,7 +52,7 @@
 			$metriclocale = $metric;
 			
 			//check if we only need to update a row or insert one for metric
-			$metricchecks = $this->database->get('metric', $metric, 'metricDate', 1);
+			$metricchecks = $this->database->get('metric', $metric, 'metricQty', 1);
 			if($metricchecks->num_rows == 1)
 			{
 				/*
@@ -78,7 +78,7 @@
 			$metriclocale['localeID'] = strtolower($localeID[0]);
 			
 			//check if we need to update metric locale or just insert a new row
-			$metriclocalechecks = $this->database->get('metricLocale', $metriclocale, 'metricDate', 1);
+			$metriclocalechecks = $this->database->get('metricLocale', $metriclocale, 'metricLocaleQty', 1);
 			if($metriclocalechecks->num_rows == 1)
 			{
 				/*

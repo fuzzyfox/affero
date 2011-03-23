@@ -93,7 +93,9 @@
 			$this->stylesheet('generic');
 			$this->script('common');
 			//page title
-			echo "<title>$title</title>\r\n<!-- end default head content -->";
+			echo "<title>$title</title>\r\n<!-- end default head content -->\r\n";
+			//base url (allows for easier url writting)
+			echo "<base href=\"{$this->site_url()}\">";
 		}
 		
 		/**

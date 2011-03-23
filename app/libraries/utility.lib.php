@@ -74,7 +74,7 @@
 		 * @param string $localtion the page/file on site to point to
 		 * @return string the url to that file
 		 */
-		function site_url($localtion)
+		function site_url($localtion = '')
 		{
 			return 'http'.((isset($_SERVER['HTTPS']))?'s':'').'://'.$this->config->site->url.'/'.$localtion;
 		}
