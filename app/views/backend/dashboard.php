@@ -22,13 +22,21 @@
 			<div class="section">
 				<div class="article">
 					<h2>Dashboard</h2>
-					<div class="section left" id="graph" style="width:400px;height:340px">
-						<p class='caution'>Loading Graph...</p>
+					<div class="section left">
+						<h3>Graph</h3>
+						<div id="graph" style="width:400px;height:340px">
+							<p class='caution'>Loading Graph...</p>
+						</div>
 					</div>
-					<div class="section aside left" id="legend">
-						<p class='caution'>Loading Legend...</p>
+					<div class="section aside left">
+						<h3>Legend</h3>
+						<div id="legend">
+							<p class='caution'>Loading Legend...</p>
+						</div>
 					</div>
-					<div class="section aside left"></div>
+					<div class="section aside left">
+						<h3>Options</h3>
+					</div>
 					<div class="clear">&nbsp;</div>
 				</div>
 			</div>
@@ -38,7 +46,16 @@
 			</div>
 			
 			<script type="text/javascript">
+				var data, tmp, x = [];
+				$c.ajax('GET', 'http://localhost/affero/api/metric', function(d){
+					data = JSON.parse(d);
+				});
 				
+				for(i = 0; i < data.length; i++)
+				{
+					tmp = [];
+					tmp.push(['']);
+				}
 			</script>
 		</body>
 	</html>

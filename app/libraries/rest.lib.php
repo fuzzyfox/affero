@@ -35,6 +35,10 @@
 			'timeID' => 'timeRequirementID',
 			'timeShort' => 'timeRequirementShortDescription',
 			'timeLong' => 'timeRequirementLongDescription',
+			'date' => 'metricDate',
+			'qty' => 'metricQty',
+			'locale' => 'localeID',
+			'localeQty' => 'metricLocaleQty',
 			'tag' => array(
 				'slug' => 'skillTag',
 				'name' => 'skillName'
@@ -315,6 +319,144 @@
 			else
 			{
 				$times = (array)$this->database->get('timeRequirement')->results;
+				
+				$alias = $this->alias;
+				unset($alias['tag']);
+				$alias = array_flip($alias);
+				$tmp = array();
+				$data = array();
+				
+				foreach($times as $time)
+				{
+					foreach($time as $key => $value)
+					{
+						$tmp[$alias[$key]] = $value;
+					}
+					array_push($data, $tmp);
+				}
+				
+				$this->data = $data;
+			}
+		}
+		
+		/**
+		 * get_metric
+		 *
+		 * Gets the metrics data and exposes it for the read only api
+		 *
+		 * @param array $args the aguments supplied by gluephp about the url
+		 */
+		private function get_metric($args)
+		{
+			
+			if(isset($args['query_string'])&&($args['query_string'] != null))
+			{
+				$constraints = explode('&', substr(urldecode($args['query_string']), 1));
+				foreach($constraints as $constraint)
+				{
+					$constraint = explode('=', $constraint, 2);
+					if(array_key_exists($this->input->clean_key($constraint[0]), $this->alias))
+					{
+						$cleanConstraints[$this->alias[$this->input->clean_key($constraint[0])]] = $this->input->get($constraint[0]);
+					}
+					else
+					{
+						header('HTTP/1.0 400 Bad Request');
+						die('Bad Request');
+					}
+				}
+				
+				$times = (array)$this->database->get('metric', $cleanConstraints)->results;
+				
+				$alias = $this->alias;
+				unset($alias['tag']);
+				$alias = array_flip($alias);
+				$tmp = array();
+				$data = array();
+				
+				foreach($times as $time)
+				{
+					foreach($time as $key => $value)
+					{
+						$tmp[$alias[$key]] = $value;
+					}
+					array_push($data, $tmp);
+				}
+				
+				$this->data = $data;
+			}
+			else
+			{
+				$times = (array)$this->database->get('metric')->results;
+				
+				$alias = $this->alias;
+				unset($alias['tag']);
+				$alias = array_flip($alias);
+				$tmp = array();
+				$data = array();
+				
+				foreach($times as $time)
+				{
+					foreach($time as $key => $value)
+					{
+						$tmp[$alias[$key]] = $value;
+					}
+					array_push($data, $tmp);
+				}
+				
+				$this->data = $data;
+			}
+		}
+		
+		/**
+		 * get_locale
+		 *
+		 * Gets the locale metric data and exposes it for the read only api
+		 *
+		 * @param array $args the aguments supplied by gluephp about the url
+		 */
+		private function get_locale($args)
+		{
+			
+			if(isset($args['query_string'])&&($args['query_string'] != null))
+			{
+				$constraints = explode('&', substr(urldecode($args['query_string']), 1));
+				foreach($constraints as $constraint)
+				{
+					$constraint = explode('=', $constraint, 2);
+					if(array_key_exists($this->input->clean_key($constraint[0]), $this->alias))
+					{
+						$cleanConstraints[$this->alias[$this->input->clean_key($constraint[0])]] = $this->input->get($constraint[0]);
+					}
+					else
+					{
+						header('HTTP/1.0 400 Bad Request');
+						die('Bad Request');
+					}
+				}
+				
+				$times = (array)$this->database->get('metricLocale', $cleanConstraints)->results;
+				
+				$alias = $this->alias;
+				unset($alias['tag']);
+				$alias = array_flip($alias);
+				$tmp = array();
+				$data = array();
+				
+				foreach($times as $time)
+				{
+					foreach($time as $key => $value)
+					{
+						$tmp[$alias[$key]] = $value;
+					}
+					array_push($data, $tmp);
+				}
+				
+				$this->data = $data;
+			}
+			else
+			{
+				$times = (array)$this->database->get('metricLocale')->results;
 				
 				$alias = $this->alias;
 				unset($alias['tag']);
