@@ -50,11 +50,21 @@ var $g = (function($c){
 			r.g.axis(25, 320, 280, 0, maxHeight, 10, 1);
 			
 			//create the x-axis
-			for(i = 0; i < xaxis.length; i++)
+			if((typeof xaxis != 'undefined')&&(xaxis !== null))
 			{
-				tmp.push(xaxis[i], ' ');
+				for(i = 0; i < xaxis.length; i++)
+				{
+					tmp.push(xaxis[i], ' ');
+				}
 			}
-			r.g.axis(25, 320, 339, null, null, 6, 0, tmp, '.', 0);
+			else
+			{
+				for(i = 0; i < graphdata.length; i++)
+				{
+					tmp.push(' ');
+				}
+			}
+			r.g.axis(25, 320, 350, null, null, 6, 0, tmp, '.', 0);
 			
 			//plot graph
 			r.g.barchart(5, 20, 380, 320, graphdata).hover(function(){

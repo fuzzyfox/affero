@@ -143,3 +143,16 @@ var $c = $common = (function(){
 	
 	return $;
 })();
+
+/* array prototype to find out if something in an array */
+Array.prototype.inArray = function(search){
+	for(var i = 0; i < this.length; i++)
+	{
+		if(this[i] === search)
+		{
+			return true;
+		}
+	}
+	
+	return false;
+};

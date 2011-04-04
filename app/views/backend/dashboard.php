@@ -46,16 +46,23 @@
 			</div>
 			
 			<script type="text/javascript">
-				var data, tmp, x = [];
+				var data = [], xaxis = [], x = [];
 				$c.ajax('GET', 'http://localhost/affero/api/metric', function(d){
 					data = JSON.parse(d);
+					
+					console.log(data);
+					
+					for(i = 0; i < data.length; i++)
+					{
+						if(!xaxis.inArray(data[i]['slug']))
+						{
+							xaxis.push(data[i]['slug']);
+							x.push(data[i]['qty']);
+						}
+					}
+					
+					$g.bar('graph', x, null, 'legend', xaxis);
 				});
-				
-				for(i = 0; i < data.length; i++)
-				{
-					tmp = [];
-					tmp.push(['']);
-				}
 			</script>
 		</body>
 	</html>
