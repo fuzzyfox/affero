@@ -435,7 +435,7 @@
 					}
 				}
 				
-				$times = (array)$this->database->get('metricLocale', $cleanConstraints)->results;
+				$times = (array)$this->database->get('metricLocale', $cleanConstraints, '*', null, 'localeID')->results;
 				
 				$alias = $this->alias;
 				unset($alias['tag']);

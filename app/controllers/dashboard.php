@@ -30,7 +30,8 @@
 		 */
 		function index()
 		{
-			$this->view->load('backend/dashboard');
+			$data['areas'] = $this->database->get('area', null, 'areaSlug')->results;
+			$this->view->load('backend/dashboard', $data);
 		}
 		
 	}

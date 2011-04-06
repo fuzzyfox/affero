@@ -64,7 +64,7 @@ var $g = (function($c){
 					tmp.push(' ');
 				}
 			}
-			r.g.axis(25, 320, 350, null, null, ((xaxis !== null)?xaxis.length:1), 0, tmp, '.', 0);
+			r.g.axis(25, 320, 350, null, null, ((xaxis !== null)?xaxis.length*2:1), 0, tmp, '.', 0);
 			
 			//plot graph
 			r.g.barchart(25, 20, 350, 320, graphdata).hover(function(){
