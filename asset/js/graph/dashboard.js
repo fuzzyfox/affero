@@ -64,10 +64,10 @@ var $g = (function($c){
 					tmp.push(' ');
 				}
 			}
-			r.g.axis(25, 320, 350, null, null, 6, 0, tmp, '.', 0);
+			r.g.axis(25, 320, 350, null, null, ((xaxis !== null)?xaxis.length:1), 0, tmp, '.', 0);
 			
 			//plot graph
-			r.g.barchart(5, 20, 380, 320, graphdata).hover(function(){
+			r.g.barchart(25, 20, 350, 320, graphdata).hover(function(){
 				this.flag = r.g.popup(this.bar.x, this.bar.y, this.bar.value || '0').insertBefore(this);
 			}, function(){
 				this.flag.animate({opacity: 0}, 300, function(){this.remove();});
