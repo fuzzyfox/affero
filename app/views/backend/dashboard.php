@@ -28,7 +28,7 @@
 							<p class='caution'>Loading Graph...</p>
 						</div>
 					</div>
-					<div class="section aside left">
+					<div class="section aside left" style="max-height : 200px;overflow : auto;">
 						<h3>Legend</h3>
 						<div id="legend">
 							<p class='caution'>Loading Legend...</p>
@@ -36,6 +36,7 @@
 					</div>
 					<div class="section aside left">
 						<h3>Options</h3>
+						
 					</div>
 					<div class="clear">&nbsp;</div>
 				</div>
@@ -46,23 +47,60 @@
 			</div>
 			
 			<script type="text/javascript">
-				var data = [], xaxis = [], x = [];
-				$c.ajax('GET', 'http://localhost/affero/api/metric', function(d){
-					data = JSON.parse(d);
-					
-					console.log(data);
-					
-					for(i = 0; i < data.length; i++)
-					{
-						if(!xaxis.inArray(data[i]['slug']))
+				var data = [], xaxis = [], graphdata = [], legenddata = [], idx = 0;
+				
+				/**
+				 * function graph total metrics
+				 */
+				function totalMetrics()
+				{
+					$c.ajax('GET', 'http://localhost/affero/api/metric', function(d){
+						data = JSON.parse(d);
+						
+						console.log(data);
+						
+						for(i = 0; i < data.length; i++)
 						{
-							xaxis.push(data[i]['slug']);
-							x.push(data[i]['qty']);
+							if(!legenddata.inArray(data[i]['slug']))
+							{
+								legenddata.push(data[i]['slug']);
+								graphdata.push(parseInt(data[i]['qty']));
+							}
+							else
+							{
+								idx = legenddata.indexOf(data[i]['slug']);
+								graphdata[idx] += parseInt(data[i]['qty']);
+							}
 						}
-					}
-					
-					$g.bar('graph', x, null, 'legend', xaxis);
-				});
+						
+						$g.bar('graph', graphdata, null, 'legend', legenddata);
+					});
+				};
+				
+				function specificMetrics(slug)
+				{
+					$c.ajax('GET', 'http://localhost/affero/api/metric?slug='+slug, function(d){
+						data = JSON.parse(d);
+						
+						console.log(data);
+						
+						for(i = 0; i < data.length; i++)
+						{
+							if(!legenddata.inArray(data[i]['date']))
+							{
+								legenddata.push(data[i]['date']);
+								graphdata.push(parseInt(data[i]['qty']));
+							}
+							else
+							{
+								idx = legenddata.indexOf(data[i]['date']);
+								graphdata[idx] += parseInt(data[i]['qty']);
+							}
+						}
+						
+						$g.bar('graph', graphdata, xaxis, 'legend', legenddata);
+					});
+				};
 			</script>
 		</body>
 	</html>
