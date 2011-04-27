@@ -34,7 +34,7 @@
 			//set the database host (normally localhost)
 			'host' => 'localhost',
 			//set the database name
-			'name' => 'affero',
+			'name' => 'ccw_dev',
 			//set the database username
 			'user' => 'root',
 			//set the database password
