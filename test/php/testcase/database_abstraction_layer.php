@@ -14,7 +14,7 @@
 	 */
     
     //include the simple test framework
-	require_once(dirname(__FILE__).'/../simpletest/autorun.php');
+	require_once('/simpletest/autorun.php');
     //include the database abstraction layer
 	require_once(dirname(__FILE__).'/../../../app/libraries/database.lib.php');
 	

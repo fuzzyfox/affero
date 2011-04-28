@@ -15,7 +15,7 @@
 	 */
 	
 	//include the simple test framework
-	require_once(dirname(__FILE__).'/../simpletest/autorun.php');
+	require_once('/simpletest/autorun.php');
 	//include the required libraries
 	require_once(dirname(__FILE__).'/../../../app/libraries/utilities.lib.php');
 	require_once(dirname(__FILE__).'/../../../app/libraries/input.lib.php');

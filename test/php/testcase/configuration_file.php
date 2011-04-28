@@ -14,7 +14,7 @@
 	 * @license MPL 1.1/LGPL 2.1/GPL 2.0
 	 */
     
-    require_once(dirname(__FILE__).'/../simpletest/autorun.php');
+    require_once('/simpletest/autorun.php');
     require_once(dirname(__FILE__).'/../../../app/config.php');
     
     class TestConfiguration extends UnitTestCase

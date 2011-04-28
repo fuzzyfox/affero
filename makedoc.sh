@@ -2,7 +2,7 @@
 # $Id: makedoc.sh,v 1.2 2007-12-10 01:11:19 ashnazg Exp $ 
 
 #modification by William Duyck <wduyck@gmail.com> to remove previous docs first
-rm -R ./docs
+#rm -R ./docs
 
 #/**
 #  * makedoc - PHPDocumentor script to save your settings
@@ -30,7 +30,7 @@ rm -R ./docs
 #  * 
 #  * @var               string TITLE
 #  */
-TITLE="Affero - The Community Contribution Wizard"
+TITLE="Affero -- Developer Documentation"
 
 #/** 
 #  * name to use for the default package. If not specified, uses 'default'
@@ -80,7 +80,7 @@ CONVERTER=frames
 #  *
 #  * @var               string TEMPLATE
 #  */
-TEMPLATE=earthli
+TEMPLATE=phphtmllib
 
 #/**
 #  * parse elements marked as private
